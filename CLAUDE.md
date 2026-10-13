@@ -9,3 +9,4 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 - `prueba_carga.csv`: fichero de ensayo para practicar la carga de datos en Oracle. Consultas del ensayo en `docs/sql/prueba_carga.sql`.
 - Entorno: venv en `.venv` (Python 3.13). Usar siempre `.venv/Scripts/python.exe` (tests: `-m pytest`; dashboard: `.venv/Scripts/streamlit run common/streamlit_app.py`; prueba de Oracle: `-m common.db`, necesita `.env`).
 - `common/` ya existe (db, dataio, charts, plantilla Streamlit) y se reutiliza en los kits. pandas 3.x: las columnas de texto no son `object`, usar `pd.api.types`.
+- Repo privado en GitHub: `javirmmn/malackathon-2026` (remoto `origin`, rama `main`). `gh` está en `C:\Program Files\GitHub CLI\gh.exe` (no está en el PATH de sesiones antiguas).
