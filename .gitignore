@@ -1,0 +1,39 @@
+# --- Secretos: NUNCA al repo ---
+.env
+.env.*
+!.env.example
+wallet/
+Wallet_*/
+*.zip
+*.p12
+*.sso
+*.pem
+*.jks
+tnsnames.ora
+sqlnet.ora
+ojdbc.properties
+.streamlit/secrets.toml
+
+# --- Datos locales (se reparten por otro canal) ---
+data/*
+!data/README.md
+
+# --- Python ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# --- Salidas generadas ---
+out/
+reports/
+
+# --- Sistema / editores ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/settings.json
+.idea/

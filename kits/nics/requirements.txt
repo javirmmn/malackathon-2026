@@ -1,0 +1,7 @@
+# Kit NICS Lab (apartado 6.2 del plan). Además de ../../requirements.txt
+httpx>=0.27
+pyyaml>=6.0
+rapidfuzz>=3.9
+fastapi>=0.115
+uvicorn>=0.30
+# Ollama se instala aparte (https://ollama.com) y se descarga un modelo pequeño, p. ej.:  ollama pull llama3.2:3b

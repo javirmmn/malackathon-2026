@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Plan de acción · III Malackathon ETSII UMA 2026</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  :root {
+    --ink: #1d2433; --muted: #5b6475; --accent: #0b5cad; --accent-soft: #e8f1fb;
+    --warn: #b4410c; --warn-soft: #fdf0e8; --ok: #1d7a46; --ok-soft: #e9f6ee;
+    --line: #d9dee7; --bg: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: var(--ink); font-size: 10.3pt; line-height: 1.45; margin: 0; }
+  h1 { font-size: 24pt; margin: 0 0 4px; color: var(--accent); letter-spacing: -0.3px; }
+  h2 { font-size: 15pt; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 2px solid var(--accent); color: var(--accent); page-break-after: avoid; }
+  h3 { font-size: 12pt; margin: 16px 0 6px; page-break-after: avoid; }
+  h4 { font-size: 10.5pt; margin: 10px 0 4px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; page-break-after: avoid; }
+  p { margin: 4px 0 8px; }
+  ul, ol { margin: 4px 0 8px; padding-left: 20px; }
+  li { margin: 2px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 9.6pt; page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  th, td { border: 1px solid var(--line); padding: 5px 7px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); font-weight: 600; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #f2f4f8; padding: 0 3px; border-radius: 3px; }
+  .cover { border-left: 6px solid var(--accent); padding: 6px 0 6px 16px; margin-bottom: 16px; }
+  .subtitle { color: var(--muted); font-size: 11pt; margin: 0; }
+  .meta { color: var(--muted); font-size: 9pt; margin-top: 6px; }
+  .box { border-radius: 6px; padding: 9px 12px; margin: 8px 0 12px; page-break-inside: avoid; }
+  .warn { background: var(--warn-soft); border: 1px solid #f2c6ab; }
+  .warn strong.t { color: var(--warn); }
+  .ok { background: var(--ok-soft); border: 1px solid #bfe3cc; }
+  .ok strong.t { color: var(--ok); }
+  .info { background: var(--accent-soft); border: 1px solid #c3d9f1; }
+  .info strong.t { color: var(--accent); }
+  .check li { list-style: none; margin-left: -18px; }
+  .check li::before { content: "☐  "; color: var(--accent); font-weight: 700; }
+  .pill { display: inline-block; font-size: 8.5pt; padding: 1px 7px; border-radius: 10px; background: #eef0f4; color: var(--muted); margin-right: 4px; }
+  .pri { display: inline-block; min-width: 20px; text-align: center; font-weight: 700; color: #fff; background: var(--accent); border-radius: 4px; padding: 0 5px; margin-right: 6px; }
+  .challenge { border: 1px solid var(--line); border-radius: 8px; padding: 4px 14px 8px; margin: 12px 0; }
+  .challenge h3 { margin-top: 10px; }
+  .toc ol { columns: 2; column-gap: 28px; }
+  .small { font-size: 8.8pt; color: var(--muted); }
+  .pb { page-break-before: always; }
+  a { color: var(--accent); text-decoration: none; word-break: break-all; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Plan de acción · III Malackathon</h1>
+  <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
+  <p class="meta">Documento preparado el 13/10/2026 · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code></p>
+</div>
+
+<div class="box warn">
+  <strong class="t">Lo crítico en una línea:</strong> los 4 ya tenemos cuenta de Oracle (@uma.es, de una asignatura), así que <b>no hace falta la encuesta</b>. Cada uno debe comprobar <b>hoy</b> que puede entrar con el doble factor. El jueves 15 hay que <b>entregar por el Campus Virtual antes de las 20:00</b>. Si no hay entrega, el equipo no cuenta.
+</div>
+
+<div class="toc">
+<h2>Índice</h2>
+<ol>
+  <li>Resumen del evento</li>
+  <li>Programa y normas</li>
+  <li>Retos y nuestro orden de preferencia</li>
+  <li>Infraestructura Oracle (OCI)</li>
+  <li>Checklist: hoy, 13/10</li>
+  <li>Mañana, 14/10: kits de arranque (NICS y Mercedes)</li>
+  <li>Organización del equipo</li>
+  <li>Plan horario del jueves 15</li>
+  <li>Presentación y defensa (viernes 16)</li>
+  <li>Plan por reto: NICS Lab</li>
+  <li>Plan por reto: Mercedes-Benz</li>
+  <li>Plan por reto: NTT DATA</li>
+  <li>Plan por reto: Indra</li>
+  <li>Plan por reto: Google</li>
+  <li>Plan por reto: Betsson</li>
+  <li>Material e instalación previa</li>
+  <li>Riesgos y planes de contingencia</li>
+  <li>Contactos y enlaces</li>
+  <li>Contexto para retomar con Claude</li>
+</ol>
+</div>
+
+<h2>1. Resumen del evento</h2>
+<ul>
+  <li><b>Qué es:</b> 3.ª edición del Malackathon, el hackathon de la ETSI Informática de la UMA. Lo organiza la Escuela con Betsson, Grupo Indra, Google, Mercedes-Benz, NTT DATA y NICS Lab UMA. Oracle es colaborador tecnológico y la Cátedra OPPLUS patrocina.</li>
+  <li><b>Formato:</b> equipos de 4 estudiantes de grado de la ETSII. Cada empresa propone su propio reto y lo resuelven como máximo unos <b>15 equipos por reto</b>. Toda la documentación y la comunicación son en castellano.</li>
+  <li><b>Asignación de retos:</b> según la preferencia del equipo y el orden de envío del cuestionario (el primero en llegar tiene prioridad). La organización publica en el Campus Virtual el listado de equipos por empresa y reto.</li>
+  <li><b>Premios:</b> cada empresa premia al equipo que considera ganador de su reto. Hay varios premios por categoría y reto, todavía sin anunciar.</li>
+  <li><b>Restricción:</b> no se admiten miembros con experiencia profesional significativa.</li>
+  <li><b>Lugar de trabajo:</b> cada equipo tiene un aula asignada (habrá un PDF de ubicaciones en el Campus Virtual) y debe trabajar desde su puesto toda la jornada.</li>
+  <li><b>Evaluación:</b> durante el día 1, la organización y los mentores de cada empresa van evaluando las distintas fases del trabajo. Con esas evaluaciones se eligen los finalistas.</li>
+</ul>
+
+<h2>2. Programa y normas</h2>
+<table>
+  <tr><th style="width:22%">Cuándo</th><th>Qué</th></tr>
+  <tr><td><b>Jue 15 · 09:00</b></td><td>Registro en la antesala del Salón de Actos</td></tr>
+  <tr><td>09:30</td><td>Presentación general del hackathon (Salón de Actos)</td></tr>
+  <tr><td>09:45</td><td>Presentación de cada reto en su aula. El aula de cada reto se publica en el Campus Virtual</td></tr>
+  <tr><td>10:15 – 20:00</td><td>Trabajo en las aulas, con mentores de la empresa, profesores de la Escuela y estudiantes de máster</td></tr>
+  <tr><td>antes de 20:00</td><td><b>Entrega por el Campus Virtual o el formulario habilitado</b>. Solo se considera presentado el equipo que entrega</td></tr>
+  <tr><td>21:45</td><td>Se publica la lista de finalistas en el Campus Virtual</td></tr>
+  <tr><td><b>Vie 16 · 09:30</b></td><td>Recepción de finalistas (Salón de Actos)</td></tr>
+  <tr><td>10:00</td><td>Presentaciones de los finalistas: <b>7 minutos como máximo</b>, demo en directo</td></tr>
+  <tr><td>12:30</td><td>Deliberación del jurado</td></tr>
+  <tr><td>13:00</td><td>Entrega de premios</td></tr>
+</table>
+<h4>Normas clave de la presentación</h4>
+<ul>
+  <li>Presenta <b>un único miembro</b> del equipo, con una <b>demostración en directo</b>.</li>
+  <li>Se puede proyectar un <b>PDF de apoyo</b> y enseñar cosas en vivo.</li>
+  <li>Después de todas las presentaciones hay un debate con el jurado en el que puede hablar cualquier miembro. El jurado puede pedir que se muestren la <b>funcionalidad y la arquitectura</b>.</li>
+  <li>Las decisiones del jurado son inapelables.</li>
+  <li>Si el equipo abandona, hay que avisar en la sala de co-working <b>Haz Cosas (aula 4.1.1)</b>, que es la sede de la organización durante el evento.</li>
+</ul>
+
+<h2>3. Retos y nuestro orden de preferencia</h2>
+<p>Orden enviado: <b>1 NICS Lab · 2 Mercedes-Benz · 3 NTT DATA · 4 Indra · 5 Google · 6 Betsson</b>. <b>El reto asignado no se conoce hasta el jueves 15 por la mañana.</b> Por eso el 14/10 se preparan kits de arranque para las dos primeras opciones (apartado 6).</p>
+<table>
+  <tr><th style="width:5%">#</th><th style="width:18%">Empresa</th><th style="width:27%">Reto</th><th>Resumen</th><th style="width:12%">Dificultad</th></tr>
+  <tr><td>1</td><td>NICS Lab</td><td>Infiltrados en la red: encuentra a la IA impostora</td><td>Una red corporativa expone decenas de servicios web. Hay que descubrirlos y clasificar cada uno como <i>real</i>, <i>honeypot clásico</i> u <i>honeypot generativo</i> (respuestas inventadas por una IA), documentando qué delató a cada impostor.</td><td>2–3 la básica; 4 la de IA</td></tr>
+  <tr><td>2</td><td>Mercedes-Benz</td><td>Clustering the Star</td><td>Aprendizaje no supervisado para segmentar la base de clientes y sacar estrategias de marketing personalizadas e insights de negocio.</td><td>3</td></tr>
+  <tr><td>3</td><td>NTT DATA</td><td>El Guardián: detecta cuándo una IA se inventa las cosas</td><td>Detector de alucinaciones: lee la respuesta de una IA junto con sus fuentes y decide si se ha inventado algo. LLMs locales, texto en español, ranking en directo y una prueba sorpresa a mitad de evento. Dan un bot de ejemplo que ya funciona.</td><td>4/5</td></tr>
+  <tr><td>4</td><td>Grupo Indra</td><td>Detección y caracterización de un incendio por satélite</td><td>Dos imágenes Sentinel-2 (Copernicus) de la misma zona e instante, de un incendio en la Comunidad de Madrid: una en color real (True Color) y otra con infrarrojo de onda corta (SWIR).</td><td>4</td></tr>
+  <tr><td>5</td><td>Google</td><td>Incidente en el Google Safety Engineering Center</td><td>Hacer de SOC de emergencia: desplegar un repositorio de datos propio y una consola web para analizar 30 días de telemetría sintética, reconstruir la intrusión y contener la amenaza en vivo.</td><td>3 básico; 4 avanzado</td></tr>
+  <tr><td>6</td><td>Betsson</td><td>Casino Lobby, lanzamiento y jugada</td><td>Aplicación que compruebe por sí sola que un juego nuevo aparece en el lobby, lo lance y juegue una partida en webs reales de Betsson, dejando capturas y un veredicto.</td><td>4–5</td></tr>
+</table>
+
+<h2>4. Infraestructura Oracle (OCI)</h2>
+<h3>4.1 Situación actual (actualizada el 13/10)</h3>
+<ul>
+  <li><b>Los 4 miembros tienen cuenta OCI</b> de una asignatura anterior, asociada a su @uma.es. La principal es la de Javier: tenancy <code>javierroman</code>, región de origen <b>Spain Central (Madrid)</b>, en estado <i>Free Trial</i>.</li>
+  <li><b>Correo de la organización (13/10):</b> la encuesta es solo para quien <b>todavía no tiene cuenta</b>. Hay que ser mayor de edad, usar un @uma.es y <b>no se puede repetir si ya se pidió</b>. La alternativa es un alias @uma.es.</li>
+  <li><b>Decisión:</b> <b>no rellenamos la encuesta</b>. Trabajamos con la tenancy de Javier y las de los demás quedan de respaldo.</li>
+  <li><b>Base de datos antigua <code>SeguridadOracle</code>: ya no existe.</b> No aparece en <i>Autonomous AI Databases</i> del compartimento raíz. Oracle la habrá eliminado por inactividad (más de 120 días sin uso). El enlace de "My recently viewed" del inicio daba 404 porque esa lista no se actualiza. <b>No hay nada que borrar</b> y los <b>2 huecos Always Free están libres</b>.</li>
+</ul>
+<div class="box info">
+  <strong class="t">Límites que hay que conocer:</strong>
+  <ul style="margin:4px 0 0">
+    <li>Como máximo <b>2 Autonomous Databases <i>Always Free</i></b> por tenancy.</li>
+    <li>Una base de datos Always Free que pasa <b>7 días sin uso se detiene</b> (se puede volver a arrancar con <i>Start</i>), y si sigue detenida unos 90 días <b>se elimina</b>. Una base de datos creada hoy sigue activa el jueves.</li>
+    <li>Recursos Always Free: 1 OCPU y 20 GB de almacenamiento por base de datos. Suficiente para el hackathon.</li>
+    <li>Cuando termina el trial, la cuenta queda limitada a recursos Always Free. Por eso se crea <b>siempre</b> con el interruptor <b>Always Free</b> activado.</li>
+  </ul>
+</div>
+
+<h3>4.2 Encuesta de infraestructura (no aplica a nuestro equipo)</h3>
+<ul>
+  <li>Encuesta "Utilización de Infraestructura de Oracle" en el Campus Virtual. Plazo: <b>13/10 a las 23:59</b>.</li>
+  <li>Se rellena <b>una sola vez por equipo</b>. Queda registrado quién la envía, así que conviene que lo haga el responsable.</li>
+  <li>Solo vale un correo <b>@uma.es</b>. <b>No aplica a nuestro equipo:</b> los 4 ya pedimos cuenta en el pasado y no se puede repetir. Si alguna cuenta resultara inutilizable, la alternativa que da la organización es un <b>alias @uma.es</b>.</li>
+</ul>
+
+<h3>4.3 Flujo técnico según la guía "Crear Base de Datos en OCI"</h3>
+<ol>
+  <li>Entrar en la consola de OCI con el doble factor ya configurado. El idioma se puede cambiar.</li>
+  <li>Buscar <i>Oracle Database</i> y crear una <b>Base de Datos Autónoma</b> de <b>Procesamiento de Transacciones</b> (ATP), marcando <b>SIEMPRE GRATIS / Always Free</b>. El resto de opciones, por defecto.</li>
+  <li>Se crea el usuario <code>ADMIN</code>. <b>Apuntad su contraseña: es muy importante.</b></li>
+  <li><i>Acciones de base de datos → Usuarios de base de datos</i>: crear un usuario nuevo con contraseña fuerte, cuota <b>UNLIMITED</b> y los roles <b>Gráfico</b>, <b>OML</b> y <b>REST</b> activados.</li>
+  <li>Copiar la <b>URL de acceso al esquema</b> de ese usuario (aparece debajo del usuario en la lista). <b>Se entrega después en el formulario de evaluación.</b></li>
+  <li>Cargar los datos: abrir la URL del usuario, iniciar sesión y entrar en <i>Carga de datos → Carga de datos</i>. Arrastrar el Excel descargado del Campus Virtual.</li>
+  <li><b>Muy importante:</b> pulsar el <b>lápiz</b> para configurar la importación. Se recomienda poner como <code>VARCHAR2</code> las fechas, países y campos problemáticos, y transformarlos después con SQL.</li>
+  <li>Pulsar <b>Inicio</b> para importar y después <b>Listo</b>.</li>
+  <li>Opcional: montar un servidor web en una instancia de Compute. No es obligatorio; está explicado en el vídeo del taller.</li>
+</ol>
+
+<h2>5. Checklist: hoy, 13/10</h2>
+<h3>5.1 Ensayo de Oracle: crear ya la base de datos del evento (Javier, unos 30 min)</h3>
+<p>En lugar de una base de datos "de usar y tirar", <b>se crea hoy la que usaremos el jueves</b>. Así llegamos con todo comprobado y ahorramos tiempo el día 1. Si el reto exigiera otra configuración, queda libre un segundo hueco Always Free.</p>
+<ol>
+  <li><b>Crear la base de datos.</b> ☰ → <i>Oracle Database</i> → <i>Autonomous Database</i>, con la región <b>Spain Central (Madrid)</b> y el compartimento <code>javierroman (root)</code> → <b>Create Autonomous AI Database</b>.
+    <ul>
+      <li>Display name y Database name: <code>malackathon</code>.</li>
+      <li>Workload type: <b>Transaction Processing</b>.</li>
+      <li>Interruptor <b>Always Free</b>: <b>activado</b>. Comprobad que no se cobra nada.</li>
+      <li>Contraseña de <code>ADMIN</code>: fuerte, <b>guardada en un gestor de contraseñas</b>. Nunca en el repo.</li>
+      <li>Acceso de red: el que venga por defecto (acceso seguro desde cualquier sitio).</li>
+      <li>Lo demás, por defecto → <i>Create</i>. Tarda de 3 a 5 minutos hasta quedar en estado <b>Available</b>.</li>
+    </ul>
+  </li>
+  <li><b>Crear el usuario de trabajo.</b> Dentro de la base de datos: <i>Database actions → Database Users</i> → <i>Create User</i>.
+    <ul>
+      <li>Usuario: <code>MALACK</code> (o el nombre del equipo), con contraseña fuerte.</li>
+      <li>Quota on tablespace DATA: <b>UNLIMITED</b>.</li>
+      <li>Activar <b>Graph</b>, <b>OML</b> y <b>Web Access (REST)</b>.</li>
+    </ul>
+  </li>
+  <li><b>Copiar la URL del esquema</b> que aparece en la tarjeta del usuario. Guardarla en <code>docs/oracle.md</code> del repo (solo la URL, sin contraseñas). <b>Es la que se entrega en el formulario de evaluación.</b></li>
+  <li><b>Probar la carga de datos.</b> Abrir la URL, iniciar sesión como <code>MALACK</code> → <i>Data Load → Load Data</i>. Arrastrar el fichero de prueba <code>prueba_carga.csv</code> de la carpeta del proyecto.
+    <ul>
+      <li>Pulsar el <b>lápiz</b> y poner como <code>VARCHAR2</code> la fecha, el país y el campo decimal con coma.</li>
+      <li><i>Start</i> → <i>Done</i>.</li>
+    </ul>
+  </li>
+  <li><b>Comprobar con SQL.</b> En <i>SQL</i> (Database Actions), ejecutar <code>SELECT COUNT(*) FROM PRUEBA_CARGA;</code> y probar a convertir la fecha con <code>TO_DATE(fecha,'DD/MM/YYYY')</code> y el decimal con <code>TO_NUMBER(REPLACE(importe,',','.'))</code>.</li>
+  <li><b>Opcional, recomendable para Google o Mercedes:</b> descargar el <b>wallet</b> (<i>Database connection → Download wallet</i>) y probar a conectar desde Python con <code>oracledb</code>. El wallet no se sube al repo.</li>
+  <li><b>Borrar solo la tabla de prueba</b> (<code>DROP TABLE PRUEBA_CARGA PURGE;</code>). <b>La base de datos y el usuario se quedan</b> para el jueves.</li>
+</ol>
+<p class="small">"My recently viewed" del inicio no tiene opción para quitar elementos. Se va renovando con lo que abráis y la entrada rota de <code>SeguridadOracle</code> desaparecerá sola. Es inofensiva.</p>
+
+<h3>5.2 Resto de tareas de hoy</h3>
+<ul class="check">
+  <li><b>Los 4</b> comprueban que pueden entrar en su cuenta OCI con el doble factor (cuentas de respaldo).</li>
+  <li>Javier: mirar la fecha de fin del trial (aviso del inicio o <i>Billing → Subscriptions</i>).</li>
+  <li>Ver el vídeo del taller de Oracle del 10/10 (enlace en el apartado 18).</li>
+  <li>Revisar el Campus Virtual por si hay novedades (aulas, materiales, avisos). El reto no se sabrá hasta el jueves por la mañana.</li>
+  <li>Decidir las parejas del 14/10: quién hace el kit de NICS y quién el de Mercedes (apartado 6.1).</li>
+  <li>Acordar los roles del equipo (apartado 7) y quién presenta.</li>
+  <li>Comprobar que los 4 tienen Python funcionando en su portátil. En el de Javier, <code>python</code> abre la Microsoft Store: usar el lanzador <code>py</code> o instalar Python 3.11/3.12.</li>
+  <li>Crear un grupo de Telegram o WhatsApp del equipo y un repositorio Git compartido (GitHub, privado hasta la entrega). Compartir allí la URL del esquema y, por un canal seguro, las credenciales de <code>MALACK</code>.</li>
+</ul>
+
+<h2>6. Mañana, 14/10: kits de arranque para NICS Lab y Mercedes-Benz</h2>
+<div class="box warn">
+  <strong class="t">El reto asignado no se sabe hasta el jueves 15 por la mañana.</strong> Por eso el miércoles se preparan <b>kits de arranque</b> para nuestras dos primeras opciones: código base reutilizable que no depende de los datos del reto (que se dan el mismo día). El jueves, en cuanto se anuncie el reto, se elige el kit que toca y se empieza desde ahí y no desde cero. Si nos tocara NTT, Indra, Google o Betsson, se usan las partes comunes y la preparación ligera del apartado 6.4.
+</div>
+<p class="small"><b>Ojo con las normas:</b> las bases no prohíben llevar herramientas preparadas, pero la solución se evalúa sobre lo que se haga durante el evento con los datos del reto. Preparad <b>infraestructura genérica</b> (esqueleto, utilidades, plantillas), no una solución "enlatada". Si hay dudas, preguntad a la organización (<a href="mailto:empresas.informatica@uma.es">empresas.informatica@uma.es</a>) y, si os preguntan, decid con naturalidad qué traíais preparado.</p>
+
+<h3>6.1 Organización del día y estructura del repo</h3>
+<table>
+  <tr><th style="width:22%">Quién</th><th>Tarea del 14/10</th></tr>
+  <tr><td>Pareja A (2 personas)</td><td>Kit <b>NICS Lab</b> (apartado 6.2)</td></tr>
+  <tr><td>Pareja B (2 personas)</td><td>Kit <b>Mercedes-Benz</b> (apartado 6.3)</td></tr>
+  <tr><td>Todos, al final del día (1 h)</td><td>Partes comunes: conexión a Oracle desde Python, plantilla Streamlit, plantilla del PDF de presentación y puesta en común (cada pareja enseña su kit a la otra)</td></tr>
+</table>
+<p>Estructura propuesta del repositorio (en <code>C:\Users\jrmro\Malackathon_2026</code>):</p>
+<table>
+  <tr><th style="width:32%">Carpeta</th><th>Contenido</th></tr>
+  <tr><td><code>common/</code></td><td>Conexión a Oracle (<code>oracledb</code> + wallet, por variables de entorno), utilidades de carga y exportación de CSV/Excel, plantilla de app Streamlit, estilos de gráficos</td></tr>
+  <tr><td><code>kits/nics/</code></td><td>Kit de clasificación de servicios (6.2)</td></tr>
+  <tr><td><code>kits/mercedes/</code></td><td>Kit de clustering de clientes (6.3)</td></tr>
+  <tr><td><code>docs/</code></td><td>Plan, <code>oracle.md</code> (URL del esquema, sin contraseñas), plantilla del PDF de presentación, diagrama de arquitectura</td></tr>
+  <tr><td><code>data/</code></td><td>Datos locales; en <code>.gitignore</code>. El wallet y el <code>.env</code> tampoco se suben</td></tr>
+</table>
+
+<h3>6.2 Kit NICS Lab (pareja A)</h3>
+<p><b>Objetivo del kit:</b> que el jueves baste con meter la lista de servicios del entorno del reto para tener las primeras clasificaciones en menos de una hora.</p>
+<ol>
+  <li><b>Inventario:</b> módulo que lee la lista de servicios (dirección, puerto, ruta) desde un CSV o YAML y la normaliza.</li>
+  <li><b>Recolector de evidencias:</b> envía a cada servicio un conjunto configurable de peticiones inocuas, repetidas varias veces, y guarda respuesta, cabeceras, código de estado y latencia (en SQLite o CSV, opcionalmente en Oracle).</li>
+  <li><b>Extracción de rasgos por servicio:</b> variabilidad de respuestas ante la misma petición (similitud textual), estadísticas de latencia (media, desviación), coherencia de cabeceras y códigos de estado, y coincidencias con valores por defecto conocidos de honeypots.</li>
+  <li><b>Clasificador por reglas con pesos</b> (configurables en un YAML): puntuación por clase (real / honeypot clásico / honeypot generativo), clase final, confianza y lista de evidencias que la justifican.</li>
+  <li><b>Salidas:</b> dashboard en Streamlit (tabla filtrable y detalle por servicio) y generador de informe Markdown/PDF con "qué delató a cada impostor".</li>
+  <li><b>Banco de pruebas local</b> para comprobar que todo funciona sin el entorno real: tres servicios simulados en <code>localhost</code>: uno "real" (respuestas estáticas coherentes), uno "honeypot clásico" (respuestas fijas por defecto) y uno "generativo" (respuestas generadas por un modelo local con Ollama). El clasificador debe separarlos.</li>
+</ol>
+<p><b>Hecho cuando:</b> <code>python -m kits.nics.run --targets targets.csv</code> recorre el banco de pruebas, clasifica bien los 3 servicios y el dashboard los muestra con sus evidencias.</p>
+<p class="small">Dependencias: <code>httpx</code>, <code>pandas</code>, <code>pyyaml</code>, <code>rapidfuzz</code>, <code>streamlit</code>, <code>fastapi</code> + <code>uvicorn</code> (servicios simulados), Ollama con un modelo pequeño.</p>
+
+<h3>6.3 Kit Mercedes-Benz (pareja B)</h3>
+<p><b>Objetivo del kit:</b> que el jueves, con el dataset de clientes, en unas 2 horas haya segmentos perfilados y un dashboard funcionando.</p>
+<ol>
+  <li><b>Dataset de ensayo público</b> de clientes (por ejemplo, <i>Customer Personality Analysis</i> o <i>Mall Customers</i> de Kaggle), solo para probar el pipeline.</li>
+  <li><b>EDA automática:</b> tipos de variables, nulos, distribuciones, valores atípicos y correlaciones, en un informe HTML que se genera con un comando.</li>
+  <li><b>Preprocesado configurable:</b> detección de numéricas y categóricas, imputación, encoding, escalado (Standard o Robust), tratamiento de valores atípicos y variables tipo RFM si hay fechas o importes.</li>
+  <li><b>Búsqueda de modelos:</b> K-Means (k de 2 a 10), GMM, HDBSCAN y K-Prototypes, con tabla comparativa de silueta, Davies-Bouldin y Calinski-Harabasz, y gráfico del codo.</li>
+  <li><b>Perfilado:</b> tabla de medias y medianas por cluster, variables que más distinguen a cada segmento, gráfico radar y una plantilla para poner nombre de "persona" y acciones de marketing a cada segmento.</li>
+  <li><b>Visualización:</b> PCA y UMAP en 2D coloreados por cluster.</li>
+  <li><b>Dashboard Streamlit:</b> selector de segmento, perfil y simulador de "¿a qué segmento pertenece este cliente?".</li>
+  <li><b>Opcional:</b> carga y lectura desde la Autonomous DB <code>malackathon</code> mediante <code>common/</code>.</li>
+</ol>
+<p><b>Hecho cuando:</b> con el dataset de ensayo, un solo comando genera la EDA, la comparación de modelos y los perfiles, y el dashboard muestra los segmentos.</p>
+<p class="small">Dependencias: <code>pandas</code>, <code>scikit-learn</code>, <code>hdbscan</code>, <code>umap-learn</code>, <code>kmodes</code>, <code>plotly</code>, <code>streamlit</code>, <code>ydata-profiling</code> (opcional).</p>
+
+<h3>6.4 Preparación ligera para el resto de retos (si sobra tiempo o por la noche)</h3>
+<ul class="check">
+  <li><b>NTT DATA:</b> instalar Ollama y descargar un modelo de 3 a 8B; dejar en caché un modelo NLI multilingüe (<code>transformers</code>).</li>
+  <li><b>Indra:</b> instalar <code>rasterio</code>, <code>opencv-python</code>, <code>scikit-image</code> y <code>folium</code>; opcionalmente, probar umbrales de color sobre una imagen SWIR pública de Copernicus Browser.</li>
+  <li><b>Google:</b> la conexión a Oracle de <code>common/</code> ya cubre la base del reto.</li>
+  <li><b>Betsson:</b> <code>pip install playwright</code> y <code>playwright install chromium</code>.</li>
+</ul>
+
+<h3>6.5 Cierre del día 14/10</h3>
+<ul class="check">
+  <li>Ambos kits en <code>main</code>, con un <code>README</code> de "cómo arrancar en 5 minutos".</li>
+  <li>Los 4 portátiles clonan el repo y ejecutan los dos kits sin errores.</li>
+  <li>Comprobar que la base de datos <code>malackathon</code> sigue en estado <i>Available</i>; si no, <i>Start</i>.</li>
+  <li>Plantilla del PDF de presentación (6–8 diapositivas) y del diagrama de arquitectura.</li>
+  <li>Material físico listo (apartado 16) y a dormir pronto: el día 1 dura casi 11 horas.</li>
+</ul>
+
+<h2>7. Organización del equipo</h2>
+<table>
+  <tr><th style="width:24%">Rol</th><th>Responsabilidades</th></tr>
+  <tr><td><b>Líder / presentador</b></td><td>Controla el tiempo y los checkpoints, habla con los mentores, recoge feedback, prepara el PDF y el guion de la demo, hace la entrega en el Campus Virtual y presenta el viernes (una sola persona).</td></tr>
+  <tr><td><b>Datos / backend</b></td><td>Carga y limpieza de datos, Oracle (base de datos, usuario, REST), pipeline principal e integración.</td></tr>
+  <tr><td><b>Modelo / IA</b></td><td>Núcleo técnico: modelo, reglas, métricas y validación. Lleva el registro de experimentos.</td></tr>
+  <tr><td><b>Frontend / visualización</b></td><td>Dashboard o interfaz de la demo (Streamlit o similar), gráficos, capturas y <b>vídeo de respaldo</b> de la demo.</td></tr>
+</table>
+<p><b>Reglas internas:</b> una reunión de 5 minutos cada 90 minutos para ver qué hay hecho, qué bloquea y qué viene. Ramas cortas y <code>main</code> siempre funcionando. Ninguna decisión técnica se discute más de 10 minutos: decide el líder.</p>
+
+<h2>8. Plan horario del jueves 15</h2>
+<table>
+  <tr><th style="width:18%">Franja</th><th>Objetivo</th><th style="width:28%">Hito de control</th></tr>
+  <tr><td>09:00 – 10:15</td><td><b>Se conoce el reto asignado.</b> Si es NICS o Mercedes, se parte del kit correspondiente; si es otro, de <code>common/</code> y la preparación ligera. Registro, presentación general y del reto. <b>Apuntad los criterios de evaluación</b>, el formato de entrega y las métricas. Preguntad qué valoran más.</td><td>Criterios anotados</td></tr>
+  <tr><td>10:15 – 11:30</td><td>Explorar datos y entorno, adaptar el kit (o montar el esqueleto si no hay kit) y repartir tareas. Primera versión mínima funcionando cuanto antes.</td><td>Algo funcionando de principio a fin</td></tr>
+  <tr><td>11:30 – 15:00</td><td>Solución base completa, aunque sea simple. Comer por turnos.</td><td>Primera versión enseñada a un mentor</td></tr>
+  <tr><td>15:00 – 18:00</td><td>Mejoras, métricas, el elemento diferenciador y la interfaz de la demo.</td><td>Versión 2 con métricas</td></tr>
+  <tr><td>18:00 – 19:15</td><td><b>Congelar el código.</b> PDF, guion, diagrama de arquitectura y vídeo de respaldo de la demo.</td><td>Demo ensayada una vez</td></tr>
+  <tr><td>19:15 – 19:45</td><td><b>Entrega por el Campus Virtual</b> (código, PDF, URL del esquema de Oracle si aplica).</td><td>Entrega confirmada</td></tr>
+  <tr><td>21:45</td><td>Lista de finalistas. Si estamos, ensayar la presentación esa noche o a primera hora.</td><td>—</td></tr>
+</table>
+<div class="box info"><strong class="t">Clave:</strong> los mentores evalúan <b>por fases durante el día</b>. Enseñadles avances parciales pronto y a menudo; no esperéis a tenerlo todo.</div>
+
+<h2>9. Presentación y defensa (viernes 16)</h2>
+<h4>Estructura de 7 minutos</h4>
+<table>
+  <tr><th style="width:18%">Tiempo</th><th>Contenido</th></tr>
+  <tr><td>0:00 – 0:30</td><td>El problema en una frase y por qué importa a la empresa.</td></tr>
+  <tr><td>0:30 – 1:30</td><td>Enfoque y arquitectura: un diagrama.</td></tr>
+  <tr><td>1:30 – 5:30</td><td><b>Demo en directo</b>, siguiendo un caso concreto de principio a fin.</td></tr>
+  <tr><td>5:30 – 6:30</td><td>Resultados: métricas, hallazgos y valor de negocio.</td></tr>
+  <tr><td>6:30 – 7:00</td><td>Limitaciones honestas y siguientes pasos.</td></tr>
+</table>
+<ul>
+  <li>Ensayad con cronómetro: 6:45 como máximo.</li>
+  <li>Llevad el vídeo de la demo por si falla la red o el directo. El PDF también en un USB.</li>
+  <li>Preparad respuestas a preguntas probables: ¿por qué este método?, ¿cómo escala?, ¿qué haríais con más tiempo?, ¿cómo lo habéis validado?</li>
+  <li>En el debate puede hablar cualquiera: cada miembro debe saber explicar su parte.</li>
+</ul>
+
+<div class="pb"></div>
+<h2>10. Plan por reto · <span class="pri">1</span>NICS Lab: encuentra a la IA impostora</h2>
+<div class="challenge">
+<p><span class="pill">Ciberseguridad</span><span class="pill">IA</span><span class="pill">Honeypots</span><span class="pill">Reconocimiento</span></p>
+<h4>Objetivo</h4>
+<p>Clasificar cada servicio web de la red proporcionada como <b>real</b>, <b>honeypot clásico</b> u <b>honeypot generativo</b>, y documentar las evidencias que lo delatan.</p>
+<h4>Alcance</h4>
+<p>Trabajar <b>solo sobre la red y los servicios del entorno del reto</b> y respetar las normas que den los organizadores.</p>
+<h4>Enfoque</h4>
+<ol>
+  <li><b>Inventario</b> de los servicios del entorno autorizado: dirección, puerto, tipo de servicio y primera respuesta.</li>
+  <li><b>Batería de pruebas automatizada</b> que recoja evidencias por servicio:
+    <ul>
+      <li><b>Consistencia:</b> ¿la misma petición repetida da siempre la misma respuesta? Un modelo generativo suele variar.</li>
+      <li><b>Latencia:</b> tiempos de respuesta irregulares o altos, típicos de la generación de texto.</li>
+      <li><b>Coherencia con el protocolo:</b> cabeceras, códigos de estado y formatos que cumplan lo esperado de un servicio real.</li>
+      <li><b>Valores por defecto</b> conocidos de software de honeypot clásico.</li>
+      <li><b>Coherencia del contenido:</b> contradicciones entre respuestas, datos inventados o demasiado "verosímiles".</li>
+    </ul>
+  </li>
+  <li><b>Clasificador por reglas con pesos</b>: puntuación por categoría, nivel de confianza y lista de evidencias.</li>
+  <li><b>Informe y dashboard</b>: tabla con servicio, clasificación, confianza, evidencias y la técnica que lo delató.</li>
+</ol>
+<h4>Diferenciador</h4>
+<p>Documentación clara y reproducible de cada clasificación. El reto lo pide explícitamente y pesa mucho en la evaluación.</p>
+<h4>Preparación</h4>
+<ul>
+  <li>Python con <code>requests</code>/<code>httpx</code>, <code>pandas</code> y <code>streamlit</code>. Plantilla del informe hecha.</li>
+  <li>Repasar cómo funcionan los honeypots (de baja y alta interacción) y por qué los LLM son poco deterministas.</li>
+</ul>
+</div>
+
+<h2>11. Plan por reto · <span class="pri">2</span>Mercedes-Benz: Clustering the Star</h2>
+<div class="challenge">
+<p><span class="pill">Machine Learning</span><span class="pill">Análisis de datos</span><span class="pill">Clustering</span></p>
+<h4>Pipeline</h4>
+<ol>
+  <li><b>EDA</b> (análisis exploratorio): tipos de variables, nulos, distribuciones, valores atípicos y correlaciones.</li>
+  <li><b>Preprocesado:</b> imputación, one-hot o target encoding de las categóricas, escalado (Standard o Robust) y, si hace falta, ingeniería de variables tipo RFM (recencia, frecuencia, valor).</li>
+  <li><b>Modelos:</b> K-Means como base; GMM; HDBSCAN o DBSCAN para formas irregulares; K-Prototypes si hay muchas categóricas.</li>
+  <li><b>Elegir k:</b> método del codo, coeficiente de silueta, Davies-Bouldin, y sobre todo que los grupos se puedan interpretar.</li>
+  <li><b>Visualización:</b> PCA o UMAP en 2D coloreado por cluster, y perfiles por cluster (medias o medianas y gráficos radar).</li>
+  <li><b>Negocio:</b> nombre de "persona" para cada segmento, descripción, tamaño, valor y <b>acciones de marketing concretas</b> por segmento.</li>
+</ol>
+<h4>Diferenciador</h4>
+<p>Gana el <b>storytelling de negocio</b>, no el algoritmo. Al ser el reto de menor dificultad (3), la competencia se decide en los insights y la presentación.</p>
+<h4>Demo</h4>
+<p>Dashboard en Streamlit: filtro por cluster, perfil del segmento y simulador que diga a qué segmento pertenece un cliente nuevo. Si se usa Oracle, datos cargados en la Autonomous DB.</p>
+<h4>Preparación</h4>
+<p><code>pandas</code>, <code>scikit-learn</code>, <code>hdbscan</code>, <code>umap-learn</code>, <code>plotly</code>, <code>streamlit</code>, <code>kmodes</code>.</p>
+</div>
+
+<h2>12. Plan por reto · <span class="pri">3</span>NTT DATA: El Guardián</h2>
+<div class="challenge">
+<p><span class="pill">NLP</span><span class="pill">Análisis de datos</span><span class="pill">LLM local</span></p>
+<h4>Estrategia</h4>
+<ol>
+  <li><b>Primera hora:</b> poner en marcha el <b>bot de ejemplo</b> y hacer una primera entrega al ranking.</li>
+  <li><b>Comprobaciones baratas:</b> que las cifras, fechas, nombres propios y entidades de la respuesta aparezcan en las fuentes (normalizando formatos).</li>
+  <li><b>Verificación por afirmaciones:</b> dividir la respuesta en afirmaciones atómicas y comprobar cada una contra las fuentes con un modelo NLI multilingüe (por ejemplo, variantes XNLI de mDeBERTa).</li>
+  <li><b>LLM local como juez</b> (Ollama), con un prompt estricto: "¿está respaldada por las fuentes? sí / no / parcial".</li>
+  <li><b>Combinar las señales</b> en una puntuación y <b>ajustar el umbral</b> sobre un conjunto de validación para la métrica del ranking.</li>
+</ol>
+<h4>Prueba sorpresa a mitad del evento</h4>
+<p>No sobreajustéis al dataset: reglas generales, umbral robusto y un pipeline fácil de reejecutar con datos nuevos.</p>
+<h4>Preparación (imprescindible antes del jueves)</h4>
+<ul>
+  <li>Instalar <b>Ollama</b> y <b>descargar los modelos antes</b>, porque la red del evento puede ir lenta. Mejor un modelo pequeño y rápido (3–8B) que uno grande.</li>
+  <li>Dejar en caché los modelos NLI de Hugging Face. <code>transformers</code>, <code>torch</code>, <code>spacy</code> con modelo en español.</li>
+</ul>
+</div>
+
+<h2>13. Plan por reto · <span class="pri">4</span>Indra: incendio con Sentinel-2</h2>
+<div class="challenge">
+<p><span class="pill">Teledetección</span><span class="pill">Observación de la Tierra</span><span class="pill">Visión por computador</span></p>
+<h4>Datos</h4>
+<p>Dos composiciones de la misma escena: <b>True Color</b> (RGB visible) y <b>SWIR</b>. En las composiciones SWIR el fuego activo sale en rojo o naranja muy brillante, la zona quemada en tonos oscuros o pardos y la vegetación sana en verde.</p>
+<h4>Pipeline</h4>
+<ol>
+  <li>Leer las imágenes con <code>rasterio</code> o OpenCV. Comprobar si traen georreferencia (GeoTIFF) o son imágenes planas.</li>
+  <li><b>Segmentar</b> por umbrales en HSV o Lab, o por clustering de píxeles, en: fuego activo, área quemada, humo (más visible en True Color), vegetación, suelo y agua.</li>
+  <li>Limpiar con operaciones morfológicas (apertura y cierre) y quitar regiones pequeñas.</li>
+  <li><b>Medidas:</b> superficie en hectáreas a partir de la resolución del píxel (10 m o 20 m en SWIR), perímetro, frente activo y dirección probable de propagación (por ejemplo, según la pluma de humo).</li>
+  <li>Exportar los polígonos a <b>GeoJSON</b> y mostrarlos en un mapa interactivo (<code>folium</code>).</li>
+</ol>
+<h4>Ojo</h4>
+<p>Al ser composiciones RGB y no bandas en bruto, no se puede calcular NBR ni dNBR directamente. Explicad en la presentación cómo se haría con las bandas B8 y B12. Eso suma puntos.</p>
+<h4>Preparación</h4>
+<p><code>rasterio</code>, <code>opencv-python</code>, <code>numpy</code>, <code>scikit-image</code>, <code>shapely</code>, <code>geopandas</code>, <code>folium</code>. Repasar Sentinel-2 (bandas y resoluciones) y las composiciones SWIR para incendios.</p>
+</div>
+
+<h2>14. Plan por reto · <span class="pri">5</span>Google: incidente en el GSEC</h2>
+<div class="challenge">
+<p><span class="pill">Ciberseguridad defensiva</span><span class="pill">IA</span><span class="pill">Threat hunting</span></p>
+<ol>
+  <li><b>Repositorio de datos:</b> cargar los 30 días de telemetría en la Autonomous DB de Oracle y normalizar marcas de tiempo, hosts, usuarios e IPs.</li>
+  <li><b>Consola web de análisis</b> (APEX, ORDS + frontend o Streamlit): línea temporal, búsquedas, filtros y pivotes por entidad.</li>
+  <li><b>Detecciones:</b> reglas en SQL para anomalías (accesos fuera de horario, volúmenes salientes anómalos, nuevas cuentas o privilegios), mapeadas a MITRE ATT&amp;CK.</li>
+  <li><b>Reconstruir la intrusión:</b> cronología con el acceso inicial, el movimiento lateral, la exfiltración y el sabotaje, más la lista de IOCs (indicadores de compromiso).</li>
+  <li><b>Contención en vivo:</b> panel de acciones y playbook de respuesta. Un LLM puede resumir los hallazgos.</li>
+</ol>
+</div>
+
+<h2>15. Plan por reto · <span class="pri">6</span>Betsson: lobby, lanzamiento y jugada</h2>
+<div class="challenge">
+<p><span class="pill">Automatización web</span><span class="pill">Testing</span><span class="pill">IA</span></p>
+<ol>
+  <li><b>Playwright</b> (Python): abrir el lobby, buscar el juego nuevo, verificar que se ve, lanzarlo y esperar a que cargue.</li>
+  <li>Jugar una partida: localizar los controles (a menudo dentro de un canvas o iframe) y hacer una jugada.</li>
+  <li>Guardar <b>capturas</b> de cada paso y emitir un <b>veredicto</b> (OK / FALLO y motivo) en un informe HTML.</li>
+  <li>Opcional: un modelo con visión que valide las capturas ("¿se ve el juego cargado?").</li>
+  <li>Respetar las condiciones de uso de las webs y el alcance que marque la empresa.</li>
+</ol>
+</div>
+
+<h2>16. Material e instalación previa</h2>
+<h4>Común a todos los portátiles</h4>
+<ul class="check">
+  <li>Python 3.11/3.12, <code>venv</code>, Jupyter, <code>pandas</code>, <code>numpy</code>, <code>scikit-learn</code>, <code>matplotlib</code>/<code>plotly</code>, <code>streamlit</code>.</li>
+  <li>Git configurado y acceso al repo del equipo. VS Code con las extensiones de Python y Jupyter.</li>
+  <li>Acceso al Campus Virtual y a la consola OCI comprobado (con el doble factor en el móvil).</li>
+</ul>
+<h4>Según el reto</h4>
+<table>
+  <tr><th style="width:22%">Reto</th><th>Instalar o descargar antes</th></tr>
+  <tr><td>NICS Lab</td><td><code>httpx</code>/<code>requests</code>, plantilla del informe</td></tr>
+  <tr><td>Mercedes-Benz</td><td><code>hdbscan</code>, <code>umap-learn</code>, <code>kmodes</code></td></tr>
+  <tr><td>NTT DATA</td><td>Ollama con modelos descargados, <code>transformers</code>, <code>torch</code>, modelo NLI en caché, <code>spacy</code> en español</td></tr>
+  <tr><td>Indra</td><td><code>rasterio</code>, <code>opencv-python</code>, <code>scikit-image</code>, <code>geopandas</code>, <code>folium</code></td></tr>
+  <tr><td>Google</td><td>Cliente de Oracle (<code>oracledb</code>), wallet de la base de datos descargado</td></tr>
+  <tr><td>Betsson</td><td><code>playwright</code> y <code>playwright install</code> (navegadores)</td></tr>
+</table>
+<h4>Material físico</h4>
+<ul class="check">
+  <li>Portátiles cargados, cargadores y <b>regleta</b>.</li>
+  <li>Móvil para compartir datos como red de respaldo.</li>
+  <li>USB con el PDF y el vídeo de la demo para el viernes.</li>
+  <li>Agua y algo de comer: la jornada es larga.</li>
+</ul>
+
+<h2>17. Riesgos y planes de contingencia</h2>
+<table>
+  <tr><th style="width:32%">Riesgo</th><th>Plan</th></tr>
+  <tr><td>La tenancy de Javier falla o se queda sin recursos</td><td>Usar la cuenta OCI de otro miembro del equipo (los 4 tenemos). Si alguna no sirve, la organización permite pedir cuenta con un alias @uma.es.</td></tr>
+  <tr><td>La red del evento va lenta</td><td>Modelos y dependencias descargados antes; compartir datos desde el móvil.</td></tr>
+  <tr><td>No llegamos a todo</td><td>Prioridad: versión mínima funcionando, luego demo y luego mejoras. Congelar el código a las 18:00 sí o sí.</td></tr>
+  <tr><td>Falla la demo en directo</td><td>Vídeo grabado y capturas en el PDF.</td></tr>
+  <tr><td>Se olvida la entrega</td><td>El líder entrega entre las 19:15 y las 19:45 y confirma que ha quedado registrada.</td></tr>
+  <tr><td>Bloqueo técnico de más de 20 min</td><td>Preguntar a un mentor o ir a la sala Haz Cosas (aula 4.1.1).</td></tr>
+  <tr><td>Python no funciona en algún portátil</td><td>Resolverlo hoy o mañana. En Windows, usar el lanzador <code>py</code> o instalar desde python.org.</td></tr>
+</table>
+
+<h2>18. Contactos y enlaces</h2>
+<ul>
+  <li><b>Organización:</b> <a href="mailto:empresas.informatica@uma.es">empresas.informatica@uma.es</a> · Durante el evento: sala de co-working <b>Haz Cosas, aula 4.1.1</b>.</li>
+  <li><b>Encuesta de infraestructura Oracle:</b> <a href="https://informatica.cv.uma.es/mod/questionnaire/view.php?id=32225">informatica.cv.uma.es/mod/questionnaire/view.php?id=32225</a></li>
+  <li><b>Encuesta de selección de retos</b> (ya cerrada): <a href="https://informatica.cv.uma.es/mod/questionnaire/view.php?id=30635">informatica.cv.uma.es/mod/questionnaire/view.php?id=30635</a></li>
+  <li><b>Vídeo del taller de Oracle (10/10):</b> <a href="https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/_RaHQEu-4kDkJpOALCZmQPoZ8sXgNw0uA5XRjFlX-ECIIFVO4p-nTnOEbUJrO0MG/n/frddomvd8z4q/b/cust-uma-bucket/o/video1274765269.mp4">objectstorage.eu-frankfurt-1.oraclecloud.com/…/video1274765269.mp4</a></li>
+  <li><b>Oracle REST Data Services, guía del desarrollador:</b> <a href="https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/24.1/orddg/oracle-rest-data-services-developers-guide.pdf">docs.oracle.com/…/oracle-rest-data-services-developers-guide.pdf</a></li>
+  <li><b>Servidor web en una instancia de Compute (vídeo):</b> <a href="https://www.youtube.com/watch?v=IyQ9iyn6QOY">youtube.com/watch?v=IyQ9iyn6QOY</a></li>
+  <li><b>Claves SSH para instancias Linux en OCI (vídeo):</b> <a href="https://www.youtube.com/watch?v=v5fGdgIrdd0">youtube.com/watch?v=v5fGdgIrdd0</a></li>
+</ul>
+
+<h2>19. Contexto para retomar con Claude</h2>
+<div class="box ok">
+  <strong class="t">Copiar este bloque al empezar una conversación nueva:</strong>
+  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 13/10 se crea la Autonomous DB Always Free <code>malackathon</code> (ATP, Madrid) con el usuario <code>MALACK</code> (roles Graph/OML/REST) para usarla el jueves. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>. El plan completo está en <code>Plan_Malackathon_2026.pdf</code> en esa carpeta.</p>
+</div>
+
+<p class="small" style="margin-top:18px">Fuentes: Bases III Malackathon ETSII UMA; Programa y Normas Malackathon; guía "Cómo crear la base de datos y un usuario en OCI"; hoja de recursos de Oracle (uma-hackaton v1.0.0); información de retos del Campus Virtual. Las fechas y normas pueden cambiar a criterio de la organización: revisad siempre el Campus Virtual.</p>
+
+</body>
+</html>

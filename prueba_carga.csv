@@ -1,0 +1,11 @@
+id,nombre,fecha,pais,importe,categoria
+1,Cliente Ana,03/01/2025,España,"1234,50",Premium
+2,Cliente Luis,15/02/2025,Portugal,"89,99",Básico
+3,Cliente Marta,28/02/2025,Francia,"450,00",Estándar
+4,Cliente Jorge,10/03/2025,España,"2310,75",Premium
+5,Cliente Sofía,22/04/2025,Alemania,"15,20",Básico
+6,Cliente Pablo,05/05/2025,Italia,"780,40",Estándar
+7,Cliente Lucía,19/06/2025,España,"999,99",Premium
+8,Cliente Diego,30/07/2025,México,"60,00",Básico
+9,Cliente Elena,12/08/2025,España,"1520,10",Premium
+10,Cliente Raúl,25/09/2025,Argentina,"310,55",Estándar
