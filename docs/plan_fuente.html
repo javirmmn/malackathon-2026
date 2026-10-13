@@ -37,6 +37,8 @@
   .info strong.t { color: var(--accent); }
   .check li { list-style: none; margin-left: -18px; }
   .check li::before { content: "☐  "; color: var(--accent); font-weight: 700; }
+  .check li.done { color: var(--muted); }
+  .check li.done::before { content: "☑  "; color: var(--ok); }
   .pill { display: inline-block; font-size: 8.5pt; padding: 1px 7px; border-radius: 10px; background: #eef0f4; color: var(--muted); margin-right: 4px; }
   .pri { display: inline-block; min-width: 20px; text-align: center; font-weight: 700; color: #fff; background: var(--accent); border-radius: 4px; padding: 0 5px; margin-right: 6px; }
   .challenge { border: 1px solid var(--line); border-radius: 8px; padding: 4px 14px 8px; margin: 12px 0; }
@@ -52,7 +54,7 @@
 <div class="cover">
   <h1>Plan de acción · III Malackathon</h1>
   <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
-  <p class="meta">Documento preparado el 13/10/2026 · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code></p>
+  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 13/10 por la tarde) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
 </div>
 
 <div class="box warn">
@@ -169,6 +171,15 @@
 </ol>
 
 <h2>5. Checklist: hoy, 13/10</h2>
+<div class="box ok">
+  <strong class="t">Ya hecho (13/10 por la tarde):</strong>
+  <ul style="margin:4px 0 0">
+    <li><b>Repositorio privado</b> en GitHub: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a> (rama <code>main</code>), con la estructura del apartado 6.1, <code>.gitignore</code> que bloquea <code>.env</code>, wallet y <code>data/</code>, y un <code>README</code> de "arrancar en 5 minutos". Faltan las <b>invitaciones</b> a los otros 3 (<i>Settings → Collaborators</i>).</li>
+    <li><b>Python</b> en el portátil de Javier: 3.13.7 con entorno <code>.venv</code> y todas las dependencias comunes <b>y las de los dos kits</b> (hdbscan, umap-learn, kmodes, httpx, fastapi…) instaladas y comprobadas.</li>
+    <li><b>Partes comunes del 14/10 adelantadas</b> (<code>common/</code>): conexión a Oracle por <code>.env</code> (<code>query_df</code>, <code>execute</code>, <code>df_to_table</code>), lectura de CSV/Excel con tildes y decimales con coma, estilo de gráficos y plantilla de dashboard Streamlit. 4 tests pasan.</li>
+    <li><b>SQL del ensayo</b> listo en <code>docs/sql/prueba_carga.sql</code> y plantilla <code>docs/oracle.md</code> para la URL del esquema.</li>
+  </ul>
+</div>
 <h3>5.1 Ensayo de Oracle: crear ya la base de datos del evento (Javier, unos 30 min)</h3>
 <p>En lugar de una base de datos "de usar y tirar", <b>se crea hoy la que usaremos el jueves</b>. Así llegamos con todo comprobado y ahorramos tiempo el día 1. Si el reto exigiera otra configuración, queda libre un segundo hueco Always Free.</p>
 <ol>
@@ -189,16 +200,16 @@
       <li>Activar <b>Graph</b>, <b>OML</b> y <b>Web Access (REST)</b>.</li>
     </ul>
   </li>
-  <li><b>Copiar la URL del esquema</b> que aparece en la tarjeta del usuario. Guardarla en <code>docs/oracle.md</code> del repo (solo la URL, sin contraseñas). <b>Es la que se entrega en el formulario de evaluación.</b></li>
+  <li><b>Copiar la URL del esquema</b> que aparece en la tarjeta del usuario. Pegarla en el hueco marcado de <code>docs/oracle.md</code> (ya existe; solo la URL, sin contraseñas), hacer commit y push. <b>Es la que se entrega en el formulario de evaluación.</b></li>
   <li><b>Probar la carga de datos.</b> Abrir la URL, iniciar sesión como <code>MALACK</code> → <i>Data Load → Load Data</i>. Arrastrar el fichero de prueba <code>prueba_carga.csv</code> de la carpeta del proyecto.
     <ul>
       <li>Pulsar el <b>lápiz</b> y poner como <code>VARCHAR2</code> la fecha, el país y el campo decimal con coma.</li>
       <li><i>Start</i> → <i>Done</i>.</li>
     </ul>
   </li>
-  <li><b>Comprobar con SQL.</b> En <i>SQL</i> (Database Actions), ejecutar <code>SELECT COUNT(*) FROM PRUEBA_CARGA;</code> y probar a convertir la fecha con <code>TO_DATE(fecha,'DD/MM/YYYY')</code> y el decimal con <code>TO_NUMBER(REPLACE(importe,',','.'))</code>.</li>
-  <li><b>Opcional, recomendable para Google o Mercedes:</b> descargar el <b>wallet</b> (<i>Database connection → Download wallet</i>) y probar a conectar desde Python con <code>oracledb</code>. El wallet no se sube al repo.</li>
-  <li><b>Borrar solo la tabla de prueba</b> (<code>DROP TABLE PRUEBA_CARGA PURGE;</code>). <b>La base de datos y el usuario se quedan</b> para el jueves.</li>
+  <li><b>Comprobar con SQL.</b> En <i>SQL</i> (Database Actions), pegar <code>docs/sql/prueba_carga.sql</code> y ejecutarlo bloque a bloque: recuento (10 filas), tipos, tildes, conversión de la fecha con <code>TO_DATE(fecha,'DD/MM/YYYY')</code> y del decimal con coma (dos formas), detección de filas que no convierten y una tabla "limpia" tipada. Cada consulta lleva al lado el resultado esperado.</li>
+  <li><b>Opcional, recomendable para Google o Mercedes:</b> descargar el <b>wallet</b> (<i>Database connection → Download wallet</i>, con contraseña), descomprimirlo <b>fuera del repo</b>, copiar <code>.env.example</code> a <code>.env</code>, rellenarlo y ejecutar <code>.venv\Scripts\python -m common.db</code>. Debe decir "Conectado a … como MALACK". El wallet y el <code>.env</code> no se suben al repo.</li>
+  <li><b>Borrar solo las tablas de prueba</b> (último bloque del SQL: <code>DROP TABLE … PURGE</code>). <b>La base de datos y el usuario se quedan</b> para el jueves.</li>
 </ol>
 <p class="small">"My recently viewed" del inicio no tiene opción para quitar elementos. Se va renovando con lo que abráis y la entrada rota de <code>SeguridadOracle</code> desaparecerá sola. Es inofensiva.</p>
 
@@ -210,8 +221,11 @@
   <li>Revisar el Campus Virtual por si hay novedades (aulas, materiales, avisos). El reto no se sabrá hasta el jueves por la mañana.</li>
   <li>Decidir las parejas del 14/10: quién hace el kit de NICS y quién el de Mercedes (apartado 6.1).</li>
   <li>Acordar los roles del equipo (apartado 7) y quién presenta.</li>
-  <li>Comprobar que los 4 tienen Python funcionando en su portátil. En el de Javier, <code>python</code> abre la Microsoft Store: usar el lanzador <code>py</code> o instalar Python 3.11/3.12.</li>
-  <li>Crear un grupo de Telegram o WhatsApp del equipo y un repositorio Git compartido (GitHub, privado hasta la entrega). Compartir allí la URL del esquema y, por un canal seguro, las credenciales de <code>MALACK</code>.</li>
+  <li class="done">Python en el portátil de Javier: 3.13.7 (lanzador <code>py</code>) con <code>.venv</code> y todas las dependencias instaladas.</li>
+  <li>Los otros 3: clonar el repo y seguir el <code>README</code> (<code>py -m venv .venv</code>, instalar <code>requirements.txt</code> y los de los kits, <code>python -m pytest</code>). Python 3.11–3.13 vale.</li>
+  <li class="done">Repositorio Git compartido: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a>, privado.</li>
+  <li>Javier: invitar a los otros 3 al repo (<i>Settings → Collaborators → Add people</i>, con su usuario de GitHub).</li>
+  <li>Crear un grupo de Telegram o WhatsApp del equipo. Compartir allí la URL del esquema y, por un canal seguro, las credenciales de <code>MALACK</code> y el wallet.</li>
 </ul>
 
 <h2>6. Mañana, 14/10: kits de arranque para NICS Lab y Mercedes-Benz</h2>
@@ -225,16 +239,18 @@
   <tr><th style="width:22%">Quién</th><th>Tarea del 14/10</th></tr>
   <tr><td>Pareja A (2 personas)</td><td>Kit <b>NICS Lab</b> (apartado 6.2)</td></tr>
   <tr><td>Pareja B (2 personas)</td><td>Kit <b>Mercedes-Benz</b> (apartado 6.3)</td></tr>
-  <tr><td>Todos, al final del día (1 h)</td><td>Partes comunes: conexión a Oracle desde Python, plantilla Streamlit, plantilla del PDF de presentación y puesta en común (cada pareja enseña su kit a la otra)</td></tr>
+  <tr><td>Todos, al final del día (1 h)</td><td>Partes comunes: <s>conexión a Oracle desde Python, plantilla Streamlit</s> (<b>ya hechas el 13/10</b> en <code>common/</code>; solo probar la conexión real con el wallet), plantilla del PDF de presentación y puesta en común (cada pareja enseña su kit a la otra)</td></tr>
 </table>
-<p>Estructura propuesta del repositorio (en <code>C:\Users\jrmro\Malackathon_2026</code>):</p>
+<p class="small"><b>Para empezar los kits:</b> el dashboard de cada uno parte de una copia de <code>common/streamlit_app.py</code>; para leer y limpiar datos, <code>common/dataio.py</code> (<code>read_any</code>, <code>normalize_columns</code>, <code>to_number_es</code>, <code>quick_profile</code>); para Oracle, <code>common/db.py</code>. Cada kit tiene ya su <code>README.md</code> y <code>requirements.txt</code> (dependencias instaladas en el portátil de Javier). <b>Ojo con pandas 3:</b> las columnas de texto ya no son de tipo <code>object</code>; usad <code>pd.api.types.is_numeric_dtype</code> y similares.</p>
+<p>Estructura del repositorio (<b>ya creada</b> en <code>C:\Users\jrmro\Malackathon_2026</code> y en GitHub):</p>
 <table>
   <tr><th style="width:32%">Carpeta</th><th>Contenido</th></tr>
-  <tr><td><code>common/</code></td><td>Conexión a Oracle (<code>oracledb</code> + wallet, por variables de entorno), utilidades de carga y exportación de CSV/Excel, plantilla de app Streamlit, estilos de gráficos</td></tr>
+  <tr><td><code>common/</code> <span class="pill">hecho</span></td><td>Conexión a Oracle (<code>oracledb</code> + wallet, por variables de entorno), utilidades de carga y exportación de CSV/Excel, plantilla de app Streamlit, estilos de gráficos</td></tr>
   <tr><td><code>kits/nics/</code></td><td>Kit de clasificación de servicios (6.2)</td></tr>
   <tr><td><code>kits/mercedes/</code></td><td>Kit de clustering de clientes (6.3)</td></tr>
-  <tr><td><code>docs/</code></td><td>Plan, <code>oracle.md</code> (URL del esquema, sin contraseñas), plantilla del PDF de presentación, diagrama de arquitectura</td></tr>
+  <tr><td><code>docs/</code></td><td>Plan, <code>oracle.md</code> (URL del esquema, sin contraseñas), <code>sql/</code> con consultas, plantilla del PDF de presentación, diagrama de arquitectura</td></tr>
   <tr><td><code>data/</code></td><td>Datos locales; en <code>.gitignore</code>. El wallet y el <code>.env</code> tampoco se suben</td></tr>
+  <tr><td><code>tests/</code></td><td>Pruebas de <code>common/</code> que no necesitan Oracle (<code>python -m pytest</code>)</td></tr>
 </table>
 
 <h3>6.2 Kit NICS Lab (pareja A)</h3>
@@ -275,8 +291,8 @@
 
 <h3>6.5 Cierre del día 14/10</h3>
 <ul class="check">
-  <li>Ambos kits en <code>main</code>, con un <code>README</code> de "cómo arrancar en 5 minutos".</li>
-  <li>Los 4 portátiles clonan el repo y ejecutan los dos kits sin errores.</li>
+  <li>Ambos kits en <code>main</code>, con su <code>README</code> actualizado (el general de "cómo arrancar en 5 minutos" ya existe).</li>
+  <li>Los 4 portátiles clonan el repo, pasan <code>python -m pytest</code> y ejecutan los dos kits sin errores.</li>
   <li>Comprobar que la base de datos <code>malackathon</code> sigue en estado <i>Available</i>; si no, <i>Start</i>.</li>
   <li>Plantilla del PDF de presentación (6–8 diapositivas) y del diagrama de arquitectura.</li>
   <li>Material físico listo (apartado 16) y a dormir pronto: el día 1 dura casi 11 horas.</li>
@@ -440,7 +456,7 @@
 <h2>16. Material e instalación previa</h2>
 <h4>Común a todos los portátiles</h4>
 <ul class="check">
-  <li>Python 3.11/3.12, <code>venv</code>, Jupyter, <code>pandas</code>, <code>numpy</code>, <code>scikit-learn</code>, <code>matplotlib</code>/<code>plotly</code>, <code>streamlit</code>.</li>
+  <li>Python 3.11–3.13, <code>venv</code>, Jupyter, <code>pandas</code>, <code>numpy</code>, <code>scikit-learn</code>, <code>matplotlib</code>/<code>plotly</code>, <code>streamlit</code> (todo en <code>requirements.txt</code> del repo). <i>Hecho en el portátil de Javier.</i></li>
   <li>Git configurado y acceso al repo del equipo. VS Code con las extensiones de Python y Jupyter.</li>
   <li>Acceso al Campus Virtual y a la consola OCI comprobado (con el doble factor en el móvil).</li>
 </ul>
@@ -477,6 +493,7 @@
 <h2>18. Contactos y enlaces</h2>
 <ul>
   <li><b>Organización:</b> <a href="mailto:empresas.informatica@uma.es">empresas.informatica@uma.es</a> · Durante el evento: sala de co-working <b>Haz Cosas, aula 4.1.1</b>.</li>
+  <li><b>Repositorio del equipo (privado):</b> <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></li>
   <li><b>Encuesta de infraestructura Oracle:</b> <a href="https://informatica.cv.uma.es/mod/questionnaire/view.php?id=32225">informatica.cv.uma.es/mod/questionnaire/view.php?id=32225</a></li>
   <li><b>Encuesta de selección de retos</b> (ya cerrada): <a href="https://informatica.cv.uma.es/mod/questionnaire/view.php?id=30635">informatica.cv.uma.es/mod/questionnaire/view.php?id=30635</a></li>
   <li><b>Vídeo del taller de Oracle (10/10):</b> <a href="https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/_RaHQEu-4kDkJpOALCZmQPoZ8sXgNw0uA5XRjFlX-ECIIFVO4p-nTnOEbUJrO0MG/n/frddomvd8z4q/b/cust-uma-bucket/o/video1274765269.mp4">objectstorage.eu-frankfurt-1.oraclecloud.com/…/video1274765269.mp4</a></li>
@@ -488,7 +505,7 @@
 <h2>19. Contexto para retomar con Claude</h2>
 <div class="box ok">
   <strong class="t">Copiar este bloque al empezar una conversación nueva:</strong>
-  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 13/10 se crea la Autonomous DB Always Free <code>malackathon</code> (ATP, Madrid) con el usuario <code>MALACK</code> (roles Graph/OML/REST) para usarla el jueves. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>. El plan completo está en <code>Plan_Malackathon_2026.pdf</code> en esa carpeta.</p>
+  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 13/10 se crea la Autonomous DB Always Free <code>malackathon</code> (ATP, Madrid) con el usuario <code>MALACK</code> (roles Graph/OML/REST) para usarla el jueves. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, que es también el repo privado <code>github.com/javirmmn/malackathon-2026</code>. Ya existen <code>common/</code> (Oracle por <code>.env</code>, lectura de CSV/Excel, gráficos, plantilla Streamlit), <code>docs/oracle.md</code>, <code>docs/sql/prueba_carga.sql</code> y un <code>.venv</code> con Python 3.13 y las dependencias de los kits. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
 </div>
 
 <p class="small" style="margin-top:18px">Fuentes: Bases III Malackathon ETSII UMA; Programa y Normas Malackathon; guía "Cómo crear la base de datos y un usuario en OCI"; hoja de recursos de Oracle (uma-hackaton v1.0.0); información de retos del Campus Virtual. Las fechas y normas pueden cambiar a criterio de la organización: revisad siempre el Campus Virtual.</p>
