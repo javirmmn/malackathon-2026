@@ -14,3 +14,4 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 - Ollama instalado (14/10) con `llama3.2:3b`; el testbed de NICS lo usa si está en marcha (~2–3 min). Los tests fuerzan el simulador.
 - Oracle desde Python: `-m common.load <fichero> --tabla T [--simular]` y `--a-oracle PREFIJO` en los kits. Probado contra la BD real el 14/10 (wallet en `C:\Users\jrmro\oracle\Wallet_malackathon`, `.env` en la raíz, ignorado).
 - Presentación: plantillas en `docs/presentacion/` (nics, mercedes, generica; huecos en `<mark>`), diagramas en `docs/arquitectura/`.
+- Kit NTT (14/10 noche): `kits/ntt` (`-m kits.ntt.sample_data` + `-m kits.ntt.run --data data/ntt_ensayo.csv [--llm] [--modelo out/ntt/modelo.json]`). Señales en `signals.py`, pesos/umbral en `scorer.py`, juez Ollama en `judges.py`, API para el bot en `guardian.py`.

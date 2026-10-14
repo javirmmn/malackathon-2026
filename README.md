@@ -3,14 +3,15 @@
 III Malackathon de la ETSI Informática (UMA), 15 y 16 de octubre de 2026.
 Plan completo: [`docs/plan_fuente.html`](docs/plan_fuente.html) (y `Plan_Malackathon_2026.pdf`).
 
-**Qué hay aquí:** dos *kits de arranque* (herramientas listas para usar con los datos del reto) para nuestros dos
+**Qué hay aquí:** tres *kits de arranque* (herramientas listas para usar con los datos del reto) para nuestros tres
 retos preferidos, utilidades comunes (Oracle, lectura de ficheros, dashboards) y plantillas para la presentación.
 
 | Si el reto es… | Empezar por |
 |---|---|
 | **NICS Lab** (detectar honeypots e IAs impostoras) | [`kits/nics/README.md`](kits/nics/README.md) |
 | **Mercedes-Benz** (segmentar clientes) | [`kits/mercedes/README.md`](kits/mercedes/README.md) |
-| Otro (NTT DATA, Indra, Google, Betsson) | `common/` (Oracle, lectura de ficheros, dashboard genérico) y apartados 12–15 del plan |
+| **NTT DATA** (detectar alucinaciones de una IA) | [`kits/ntt/README.md`](kits/ntt/README.md) |
+| Otro (Indra, Google, Betsson) | `common/` (Oracle, lectura de ficheros, dashboard genérico) y apartados 12–15 del plan |
 | Presentación del viernes | [`docs/presentacion/README.md`](docs/presentacion/README.md) |
 | Base de datos Oracle | [`docs/oracle.md`](docs/oracle.md) (URL del esquema y cómo conectar) |
 
@@ -85,7 +86,23 @@ Crea 2.000 clientes inventados, los segmenta y genera informes. Para verlo en el
 La primera vez Streamlit pide un email en la terminal: dejarlo vacío y pulsar **Enter**. Se cierran con **Ctrl+C**
 en la terminal. El botón *Deploy* no se usa.
 
-**Informes** (doble clic para abrir): `out\nics\informe.html`, `out\mercedes\informe.html`, `out\mercedes\eda.html`.
+### Kit NTT DATA (unos 5 s; ~10 min con el juez LLM `--llm`)
+
+```bash
+.venv\Scripts\python -m kits.ntt.sample_data
+```
+
+```bash
+.venv\Scripts\python -m kits.ntt.run --data data\ntt_ensayo.csv
+```
+
+Crea 120 respuestas de IA (la mitad con datos inventados) y detecta cuáles se inventan algo. Para verlo en el navegador:
+
+```bash
+.venv\Scripts\streamlit run kits\ntt\app.py
+```
+
+**Informes** (doble clic para abrir): `out\nics\informe.html`, `out\mercedes\informe.html`, `out\mercedes\eda.html`, `out\ntt\informe.html`.
 
 ## 3. Conectar con Oracle (solo si vas a trabajar con la base de datos desde tu portátil)
 
@@ -116,6 +133,7 @@ Debe decir `Conectado a ... como MALACK`. A partir de ahí:
 | `common/` | `db.py` (Oracle: `query_df`, `execute`, `df_to_table`), `dataio.py` (leer CSV/Excel con tildes y comas decimales, normalizar columnas, exportar), `charts.py` (estilo de gráficos), `streamlit_app.py` (dashboard genérico), `load.py` (fichero → tabla de Oracle), `pdf.py` (HTML → PDF con Chrome) |
 | `kits/nics/` | Kit de clasificación de servicios: sondas, rasgos, reglas en YAML, informe, dashboard y banco de pruebas |
 | `kits/mercedes/` | Kit de segmentación: EDA, comparación de modelos, perfiles, personas, dashboard con simulador y dataset de ensayo |
+| `kits/ntt/` | Kit detector de alucinaciones: señales (cifras, nombres, fechas, negaciones, apoyo), juez LLM local, modelo reutilizable, dashboard y dataset de ensayo |
 | `docs/` | Plan, `oracle.md`, `sql/` (consultas de ensayo), `presentacion/` (plantillas y guion), `arquitectura/` (diagramas) |
 | `tests/` | Pruebas automáticas (`.venv\Scripts\python -m pytest`), no necesitan Oracle |
 | `data/` | Datos locales, **no se suben** |

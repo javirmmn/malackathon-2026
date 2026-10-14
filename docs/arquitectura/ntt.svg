@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1136 400" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0b5cad"/>
+    </marker>
+    <style>
+      .box{fill:#e8f1fb;stroke:#0b5cad;stroke-width:2}
+      .out{fill:#fff;stroke:#5b6475;stroke-width:1.5;stroke-dasharray:6 4}
+      .opt{fill:#fff7e0;stroke:#e0a21f;stroke-width:1.5}
+      .t{font-size:20px;font-weight:700;fill:#1d2433}
+      .s{font-size:14px;fill:#5b6475}
+      .l{stroke:#0b5cad;stroke-width:2.5;fill:none;marker-end:url(#a)}
+      .d{stroke:#5b6475;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#a)}
+    </style>
+  </defs>
+  <rect class="box" x="10" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="105" y="150" text-anchor="middle">Entrada</text>
+  <text class="s" x="105" y="176" text-anchor="middle">respuesta de la IA</text>
+  <text class="s" x="105" y="196" text-anchor="middle">+ fuentes</text>
+  <text class="s" x="105" y="216" text-anchor="middle">(CSV · JSON · bot)</text>
+
+  <rect class="box" x="240" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="335" y="150" text-anchor="middle">Señales baratas</text>
+  <text class="s" x="335" y="176" text-anchor="middle">cifras · fechas · nombres</text>
+  <text class="s" x="335" y="196" text-anchor="middle">negaciones nuevas</text>
+  <text class="s" x="335" y="216" text-anchor="middle">apoyo frase a frase</text>
+
+  <rect class="opt" x="470" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="565" y="150" text-anchor="middle">Jueces</text>
+  <text class="s" x="565" y="176" text-anchor="middle">LLM local (Ollama)</text>
+  <text class="s" x="565" y="196" text-anchor="middle">NLI multilingüe</text>
+  <text class="s" x="565" y="216" text-anchor="middle">(opcionales, con caché)</text>
+
+  <rect class="box" x="700" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="795" y="150" text-anchor="middle">Combinación</text>
+  <text class="s" x="795" y="176" text-anchor="middle">regresión logística</text>
+  <text class="s" x="795" y="196" text-anchor="middle">umbral para la métrica</text>
+  <text class="s" x="795" y="216" text-anchor="middle">del ranking</text>
+
+  <rect class="box" x="930" y="110" width="196" height="120" rx="12"/>
+  <text class="t" x="1028" y="150" text-anchor="middle">Veredicto</text>
+  <text class="s" x="1028" y="176" text-anchor="middle">alucina sí / no</text>
+  <text class="s" x="1028" y="196" text-anchor="middle">probabilidad</text>
+  <text class="s" x="1028" y="216" text-anchor="middle">+ motivos</text>
+
+  <path class="l" d="M200,170 H236"/><path class="l" d="M430,170 H466"/>
+  <path class="l" d="M660,170 H696"/><path class="l" d="M890,170 H926"/>
+
+  <rect class="out" x="700" y="290" width="190" height="80" rx="10"/>
+  <text class="s" x="795" y="322" text-anchor="middle" font-weight="700">modelo.json</text>
+  <text class="s" x="795" y="344" text-anchor="middle">sin reentrenar (sorpresa)</text>
+  <path class="d" d="M795,230 V286"/>
+  <rect class="out" x="930" y="290" width="196" height="80" rx="10"/>
+  <text class="s" x="1028" y="322" text-anchor="middle" font-weight="700">Entrega + dashboard</text>
+  <text class="s" x="1028" y="344" text-anchor="middle">CSV ranking · informe</text>
+  <path class="d" d="M1028,230 V286"/>
+  <rect class="out" x="240" y="16" width="190" height="64" rx="10"/>
+  <text class="s" x="335" y="42" text-anchor="middle" font-weight="700">sin red ni GPU</text>
+  <text class="s" x="335" y="62" text-anchor="middle">todo en local</text>
+  <path class="d" d="M335,80 V106"/>
+</svg>

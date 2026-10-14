@@ -54,7 +54,7 @@
 <div class="cover">
   <h1>Plan de acción · III Malackathon</h1>
   <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
-  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 14/10 por la tarde) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
+  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 14/10 por la noche) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
 </div>
 
 <div class="box warn">
@@ -221,7 +221,7 @@
   <li>Javier: mirar la fecha de fin del trial (aviso del inicio o <i>Billing → Subscriptions</i>).</li>
   <li>Ver el vídeo del taller de Oracle del 10/10 (enlace en el apartado 18).</li>
   <li>Revisar el Campus Virtual por si hay novedades (aulas, materiales, avisos). El reto no se sabrá hasta el jueves por la mañana.</li>
-  <li>Decidir las parejas del 14/10: quién hace el kit de NICS y quién el de Mercedes (apartado 6.1).</li>
+  <li class="done">Parejas del 14/10: ya no hace falta, los dos kits quedaron hechos el 14/10. Cada pareja estudia el suyo.</li>
   <li>Acordar los roles del equipo (apartado 7) y quién presenta.</li>
   <li class="done">Python en el portátil de Javier: 3.13.7 (lanzador <code>py</code>) con <code>.venv</code> y todas las dependencias instaladas.</li>
   <li>Los otros 3: clonar el repo y seguir el <code>README</code> (<code>py -m venv .venv</code>, instalar <code>requirements.txt</code> (un solo comando, incluye los kits), <code>python -m pytest</code>). Python 3.11–3.13 vale.</li>
@@ -245,6 +245,7 @@
     <li><b>Oracle integrado:</b> <code>python -m common.load fichero --tabla T</code> sube cualquier fichero del reto a Oracle (alternativa a Data Load) y los kits guardan sus resultados con <code>--a-oracle PREFIJO</code>. <b>Probado contra la base de datos real el 14/10</b> (wallet + <code>.env</code> en el portátil de Javier): conexión, carga de un CSV y resultados de los dos kits; tablas de ensayo borradas.</li>
     <li><b>Presentación:</b> plantillas de 7 diapositivas (NICS, Mercedes y genérica), guion y preguntas probables en <code>docs/presentacion/</code>; diagramas en <code>docs/arquitectura/</code>.</li>
     <li><b>12 tests</b> en verde (<code>python -m pytest</code>). Cómo usar cada kit el jueves: en su <code>README.md</code>.</li>
+    <li><b>Kit NTT DATA</b> (<code>kits/ntt/</code>, hecho el 14/10 por la noche): detecta si la respuesta de una IA se inventa algo frente a sus fuentes. Con el dataset sintético de ensayo acierta ~98 % solo con señales baratas (cifras, nombres, fechas, negaciones y apoyo frase a frase), y el modelo se reutiliza sin reentrenar para la prueba sorpresa.</li>
     <li><b>Lo que queda para las parejas:</b> clonar, ejecutar los ensayos, <b>entender el código</b> (el jueves hay que explicarlo al jurado) y mejorar lo que vean. Además, la plantilla del PDF y la puesta en común (6.5).</li>
   </ul>
 </div>
@@ -298,9 +299,9 @@
 
 <h3>6.4 Preparación ligera para el resto de retos (si sobra tiempo o por la noche)</h3>
 <ul class="check">
-  <li><b>NTT DATA:</b> <s>instalar Ollama y descargar un modelo de 3 a 8B</s> (<b>hecho</b> en el portátil de Javier: <code>llama3.2:3b</code>, unos 4 s por respuesta corta); falta dejar en caché un modelo NLI multilingüe (<code>transformers</code>).</li>
+  <li class="done"><b>NTT DATA:</b> <b>kit completo hecho el 14/10</b> (<code>kits/ntt/</code>, ver apartado 12) y Ollama con <code>llama3.2:3b</code> instalado. El modelo NLI (~2 GB) queda opcional: el kit lo usa si se instala (<code>--nli</code>).</li>
   <li><b>Indra:</b> instalar <code>rasterio</code>, <code>opencv-python</code>, <code>scikit-image</code> y <code>folium</code>; opcionalmente, probar umbrales de color sobre una imagen SWIR pública de Copernicus Browser.</li>
-  <li><b>Google:</b> la conexión a Oracle de <code>common/</code> ya cubre la base del reto.</li>
+  <li class="done"><b>Google:</b> la conexión a Oracle de <code>common/</code> (probada) y <code>common.load</code> cubren la base del reto.</li>
   <li><b>Betsson:</b> <code>pip install playwright</code> y <code>playwright install chromium</code>.</li>
 </ul>
 
@@ -308,11 +309,20 @@
 <ul class="check">
   <li class="done">Ambos kits en <code>main</code>, con su <code>README</code> (falta hacer commit y push).</li>
   <li>Los 4 portátiles clonan el repo, pasan <code>python -m pytest</code> y ejecutan los dos kits sin errores.</li>
-  <li>Comprobar que la base de datos <code>malackathon</code> sigue en estado <i>Available</i>; si no, <i>Start</i>.</li>
+  <li class="done">Base de datos <code>malackathon</code> en estado <i>Available</i> (comprobado el 14/10 por la noche al conectar desde Python).</li>
   <li class="done">Wallet descargado, <code>.env</code> rellenado y <code>common.db</code> conectando como <code>MALACK</code> (portátil de Javier).</li>
   <li>Repartir la contraseña de <code>MALACK</code> y el wallet (con su contraseña) al equipo por un canal seguro, si van a conectarse desde sus portátiles.</li>
   <li class="done">Plantillas de la presentación (7 diapositivas: NICS, Mercedes y genérica) en <code>docs/presentacion/</code>, con guion y preguntas probables, y diagramas de arquitectura en <code>docs/arquitectura/</code>. PDF con <code>python -m common.pdf docs\presentacion\nics.html</code>.</li>
   <li>Material físico listo (apartado 16) y a dormir pronto: el día 1 dura casi 11 horas.</li>
+</ul>
+
+<h3>6.6 Jueves 15, antes de salir de casa (10 minutos)</h3>
+<ul class="check">
+  <li>Traer lo último del repo: <i>Pull origin</i> en GitHub Desktop o <code>git pull</code>.</li>
+  <li>Comprobar que todo sigue funcionando: <code>.venv\Scripts\python -m pytest</code>.</li>
+  <li>Javier: Ollama abierto (icono junto al reloj) por si toca NICS o NTT DATA.</li>
+  <li>Portátil cargado, cargador, regleta y móvil con datos. Credenciales de OCI y de <code>MALACK</code> accesibles en el gestor de contraseñas.</li>
+  <li>Al conocer el reto: abrir la tabla "Si el reto es…" del <code>README.md</code> y el README del kit que toque.</li>
 </ul>
 
 <h2>7. Organización del equipo</h2>
@@ -410,6 +420,7 @@
 
 <h2>12. Plan por reto · <span class="pri">3</span>NTT DATA: El Guardián</h2>
 <div class="challenge">
+<div class="box ok"><strong class="t">Kit listo (14/10):</strong> <code>kits/ntt/</code> implementa los puntos 2 a 5 de esta estrategia (comprobaciones baratas, juez LLM con Ollama, NLI opcional, combinación con umbral ajustado y modelo reutilizable para la prueba sorpresa). Cómo usarlo el jueves: <code>kits/ntt/README.md</code>. El punto 1 (poner en marcha el bot de ejemplo y primera entrega) sigue siendo lo primero que hay que hacer.</div>
 <p><span class="pill">NLP</span><span class="pill">Análisis de datos</span><span class="pill">LLM local</span></p>
 <h4>Estrategia</h4>
 <ol>
@@ -523,7 +534,7 @@
 <h2>19. Contexto para retomar con Claude</h2>
 <div class="box ok">
   <strong class="t">Copiar este bloque al empezar una conversación nueva:</strong>
-  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 14/10 se creó la Autonomous DB Always Free <code>malackathon</code> (Display name <code>malackathon-2026</code>, Transaction Processing, 26ai, Madrid, mTLS) con el usuario <code>MALACK</code> (Graph/OML/REST) para usarla el jueves. El ensayo de carga con Data Load y SQL salió bien, y la URL del esquema está en <code>docs/oracle.md</code>. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, que es también el repo privado <code>github.com/javirmmn/malackathon-2026</code>. Ya existen <code>common/</code> (Oracle por <code>.env</code>, lectura de CSV/Excel, gráficos, plantilla Streamlit), <code>docs/oracle.md</code>, <code>docs/sql/prueba_carga.sql</code> y un <code>.venv</code> con Python 3.13. Los dos kits están hechos y probados el 14/10: <code>kits/nics</code> (<code>python -m kits.nics.run --testbed</code>, 3/3) y <code>kits/mercedes</code> (<code>python -m kits.mercedes.run --data ...</code>, ARI 0,96 en el ensayo), cada uno con su README de uso para el jueves. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
+  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 14/10 se creó la Autonomous DB Always Free <code>malackathon</code> (Display name <code>malackathon-2026</code>, Transaction Processing, 26ai, Madrid, mTLS) con el usuario <code>MALACK</code> (Graph/OML/REST) para usarla el jueves. El ensayo de carga con Data Load y SQL salió bien, y la URL del esquema está en <code>docs/oracle.md</code>. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, que es también el repo privado <code>github.com/javirmmn/malackathon-2026</code>. Ya existen <code>common/</code> (Oracle por <code>.env</code>, lectura de CSV/Excel, gráficos, plantilla Streamlit), <code>docs/oracle.md</code>, <code>docs/sql/prueba_carga.sql</code> y un <code>.venv</code> con Python 3.13. Los tres kits están hechos y probados el 14/10 (NICS, Mercedes y NTT DATA): <code>kits/nics</code> (<code>python -m kits.nics.run --testbed</code>, 3/3) y <code>kits/mercedes</code> (<code>python -m kits.mercedes.run --data ...</code>, ARI 0,96 en el ensayo), cada uno con su README de uso para el jueves. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
 </div>
 
 <p class="small" style="margin-top:18px">Fuentes: Bases III Malackathon ETSII UMA; Programa y Normas Malackathon; guía "Cómo crear la base de datos y un usuario en OCI"; hoja de recursos de Oracle (uma-hackaton v1.0.0); información de retos del Campus Virtual. Las fechas y normas pueden cambiar a criterio de la organización: revisad siempre el Campus Virtual.</p>
