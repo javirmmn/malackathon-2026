@@ -1,4 +1,6 @@
-# Dependencias comunes (common/). Las de cada kit van en kits/<kit>/requirements.txt
+# Todo lo necesario (común + kits) con un solo comando:  .venv\Scripts\python -m pip install -r requirements.txt
+
+# Común (common/)
 oracledb>=2.4
 python-dotenv>=1.0
 pandas>=2.2
@@ -8,5 +10,9 @@ plotly>=5.24
 matplotlib>=3.9
 scikit-learn>=1.5
 streamlit>=1.40
-jupyter
+# jupyter (opcional, no lo usan los kits):  .venv\Scripts\python -m pip install jupyter
 pytest>=8
+
+# Kits
+-r kits/nics/requirements.txt
+-r kits/mercedes/requirements.txt
