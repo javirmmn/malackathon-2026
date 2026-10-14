@@ -78,5 +78,6 @@ ORDER  BY total DESC;
 DROP TABLE PRUEBA_LIMPIA PURGE;
 DROP TABLE PRUEBA_CARGA  PURGE;
 
--- 10) Comprobar que el esquema queda vacío -> esperado: sin filas
+-- 10) Comprobar que el esquema queda limpio -> esperado: solo DBTOOLS$EXECUTION_HISTORY
+--     (tabla interna que crea Database Actions para el historial de la hoja SQL; no borrarla)
 SELECT table_name FROM user_tables;
