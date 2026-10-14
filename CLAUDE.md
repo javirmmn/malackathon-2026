@@ -3,10 +3,14 @@
 Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 16 de octubre de 2026.
 
 - Plan completo: `docs/plan_fuente.html` (fuente legible) y `Plan_Malackathon_2026.pdf` (versión generada). Leer el HTML antes de empezar.
-- Para regenerar el PDF tras editar el HTML: Chrome headless con `--print-to-pdf` (Python no está en el PATH; usar el lanzador `py`).
+- Para regenerar el PDF tras editar el HTML: `.venv/Scripts/python.exe -m common.pdf docs/plan_fuente.html --out Plan_Malackathon_2026.pdf` (Chrome headless).
 - El reto asignado se conoce el jueves 15 por la mañana. El 14/10 se preparan kits de arranque genéricos para NICS Lab y Mercedes-Benz (apartado 6 del plan): `common/`, `kits/nics/`, `kits/mercedes/`, `docs/`, `data/`.
 - Oracle: tenancy `javierroman` (Spain Central/Madrid). Base de datos Always Free `malackathon` (Display name `malackathon-2026`) con usuario `MALACK`, creada el 14/10; URL del esquema en `docs/oracle.md`. Nunca subir contraseñas, wallet ni `.env` al repo.
 - `prueba_carga.csv`: fichero de ensayo para practicar la carga de datos en Oracle. Consultas del ensayo en `docs/sql/prueba_carga.sql`.
 - Entorno: venv en `.venv` (Python 3.13). Usar siempre `.venv/Scripts/python.exe` (tests: `-m pytest`; dashboard: `.venv/Scripts/streamlit run common/streamlit_app.py`; prueba de Oracle: `-m common.db`, necesita `.env`).
 - `common/` ya existe (db, dataio, charts, plantilla Streamlit) y se reutiliza en los kits. pandas 3.x: las columnas de texto no son `object`, usar `pd.api.types`.
 - Repo privado en GitHub: `javirmmn/malackathon-2026` (remoto `origin`, rama `main`). `gh` está en `C:\Program Files\GitHub CLI\gh.exe` (no está en el PATH de sesiones antiguas).
+- Kits hechos y probados (14/10): `kits/nics` (`-m kits.nics.run --testbed`; reglas en `rules.yaml`; solo escanea localhost salvo `--scope`) y `kits/mercedes` (`-m kits.mercedes.sample_data` + `-m kits.mercedes.run --data ...`). Salidas en `out/` (ignorado). 9 tests.
+- Ollama instalado (14/10) con `llama3.2:3b`; el testbed de NICS lo usa si está en marcha (~2–3 min). Los tests fuerzan el simulador.
+- Oracle desde Python: `-m common.load <fichero> --tabla T [--simular]` y `--a-oracle PREFIJO` en los kits. Sin probar contra la BD real hasta tener wallet + `.env`.
+- Presentación: plantillas en `docs/presentacion/` (nics, mercedes, generica; huecos en `<mark>`), diagramas en `docs/arquitectura/`.

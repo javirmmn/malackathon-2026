@@ -15,6 +15,7 @@ Prueba de conexión:
 
 from __future__ import annotations
 
+import json
 import os
 import re
 from contextlib import contextmanager
@@ -82,10 +83,22 @@ def execute(sql: str, params: dict | list | None = None) -> int:
         return cur.rowcount
 
 
+# Palabras reservadas de Oracle (V$RESERVED_WORDS): no valen como nombre de columna sin comillas
+_RESERVED = set("""ACCESS ADD ALL ALTER AND ANY AS ASC AUDIT BETWEEN BY CHAR CHECK CLUSTER COLUMN COMMENT COMPRESS
+CONNECT CREATE CURRENT DATE DECIMAL DEFAULT DELETE DESC DISTINCT DROP ELSE EXCLUSIVE EXISTS FILE FLOAT FOR FROM GRANT
+GROUP HAVING IDENTIFIED IMMEDIATE IN INCREMENT INDEX INITIAL INSERT INTEGER INTERSECT INTO IS LEVEL LIKE LOCK LONG
+MAXEXTENTS MINUS MLSLABEL MODE MODIFY NOAUDIT NOCOMPRESS NOT NOWAIT NULL NUMBER OF OFFLINE ON ONLINE OPTION OR ORDER
+PCTFREE PRIOR PUBLIC RAW RENAME RESOURCE REVOKE ROW ROWID ROWNUM ROWS SELECT SESSION SET SHARE SIZE SMALLINT START
+SUCCESSFUL SYNONYM SYSDATE TABLE THEN TO TRIGGER UID UNION UNIQUE UPDATE USER VALIDATE VALUES VARCHAR VARCHAR2 VIEW
+WHENEVER WHERE WITH""".split())
+
+
 def _check_ident(name: str) -> str:
+    """Nombre válido para Oracle, en mayúsculas. Las palabras reservadas reciben un '_' final (DATE -> DATE_)."""
     if not _IDENT.match(name):
         raise ValueError(f"Nombre de tabla/columna no válido para Oracle: {name!r}")
-    return name.upper()
+    upper = name.upper()
+    return f"{upper}_" if upper in _RESERVED else upper
 
 
 def _oracle_type(series: pd.Series) -> str:
@@ -94,11 +107,16 @@ def _oracle_type(series: pd.Series) -> str:
     if pd.api.types.is_integer_dtype(series):
         return "NUMBER(19)"
     if pd.api.types.is_float_dtype(series):
-        return "BINARY_DOUBLE"
+        return "NUMBER"
     if pd.api.types.is_datetime64_any_dtype(series):
         return "TIMESTAMP"
-    max_len = int(series.dropna().astype(str).str.len().max() or 1)
-    return "CLOB" if max_len > 4000 else f"VARCHAR2({max(max_len * 2, 50)} CHAR)"
+    lens = series.dropna().map(lambda v: len(_text(v)))
+    max_len = int(lens.max()) if len(lens) else 1
+    return "CLOB" if max_len > 2000 else f"VARCHAR2({min(4000, max(max_len * 2, 50))} CHAR)"
+
+
+def _text(v: Any) -> str:
+    return json.dumps(v, ensure_ascii=False, default=str) if isinstance(v, (list, dict)) else str(v)
 
 
 def create_table_sql(df: pd.DataFrame, table: str) -> str:
@@ -108,12 +126,16 @@ def create_table_sql(df: pd.DataFrame, table: str) -> str:
 
 
 def _to_python(value: Any) -> Any:
-    if value is None or (not isinstance(value, (list, dict, str)) and pd.isna(value)):
+    if isinstance(value, (list, dict)):
+        return _text(value)
+    if value is None or (not isinstance(value, str) and pd.isna(value)):
         return None
     if isinstance(value, pd.Timestamp):
         return value.to_pydatetime()
     if hasattr(value, "item"):  # escalares numpy -> python
-        return value.item()
+        value = value.item()
+    if isinstance(value, bool):
+        return int(value)
     return value
 
 
@@ -144,6 +166,9 @@ def df_to_table(
             cur.execute(f"DROP TABLE {name} PURGE")
         if not exists or if_exists == "replace":
             cur.execute(create_table_sql(df, name))
+        clobs = [oracledb.DB_TYPE_CLOB if _oracle_type(df[c]) == "CLOB" else None for c in df.columns]
+        if any(clobs):
+            cur.setinputsizes(*clobs)
         for start in range(0, len(rows), batch_size):
             cur.executemany(insert, rows[start : start + batch_size])
         conn.commit()

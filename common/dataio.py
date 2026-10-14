@@ -15,6 +15,8 @@ from pathlib import Path
 import pandas as pd
 
 _ENCODINGS = ("utf-8-sig", "cp1252", "latin-1")
+_DATE_TXT = re.compile(r"^\s*\d{1,2}[/-]\d{1,2}[/-]\d{2,4}(\s+\d{1,2}:\d{2}(:\d{2})?)?\s*$|^\s*\d{4}-\d{2}-\d{2}")
+_NUM_ES = re.compile(r"^\s*-?(\d{1,3}(\.\d{3})+|\d+)(,\d+)?\s*(€|%)?\s*$")
 
 
 def _sniff_sep(path: Path, encoding: str) -> str:
@@ -115,3 +117,25 @@ def export(df: pd.DataFrame, path: str | Path) -> Path:
     else:
         df.to_csv(path, index=False, encoding="utf-8-sig")
     return path
+
+
+def coerce_types(df: pd.DataFrame, min_share: float = 0.95) -> tuple[pd.DataFrame, dict[str, str]]:
+    """Convierte columnas de texto que en realidad son fechas (DD/MM/YYYY) o números con coma."""
+    df = df.copy()
+    log: dict[str, str] = {}
+    for c in df.columns:
+        s = df[c]
+        if pd.api.types.is_numeric_dtype(s) or pd.api.types.is_datetime64_any_dtype(s) or pd.api.types.is_bool_dtype(s):
+            continue
+        txt = s.dropna().astype(str)
+        if txt.empty:
+            continue
+        if txt.str.match(_DATE_TXT).mean() >= min_share:
+            iso = txt.str.match(r"^\s*\d{4}-").mean() > 0.5
+            df[c] = pd.to_datetime(s, dayfirst=not iso, errors="coerce")
+            log[c] = "texto -> fecha"
+        # los códigos con ceros a la izquierda (CP, teléfonos) se quedan como texto
+        elif txt.str.match(_NUM_ES).mean() >= min_share and not txt.str.match(r"^\s*0\d").any():
+            df[c] = to_number_es(s)
+            log[c] = "texto -> número (formato español)"
+    return df, log

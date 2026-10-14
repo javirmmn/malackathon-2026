@@ -1,0 +1,85 @@
+# Clasificador por reglas con pesos. Se puede editar en caliente y reclasificar sin volver a escanear:
+#   python -m kits.nics.run --solo-clasificar      (o el botón del dashboard)
+#
+# Cada regla: si <variable> <op> <valor> se cumple, suma <peso> a <clase> y anota la <evidencia>.
+# Operadores: > >= < <= == != en (lista) contiene (texto)
+# Las variables las calcula features.py (ver la tabla "rasgos" del dashboard).
+
+clases: [real, honeypot_clasico, honeypot_generativo]
+
+previa:                  # puntuación de partida (sin evidencias, se asume real con poca confianza)
+  real: 1.0
+  honeypot_clasico: 0.5
+  honeypot_generativo: 0.5
+
+reglas:
+  # ---------------- honeypot generativo (respuestas inventadas por una IA) ----------------
+  - {id: G1, clase: honeypot_generativo, variable: consistencia_raiz, op: "<", valor: 90, peso: 3.0,
+     evidencia: "La misma petición a / devuelve contenido distinto cada vez ({consistencia_raiz:.0f} % de similitud media)"}
+  - {id: G2, clase: honeypot_generativo, variable: consistencia_inexistente, op: "<", valor: 90, peso: 2.0,
+     evidencia: "Una ruta inventada devuelve contenido distinto en cada repetición ({consistencia_inexistente:.0f} %)"}
+  - {id: G3, clase: honeypot_generativo, variable: eco_token_200, op: "==", valor: true, peso: 2.5,
+     evidencia: "Responde 200 a una ruta inventada y su contenido menciona el nombre inventado"}
+  - {id: G4, clase: honeypot_generativo, variable: api_json_inventado, op: "==", valor: true, peso: 1.5,
+     evidencia: "Devuelve un JSON con datos para un endpoint de API que no existe"}
+  - {id: G5, clase: honeypot_generativo, variable: latencia_media_ms, op: ">", valor: 400, peso: 1.5,
+     evidencia: "Latencia alta, típica de generar texto ({latencia_media_ms:.0f} ms de media)"}
+  - {id: G6, clase: honeypot_generativo, variable: latencia_irregular, op: "==", valor: true, peso: 1.0,
+     evidencia: "Latencia alta y muy irregular (coef. de variación {latencia_cv:.2f})"}
+  - {id: G8, clase: honeypot_generativo, variable: timeouts, op: ">", valor: 0, peso: 1.0,
+     evidencia: "{timeouts} petición(es) sin respuesta en 60 s: tarda demasiado para ser una web normal"}
+  - {id: G7, clase: honeypot_generativo, variable: marcas_llm, op: ">", valor: 0, peso: 3.0,
+     evidencia: "Aparecen frases típicas de un modelo de lenguaje: {marcas_llm_txt}"}
+
+  # ---------------- honeypot clásico (respuestas fijas / software de honeypot) ----------------
+  - {id: C1, clase: honeypot_clasico, variable: catch_all, op: "==", valor: true, peso: 3.0,
+     evidencia: "Responde exactamente lo mismo a cualquier ruta, incluso a las inventadas"}
+  - {id: C2, clase: honeypot_clasico, variable: firmas_honeypot, op: ">", valor: 0, peso: 4.0,
+     evidencia: "Coincide con firmas conocidas de software de honeypot: {firmas_honeypot_txt}"}
+  - {id: C3, clase: honeypot_clasico, variable: falta_date, op: "==", valor: true, peso: 1.5,
+     evidencia: "No envía la cabecera Date, que cualquier servidor HTTP real incluye"}
+  - {id: C4, clase: honeypot_clasico, variable: server_obsoleto, op: "==", valor: true, peso: 1.0,
+     evidencia: "Cabecera Server de una versión muy antigua (banner típico de cebo): {server}"}
+  - {id: C5, clase: honeypot_clasico, variable: metodos_igual_respuesta, op: "==", valor: true, peso: 1.0,
+     evidencia: "OPTIONS devuelve la misma página que GET (no implementa el protocolo)"}
+
+  # ---------------- servicio real ----------------
+  - {id: R1, clase: real, variable: inexistente_status, op: "en", valor: [404, 410], peso: 2.0,
+     evidencia: "Las rutas inexistentes devuelven {inexistente_status}, como un servidor real"}
+  - {id: R2, clase: real, variable: consistencia_raiz, op: ">=", valor: 98, peso: 1.5,
+     evidencia: "Respuestas deterministas: la misma petición devuelve lo mismo ({consistencia_raiz:.0f} %)"}
+  - {id: R3, clase: real, variable: falta_date, op: "==", valor: false, peso: 0.5,
+     evidencia: "Cabeceras HTTP coherentes (incluye Date)"}
+  - {id: R4, clase: real, variable: latencia_media_ms, op: "<", valor: 150, peso: 0.5,
+     evidencia: "Latencia baja y estable ({latencia_media_ms:.0f} ms)"}
+
+# Patrones (expresiones regulares, sin distinguir mayúsculas) que se buscan en cabeceras y cuerpos.
+# Ampliad estas listas el jueves con lo que vayáis viendo en el entorno del reto.
+firmas_honeypot:
+  - "honeypot"
+  - "glastopf"
+  - "snare"
+  - "tanner"
+  - "conpot"
+  - "dionaea"
+  - "cowrie"
+  - "opencanary"
+  - "t-pot"
+marcas_llm:
+  - "as an ai"
+  - "como (un )?modelo de lenguaje"
+  - "como (una )?ia"
+  - "i'?m sorry, but"
+  - "lo siento, (pero|no puedo)"
+  - "certainly!"
+  - "¡por supuesto!"
+  - "here is (a|an|the) (sample|example)"
+  - "aquí tienes"
+  - "```"
+  - "lorem ipsum"
+server_obsoleto:
+  - "apache/1\\."
+  - "apache/2\\.[0-2]\\."
+  - "iis/[1-6]\\."
+  - "nginx/0\\."
+  - "nginx/1\\.[0-9]\\."

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1136 400" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0b5cad"/>
+    </marker>
+    <style>
+      .box{fill:#e8f1fb;stroke:#0b5cad;stroke-width:2}
+      .out{fill:#fff;stroke:#5b6475;stroke-width:1.5;stroke-dasharray:6 4}
+      .cfg{fill:#fff7e0;stroke:#e0a21f;stroke-width:1.5}
+      .t{font-size:20px;font-weight:700;fill:#1d2433}
+      .s{font-size:14px;fill:#5b6475}
+      .l{stroke:#0b5cad;stroke-width:2.5;fill:none;marker-end:url(#a)}
+      .d{stroke:#5b6475;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#a)}
+    </style>
+  </defs>
+  <!-- fila principal -->
+  <rect class="box" x="10" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="105" y="150" text-anchor="middle">Inventario</text>
+  <text class="s" x="105" y="176" text-anchor="middle">servicios del reto</text>
+  <text class="s" x="105" y="196" text-anchor="middle">(CSV / YAML)</text>
+  <text class="s" x="105" y="216" text-anchor="middle">control de alcance</text>
+
+  <rect class="box" x="240" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="335" y="150" text-anchor="middle">Recolector</text>
+  <text class="s" x="335" y="176" text-anchor="middle">sondas HTTP inocuas</text>
+  <text class="s" x="335" y="196" text-anchor="middle">repetidas · asíncrono</text>
+  <text class="s" x="335" y="216" text-anchor="middle">status, cabeceras, latencia</text>
+
+  <rect class="box" x="470" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="565" y="150" text-anchor="middle">Rasgos</text>
+  <text class="s" x="565" y="176" text-anchor="middle">consistencia · 404</text>
+  <text class="s" x="565" y="196" text-anchor="middle">latencia · cabeceras</text>
+  <text class="s" x="565" y="216" text-anchor="middle">firmas · marcas de LLM</text>
+
+  <rect class="box" x="700" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="795" y="150" text-anchor="middle">Clasificador</text>
+  <text class="s" x="795" y="176" text-anchor="middle">reglas con pesos</text>
+  <text class="s" x="795" y="196" text-anchor="middle">clase + confianza</text>
+  <text class="s" x="795" y="216" text-anchor="middle">+ evidencias</text>
+
+  <rect class="box" x="930" y="110" width="196" height="120" rx="12"/>
+  <text class="t" x="1028" y="150" text-anchor="middle">Resultados</text>
+  <text class="s" x="1028" y="176" text-anchor="middle">real / honeypot clásico</text>
+  <text class="s" x="1028" y="196" text-anchor="middle">/ honeypot generativo</text>
+  <text class="s" x="1028" y="216" text-anchor="middle">"qué lo delató"</text>
+
+  <path class="l" d="M200,170 H236"/><path class="l" d="M430,170 H466"/>
+  <path class="l" d="M660,170 H696"/><path class="l" d="M890,170 H926"/>
+
+  <!-- configuración editable -->
+  <rect class="cfg" x="240" y="16" width="190" height="56" rx="10"/>
+  <text class="s" x="335" y="40" text-anchor="middle" font-weight="700">probes.yaml</text>
+  <text class="s" x="335" y="60" text-anchor="middle">sondas y repeticiones</text>
+  <path class="d" d="M335,72 V106"/>
+  <rect class="cfg" x="700" y="16" width="190" height="56" rx="10"/>
+  <text class="s" x="795" y="40" text-anchor="middle" font-weight="700">rules.yaml</text>
+  <text class="s" x="795" y="60" text-anchor="middle">pesos y umbrales, en caliente</text>
+  <path class="d" d="M795,72 V106"/>
+
+  <!-- salidas -->
+  <rect class="out" x="240" y="290" width="190" height="80" rx="10"/>
+  <text class="s" x="335" y="322" text-anchor="middle" font-weight="700">evidencias.csv</text>
+  <text class="s" x="335" y="344" text-anchor="middle">todas las respuestas</text>
+  <path class="d" d="M335,230 V286"/>
+  <rect class="out" x="700" y="290" width="190" height="80" rx="10"/>
+  <text class="s" x="795" y="322" text-anchor="middle" font-weight="700">Oracle (MALACK)</text>
+  <text class="s" x="795" y="344" text-anchor="middle">resultados y evidencias</text>
+  <path class="d" d="M1028,230 V260 H795 V286"/>
+  <rect class="out" x="930" y="290" width="196" height="80" rx="10"/>
+  <text class="s" x="1028" y="322" text-anchor="middle" font-weight="700">Dashboard + informe</text>
+  <text class="s" x="1028" y="344" text-anchor="middle">Streamlit · HTML · Markdown</text>
+  <path class="d" d="M1028,230 V286"/>
+  <rect class="out" x="10" y="290" width="190" height="80" rx="10"/>
+  <text class="s" x="105" y="322" text-anchor="middle" font-weight="700">Banco de pruebas</text>
+  <text class="s" x="105" y="344" text-anchor="middle">real · clásico · IA (Ollama)</text>
+  <path class="d" d="M105,290 V234"/>
+</svg>

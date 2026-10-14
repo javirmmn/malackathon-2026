@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Presentación · NICS Lab</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<!-- Plantilla para el reto de NICS Lab. Rellenar lo que está en <mark> y quitar la etiqueta.
+     Exportar: .venv\Scripts\python -m common.pdf docs\presentacion\nics.html  ·  Guion: docs\presentacion\README.md -->
+
+<section class="slide">
+  <div style="margin-top:110px">
+    <div class="kicker">III Malackathon · Reto NICS Lab</div>
+    <h1>Infiltrados en la red:<br>encontramos a la IA impostora</h1>
+    <p class="big muted" style="font-weight:400">Clasificación automática y explicable de servicios web:<br>real · honeypot clásico · honeypot generativo</p>
+    <p style="margin-top:48px">Equipo <mark>[nombre del equipo]</mark> · <mark>[Nombre 1]</mark>, <mark>[Nombre 2]</mark>, <mark>[Nombre 3]</mark>, Javier Román</p>
+  </div>
+  <div class="foot"><span>ETSI Informática · Universidad de Málaga</span><span>16/10/2026</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">0:00 – 0:30</span>
+  <h2>El problema</h2>
+  <p class="big">En la red hay <mark>[N]</mark> servicios. Algunos son trampas, y las nuevas trampas usan una IA que se inventa cada respuesta para parecer reales.</p>
+  <div class="cols3" style="margin-top:40px">
+    <div class="card"><h3>Real</h3><p>Servicio legítimo: responde de forma coherente y estable.</p></div>
+    <div class="card"><h3>Honeypot clásico</h3><p>Cebo programado: respuestas fijas, banners por defecto.</p></div>
+    <div class="card"><h3>Honeypot generativo</h3><p>Cebo con un LLM: contenido verosímil, pero inventado y cambiante.</p></div>
+  </div>
+  <p class="muted" style="margin-top:28px">Por qué importa a NICS: <mark>[confundir un cebo con un servicio real = decisiones de defensa equivocadas]</mark></p>
+  <div class="foot"><span>Infiltrados en la red</span><span>2</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">0:30 – 1:30</span>
+  <h2>Enfoque: hacer hablar a cada servicio</h2>
+  <img class="diagram" src="../arquitectura/nics.svg" alt="Arquitectura">
+  <p style="font-size:21px;margin-top:6px">Preguntamos lo mismo varias veces y pedimos rutas que <b>no existen</b>: un servidor real responde 404; una IA se inventa la página. Cada decisión queda justificada con evidencias.</p>
+  <div class="foot"><span>Infiltrados en la red</span><span>3</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">1:30 – 5:30 · DEMO EN DIRECTO</span>
+  <h2>Demo: <mark>[servicio estrella, p. ej. el impostor más difícil]</mark></h2>
+  <ol class="steps">
+    <li>Lanzamos el análisis sobre la red del reto: <code>python -m kits.nics.run --targets … --scope …</code></li>
+    <li>Dashboard: vista general, <mark>[X]</mark> reales, <mark>[Y]</mark> clásicos, <mark>[Z]</mark> generativos.</li>
+    <li>Abrimos <mark>[servicio]</mark>: la misma petición devuelve contenidos distintos (<mark>[%]</mark> de similitud).</li>
+    <li>Ruta inventada → la IA nos fabrica una página / un JSON con datos falsos.</li>
+    <li>Contraste: un servicio real responde 404 y siempre lo mismo.</li>
+  </ol>
+  <div class="card" style="height:190px;display:grid;place-items:center;border-style:dashed;color:var(--muted)"><mark>[captura del dashboard:   <p class="note">Plan B si falla el directo: vídeo de la demo (USB) y capturas en la diapositiva siguiente.</p>lt;img src="capturas/nics_dashboard.png" style="max-height:170px"  <p class="note">Plan B si falla el directo: vídeo de la demo (USB) y capturas en la diapositiva siguiente.</p>gt;]</mark></div>
+  <p class="note">Plan B si falla el directo: vídeo de la demo (USB) y esta captura.</p>
+  <div class="foot"><span>Infiltrados en la red</span><span>4</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">5:30 – 6:30</span>
+  <h2>Resultados</h2>
+  <div class="cols3" style="margin-bottom:28px">
+    <div class="card"><div class="kpi"><mark>[N]</mark></div><div class="kpi-label">servicios analizados</div></div>
+    <div class="card"><div class="kpi"><mark>[Z]</mark></div><div class="kpi-label">IAs impostoras detectadas</div></div>
+    <div class="card"><div class="kpi"><mark>[%]</mark></div><div class="kpi-label">confianza media</div></div>
+  </div>
+  <table>
+    <tr><th>Qué delata a cada clase</th><th>Evidencia más frecuente</th></tr>
+    <tr><td>Honeypot generativo</td><td><mark>[respuestas distintas a la misma petición · JSON inventado · latencia de segundos]</mark></td></tr>
+    <tr><td>Honeypot clásico</td><td><mark>[misma página para cualquier ruta · banner antiguo · sin cabecera Date]</mark></td></tr>
+    <tr><td>Real</td><td><mark>[404 en rutas inexistentes · respuestas deterministas]</mark></td></tr>
+  </table>
+  <div class="foot"><span>Infiltrados en la red</span><span>5</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">6:30 – 7:00</span>
+  <h2>Limitaciones y siguientes pasos</h2>
+  <div class="cols">
+    <div><h3 style="font-size:26px">Limitaciones</h3><ul>
+      <li>Una IA con temperatura 0 y caché respondería siempre igual: <mark>[cómo lo cubrimos]</mark></li>
+      <li>Reglas ajustadas con <mark>[N]</mark> servicios</li>
+      <li><mark>[otra]</mark></li></ul></div>
+    <div><h3 style="font-size:26px">Siguientes pasos</h3><ul>
+      <li>Preguntas de "conocimiento" para pillar contradicciones</li>
+      <li>Aprender los pesos con más ejemplos etiquetados</li>
+      <li>Vigilancia continua de la red</li></ul></div>
+  </div>
+  <p class="big" style="margin-top:46px">Cada clasificación es <span style="color:var(--accent)">reproducible y explicable</span>.</p>
+  <div class="foot"><span>Infiltrados en la red</span><span>6</span></div>
+</section>
+
+<section class="slide">
+  <div style="margin-top:170px;text-align:center">
+    <h1>Gracias</h1>
+    <p class="big muted" style="font-weight:400">¿Preguntas?</p>
+    <p class="muted" style="margin-top:40px">Código, informe y evidencias: <mark>[enlace o "en la entrega del Campus Virtual"]</mark></p>
+  </div>
+  <div class="foot"><span>Infiltrados en la red</span><span>7</span></div>
+</section>
+</body>
+</html>

@@ -54,7 +54,7 @@
 <div class="cover">
   <h1>Plan de acción · III Malackathon</h1>
   <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
-  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 14/10 por la mañana) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
+  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 14/10 por la tarde) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
 </div>
 
 <div class="box warn">
@@ -237,6 +237,18 @@
 </div>
 <p class="small"><b>Ojo con las normas:</b> las bases no prohíben llevar herramientas preparadas, pero la solución se evalúa sobre lo que se haga durante el evento con los datos del reto. Preparad <b>infraestructura genérica</b> (esqueleto, utilidades, plantillas), no una solución "enlatada". Si hay dudas, preguntad a la organización (<a href="mailto:empresas.informatica@uma.es">empresas.informatica@uma.es</a>) y, si os preguntan, decid con naturalidad qué traíais preparado.</p>
 
+<div class="box ok">
+  <strong class="t">Estado del 14/10 por la tarde: los dos kits están hechos, probados y documentados.</strong>
+  <ul style="margin:4px 0 0">
+    <li><b>Kit NICS</b> (<code>kits/nics/</code>): <code>python -m kits.nics.run --testbed</code> clasifica bien <b>3 de 3</b> servicios en unos 20 s y genera el informe "qué delató a cada impostor" y el dashboard. Por seguridad, <b>solo escanea localhost</b> salvo que se le pase el rango autorizado con <code>--scope</code>.</li>
+    <li><b>Kit Mercedes</b> (<code>kits/mercedes/</code>): con un dataset sintético de 2.000 clientes y 5 segmentos plantados, un comando genera la EDA, la comparación de modelos, los perfiles y el dashboard con simulador en unos 30 s. Recupera los segmentos con un acuerdo ARI de <b>0,96</b>.</li>
+    <li><b>Oracle integrado:</b> <code>python -m common.load fichero --tabla T</code> sube cualquier fichero del reto a Oracle (alternativa a Data Load) y los kits guardan sus resultados con <code>--a-oracle PREFIJO</code>. Pendiente de probar contra la base de datos real cuando esté el wallet.</li>
+    <li><b>Presentación:</b> plantillas de 7 diapositivas (NICS, Mercedes y genérica), guion y preguntas probables en <code>docs/presentacion/</code>; diagramas en <code>docs/arquitectura/</code>.</li>
+    <li><b>12 tests</b> en verde (<code>python -m pytest</code>). Cómo usar cada kit el jueves: en su <code>README.md</code>.</li>
+    <li><b>Lo que queda para las parejas:</b> clonar, ejecutar los ensayos, <b>entender el código</b> (el jueves hay que explicarlo al jurado) y mejorar lo que vean. Además, la plantilla del PDF y la puesta en común (6.5).</li>
+  </ul>
+</div>
+
 <h3>6.1 Organización del día y estructura del repo</h3>
 <table>
   <tr><th style="width:22%">Quién</th><th>Tarea del 14/10</th></tr>
@@ -249,14 +261,14 @@
 <table>
   <tr><th style="width:32%">Carpeta</th><th>Contenido</th></tr>
   <tr><td><code>common/</code> <span class="pill">hecho</span></td><td>Conexión a Oracle (<code>oracledb</code> + wallet, por variables de entorno), utilidades de carga y exportación de CSV/Excel, plantilla de app Streamlit, estilos de gráficos</td></tr>
-  <tr><td><code>kits/nics/</code></td><td>Kit de clasificación de servicios (6.2)</td></tr>
-  <tr><td><code>kits/mercedes/</code></td><td>Kit de clustering de clientes (6.3)</td></tr>
+  <tr><td><code>kits/nics/</code> <span class="pill">hecho</span></td><td>Kit de clasificación de servicios (6.2)</td></tr>
+  <tr><td><code>kits/mercedes/</code> <span class="pill">hecho</span></td><td>Kit de clustering de clientes (6.3)</td></tr>
   <tr><td><code>docs/</code></td><td>Plan, <code>oracle.md</code> (URL del esquema, sin contraseñas), <code>sql/</code> con consultas, plantilla del PDF de presentación, diagrama de arquitectura</td></tr>
   <tr><td><code>data/</code></td><td>Datos locales; en <code>.gitignore</code>. El wallet y el <code>.env</code> tampoco se suben</td></tr>
-  <tr><td><code>tests/</code></td><td>Pruebas de <code>common/</code> que no necesitan Oracle (<code>python -m pytest</code>)</td></tr>
+  <tr><td><code>tests/</code></td><td>Pruebas de <code>common/</code> y de los dos kits, sin Oracle (<code>python -m pytest</code>, 9 tests)</td></tr>
 </table>
 
-<h3>6.2 Kit NICS Lab (pareja A)</h3>
+<h3>6.2 Kit NICS Lab (pareja A) <span class="pill">hecho el 14/10</span></h3>
 <p><b>Objetivo del kit:</b> que el jueves baste con meter la lista de servicios del entorno del reto para tener las primeras clasificaciones en menos de una hora.</p>
 <ol>
   <li><b>Inventario:</b> módulo que lee la lista de servicios (dirección, puerto, ruta) desde un CSV o YAML y la normaliza.</li>
@@ -266,10 +278,10 @@
   <li><b>Salidas:</b> dashboard en Streamlit (tabla filtrable y detalle por servicio) y generador de informe Markdown/PDF con "qué delató a cada impostor".</li>
   <li><b>Banco de pruebas local</b> para comprobar que todo funciona sin el entorno real: tres servicios simulados en <code>localhost</code>: uno "real" (respuestas estáticas coherentes), uno "honeypot clásico" (respuestas fijas por defecto) y uno "generativo" (respuestas generadas por un modelo local con Ollama). El clasificador debe separarlos.</li>
 </ol>
-<p><b>Hecho cuando:</b> <code>python -m kits.nics.run --targets targets.csv</code> recorre el banco de pruebas, clasifica bien los 3 servicios y el dashboard los muestra con sus evidencias.</p>
+<p><b>Hecho cuando:</b> <code>python -m kits.nics.run --targets targets.csv</code> recorre el banco de pruebas, clasifica bien los 3 servicios y el dashboard los muestra con sus evidencias. <b>✅ Cumplido</b> con <code>python -m kits.nics.run --testbed</code>: 3/3. <b>Ensayado también con una IA real</b> (Ollama + <code>llama3.2:3b</code>, instalado el 14/10): 3/3 tras ajustar el timeout (60 s), la regla de latencia y añadir los timeouts como evidencia. Sin Ollama, el banco de pruebas usa un simulador.</p>
 <p class="small">Dependencias: <code>httpx</code>, <code>pandas</code>, <code>pyyaml</code>, <code>rapidfuzz</code>, <code>streamlit</code>, <code>fastapi</code> + <code>uvicorn</code> (servicios simulados), Ollama con un modelo pequeño.</p>
 
-<h3>6.3 Kit Mercedes-Benz (pareja B)</h3>
+<h3>6.3 Kit Mercedes-Benz (pareja B) <span class="pill">hecho el 14/10</span></h3>
 <p><b>Objetivo del kit:</b> que el jueves, con el dataset de clientes, en unas 2 horas haya segmentos perfilados y un dashboard funcionando.</p>
 <ol>
   <li><b>Dataset de ensayo público</b> de clientes (por ejemplo, <i>Customer Personality Analysis</i> o <i>Mall Customers</i> de Kaggle), solo para probar el pipeline.</li>
@@ -281,12 +293,12 @@
   <li><b>Dashboard Streamlit:</b> selector de segmento, perfil y simulador de "¿a qué segmento pertenece este cliente?".</li>
   <li><b>Opcional:</b> carga y lectura desde la Autonomous DB <code>malackathon</code> mediante <code>common/</code>.</li>
 </ol>
-<p><b>Hecho cuando:</b> con el dataset de ensayo, un solo comando genera la EDA, la comparación de modelos y los perfiles, y el dashboard muestra los segmentos.</p>
+<p><b>Hecho cuando:</b> con el dataset de ensayo, un solo comando genera la EDA, la comparación de modelos y los perfiles, y el dashboard muestra los segmentos. <b>✅ Cumplido.</b> En lugar de Kaggle (pide registro) se usa un dataset <b>sintético</b> con segmentos plantados, lo que permite medir si el pipeline acierta. HDBSCAN se usa desde scikit-learn, sin el paquete <code>hdbscan</code>.</p>
 <p class="small">Dependencias: <code>pandas</code>, <code>scikit-learn</code>, <code>hdbscan</code>, <code>umap-learn</code>, <code>kmodes</code>, <code>plotly</code>, <code>streamlit</code>, <code>ydata-profiling</code> (opcional).</p>
 
 <h3>6.4 Preparación ligera para el resto de retos (si sobra tiempo o por la noche)</h3>
 <ul class="check">
-  <li><b>NTT DATA:</b> instalar Ollama y descargar un modelo de 3 a 8B; dejar en caché un modelo NLI multilingüe (<code>transformers</code>).</li>
+  <li><b>NTT DATA:</b> <s>instalar Ollama y descargar un modelo de 3 a 8B</s> (<b>hecho</b> en el portátil de Javier: <code>llama3.2:3b</code>, unos 4 s por respuesta corta); falta dejar en caché un modelo NLI multilingüe (<code>transformers</code>).</li>
   <li><b>Indra:</b> instalar <code>rasterio</code>, <code>opencv-python</code>, <code>scikit-image</code> y <code>folium</code>; opcionalmente, probar umbrales de color sobre una imagen SWIR pública de Copernicus Browser.</li>
   <li><b>Google:</b> la conexión a Oracle de <code>common/</code> ya cubre la base del reto.</li>
   <li><b>Betsson:</b> <code>pip install playwright</code> y <code>playwright install chromium</code>.</li>
@@ -294,11 +306,11 @@
 
 <h3>6.5 Cierre del día 14/10</h3>
 <ul class="check">
-  <li>Ambos kits en <code>main</code>, con su <code>README</code> actualizado (el general de "cómo arrancar en 5 minutos" ya existe).</li>
+  <li class="done">Ambos kits en <code>main</code>, con su <code>README</code> (falta hacer commit y push).</li>
   <li>Los 4 portátiles clonan el repo, pasan <code>python -m pytest</code> y ejecutan los dos kits sin errores.</li>
   <li>Comprobar que la base de datos <code>malackathon</code> sigue en estado <i>Available</i>; si no, <i>Start</i>.</li>
   <li>Si da tiempo: wallet descargado, <code>.env</code> rellenado y <code>.venv\Scripts\python -m common.db</code> conectando como <code>MALACK</code>. Credenciales y wallet repartidos al equipo por un canal seguro.</li>
-  <li>Plantilla del PDF de presentación (6–8 diapositivas) y del diagrama de arquitectura.</li>
+  <li class="done">Plantillas de la presentación (7 diapositivas: NICS, Mercedes y genérica) en <code>docs/presentacion/</code>, con guion y preguntas probables, y diagramas de arquitectura en <code>docs/arquitectura/</code>. PDF con <code>python -m common.pdf docs\presentacion\nics.html</code>.</li>
   <li>Material físico listo (apartado 16) y a dormir pronto: el día 1 dura casi 11 horas.</li>
 </ul>
 
@@ -326,6 +338,7 @@
 <div class="box info"><strong class="t">Clave:</strong> los mentores evalúan <b>por fases durante el día</b>. Enseñadles avances parciales pronto y a menudo; no esperéis a tenerlo todo.</div>
 
 <h2>9. Presentación y defensa (viernes 16)</h2>
+<p class="small"><b>Plantillas listas</b> en <code>docs/presentacion/</code> (<code>nics.html</code>, <code>mercedes.html</code>, <code>generica.html</code>): se rellena lo resaltado en amarillo y se exporta con <code>.venv\Scripts\python -m common.pdf docs\presentacion\&lt;fichero&gt;.html</code>. El <code>README.md</code> de esa carpeta tiene el guion y las respuestas a las preguntas probables.</p>
 <h4>Estructura de 7 minutos</h4>
 <table>
   <tr><th style="width:18%">Tiempo</th><th>Contenido</th></tr>
@@ -509,7 +522,7 @@
 <h2>19. Contexto para retomar con Claude</h2>
 <div class="box ok">
   <strong class="t">Copiar este bloque al empezar una conversación nueva:</strong>
-  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 14/10 se creó la Autonomous DB Always Free <code>malackathon</code> (Display name <code>malackathon-2026</code>, Transaction Processing, 26ai, Madrid, mTLS) con el usuario <code>MALACK</code> (Graph/OML/REST) para usarla el jueves. El ensayo de carga con Data Load y SQL salió bien, y la URL del esquema está en <code>docs/oracle.md</code>. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, que es también el repo privado <code>github.com/javirmmn/malackathon-2026</code>. Ya existen <code>common/</code> (Oracle por <code>.env</code>, lectura de CSV/Excel, gráficos, plantilla Streamlit), <code>docs/oracle.md</code>, <code>docs/sql/prueba_carga.sql</code> y un <code>.venv</code> con Python 3.13 y las dependencias de los kits. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
+  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 14/10 se creó la Autonomous DB Always Free <code>malackathon</code> (Display name <code>malackathon-2026</code>, Transaction Processing, 26ai, Madrid, mTLS) con el usuario <code>MALACK</code> (Graph/OML/REST) para usarla el jueves. El ensayo de carga con Data Load y SQL salió bien, y la URL del esquema está en <code>docs/oracle.md</code>. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, que es también el repo privado <code>github.com/javirmmn/malackathon-2026</code>. Ya existen <code>common/</code> (Oracle por <code>.env</code>, lectura de CSV/Excel, gráficos, plantilla Streamlit), <code>docs/oracle.md</code>, <code>docs/sql/prueba_carga.sql</code> y un <code>.venv</code> con Python 3.13. Los dos kits están hechos y probados el 14/10: <code>kits/nics</code> (<code>python -m kits.nics.run --testbed</code>, 3/3) y <code>kits/mercedes</code> (<code>python -m kits.mercedes.run --data ...</code>, ARI 0,96 en el ensayo), cada uno con su README de uso para el jueves. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
 </div>
 
 <p class="small" style="margin-top:18px">Fuentes: Bases III Malackathon ETSII UMA; Programa y Normas Malackathon; guía "Cómo crear la base de datos y un usuario en OCI"; hoja de recursos de Oracle (uma-hackaton v1.0.0); información de retos del Campus Virtual. Las fechas y normas pueden cambiar a criterio de la organización: revisad siempre el Campus Virtual.</p>

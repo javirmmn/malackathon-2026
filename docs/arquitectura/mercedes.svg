@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1136 400" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0b5cad"/>
+    </marker>
+    <style>
+      .box{fill:#e8f1fb;stroke:#0b5cad;stroke-width:2}
+      .out{fill:#fff;stroke:#5b6475;stroke-width:1.5;stroke-dasharray:6 4}
+      .biz{fill:#e9f6ee;stroke:#1d7a46;stroke-width:2}
+      .t{font-size:20px;font-weight:700;fill:#1d2433}
+      .s{font-size:14px;fill:#5b6475}
+      .l{stroke:#0b5cad;stroke-width:2.5;fill:none;marker-end:url(#a)}
+      .d{stroke:#5b6475;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#a)}
+    </style>
+  </defs>
+  <rect class="out" x="10" y="16" width="190" height="64" rx="10"/>
+  <text class="s" x="105" y="42" text-anchor="middle" font-weight="700">Datos de clientes</text>
+  <text class="s" x="105" y="62" text-anchor="middle">Excel / CSV / Oracle</text>
+  <path class="d" d="M105,80 V106"/>
+
+  <rect class="box" x="10" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="105" y="150" text-anchor="middle">Tipos y EDA</text>
+  <text class="s" x="105" y="176" text-anchor="middle">fechas y números ES</text>
+  <text class="s" x="105" y="196" text-anchor="middle">nulos · atípicos</text>
+  <text class="s" x="105" y="216" text-anchor="middle">correlaciones</text>
+
+  <rect class="box" x="240" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="335" y="150" text-anchor="middle">Preprocesado</text>
+  <text class="s" x="335" y="176" text-anchor="middle">imputar · recortar</text>
+  <text class="s" x="335" y="196" text-anchor="middle">escalar · one-hot</text>
+  <text class="s" x="335" y="216" text-anchor="middle">recencia (RFM)</text>
+
+  <rect class="box" x="470" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="565" y="150" text-anchor="middle">Modelos</text>
+  <text class="s" x="565" y="176" text-anchor="middle">K-Means · GMM</text>
+  <text class="s" x="565" y="196" text-anchor="middle">HDBSCAN · K-Prototypes</text>
+  <text class="s" x="565" y="216" text-anchor="middle">silhouette · DB · codo</text>
+
+  <rect class="box" x="700" y="110" width="190" height="120" rx="12"/>
+  <text class="t" x="795" y="150" text-anchor="middle">Perfiles</text>
+  <text class="s" x="795" y="176" text-anchor="middle">tamaño · medias</text>
+  <text class="s" x="795" y="196" text-anchor="middle">rasgos distintivos</text>
+  <text class="s" x="795" y="216" text-anchor="middle">radar · mapa 2D</text>
+
+  <rect class="biz" x="930" y="110" width="196" height="120" rx="12"/>
+  <text class="t" x="1028" y="150" text-anchor="middle">Negocio</text>
+  <text class="s" x="1028" y="176" text-anchor="middle">"personas"</text>
+  <text class="s" x="1028" y="196" text-anchor="middle">acciones de marketing</text>
+  <text class="s" x="1028" y="216" text-anchor="middle">por segmento</text>
+
+  <path class="l" d="M200,170 H236"/><path class="l" d="M430,170 H466"/>
+  <path class="l" d="M660,170 H696"/><path class="l" d="M890,170 H926"/>
+
+  <rect class="out" x="10" y="290" width="190" height="80" rx="10"/>
+  <text class="s" x="105" y="322" text-anchor="middle" font-weight="700">eda.html</text>
+  <text class="s" x="105" y="344" text-anchor="middle">informe exploratorio</text>
+  <path class="d" d="M105,230 V286"/>
+  <rect class="out" x="470" y="290" width="190" height="80" rx="10"/>
+  <text class="s" x="565" y="322" text-anchor="middle" font-weight="700">informe.html</text>
+  <text class="s" x="565" y="344" text-anchor="middle">comparación de modelos</text>
+  <path class="d" d="M565,230 V286"/>
+  <rect class="out" x="700" y="290" width="190" height="80" rx="10"/>
+  <text class="s" x="795" y="322" text-anchor="middle" font-weight="700">Oracle (MALACK)</text>
+  <text class="s" x="795" y="344" text-anchor="middle">clientes y segmentos</text>
+  <path class="d" d="M795,230 V286"/>
+  <rect class="out" x="930" y="290" width="196" height="80" rx="10"/>
+  <text class="s" x="1028" y="322" text-anchor="middle" font-weight="700">Dashboard</text>
+  <text class="s" x="1028" y="344" text-anchor="middle">segmentos + simulador</text>
+  <path class="d" d="M1028,230 V286"/>
+</svg>

@@ -1,0 +1,4 @@
+name,url,etiqueta_real
+servicio_a,http://127.0.0.1:8081,real
+servicio_b,http://127.0.0.1:8082,honeypot_clasico
+servicio_c,http://127.0.0.1:8083,honeypot_generativo

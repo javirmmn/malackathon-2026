@@ -55,6 +55,20 @@ Ensayo con `prueba_carga.csv`: 10 filas cargadas, tildes correctas, fecha y deci
    - Tabla limpia con `... DEFAULT NULL ON CONVERSION ERROR` para que una fila mala no tumbe la consulta.
 6. `DBTOOLS$EXECUTION_HISTORY` es una tabla interna del historial de la hoja SQL: no borrarla.
 
+## Carga desde Python (alternativa a Data Load)
+
+Con el `.env` y el wallet listos:
+
+```bash
+.venv\Scripts\python -m common.load data\reto.xlsx --tabla CLIENTES --simular
+.venv\Scripts\python -m common.load data\reto.xlsx --tabla CLIENTES
+```
+
+- Normaliza los nombres de columna, convierte fechas DD/MM/YYYY y números con coma, y crea la tabla.
+- `--texto` lo sube todo como `VARCHAR2` (como recomienda la guía); `--reemplazar` / `--anadir` si la tabla ya existe.
+- Columnas con nombre reservado de Oracle (`date`, `level`, `size`...) se renombran con `_` final.
+- Los kits guardan sus resultados con `--a-oracle PREFIJO` (ver su README).
+
 ## Límites Always Free
 
 - Como máximo 2 Autonomous DB Always Free por tenancy (queda **1 hueco libre** tras crear `malackathon`).

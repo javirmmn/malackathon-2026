@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Presentación · Mercedes-Benz</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<!-- Plantilla para el reto de Mercedes-Benz. Rellenar lo que está en <mark> y quitar la etiqueta.
+     Exportar: .venv\Scripts\python -m common.pdf docs\presentacion\mercedes.html  ·  Guion: docs\presentacion\README.md
+     Recordatorio: aquí gana el STORYTELLING de negocio, no el algoritmo. -->
+
+<section class="slide">
+  <div style="margin-top:110px">
+    <div class="kicker">III Malackathon · Reto Mercedes-Benz</div>
+    <h1>Clustering the Star:<br><mark>[N]</mark> clientes, <mark>[k]</mark> historias</h1>
+    <p class="big muted" style="font-weight:400">Segmentación de clientes y estrategias de marketing personalizadas</p>
+    <p style="margin-top:48px">Equipo <mark>[nombre del equipo]</mark> · <mark>[Nombre 1]</mark>, <mark>[Nombre 2]</mark>, <mark>[Nombre 3]</mark>, Javier Román</p>
+  </div>
+  <div class="foot"><span>ETSI Informática · Universidad de Málaga</span><span>16/10/2026</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">0:00 – 0:30</span>
+  <h2>El problema</h2>
+  <p class="big">Tratar a todos los clientes igual desperdicia presupuesto. <mark>[Dato del dataset que lo demuestre: p. ej. "el 12 % de los clientes genera el 40 % del gasto"]</mark></p>
+  <p style="margin-top:36px">Objetivo: descubrir grupos de clientes parecidos <b>sin etiquetas previas</b> y decidir qué hacer con cada uno.</p>
+  <div class="foot"><span>Clustering the Star</span><span>2</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">0:30 – 1:30</span>
+  <h2>Enfoque</h2>
+  <img class="diagram" src="../arquitectura/mercedes.svg" alt="Arquitectura">
+  <p style="font-size:21px;margin-top:6px">Comparamos <mark>[N]</mark> modelos y elegimos <mark>[modelo, k]</mark> por <b>calidad</b> (silhouette <mark>[x]</mark>) y por <b>interpretabilidad</b> para negocio.</p>
+  <div class="foot"><span>Clustering the Star</span><span>3</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">1:30 – 5:30 · DEMO EN DIRECTO</span>
+  <h2>Demo: conoce a <mark>[nombre de la persona estrella]</mark></h2>
+  <ol class="steps">
+    <li>Mapa de clientes: <mark>[k]</mark> segmentos claramente separados.</li>
+    <li>Ficha de <mark>[segmento]</mark>: quiénes son, qué les distingue, cuánto valen.</li>
+    <li>Radar: comparación con el resto de segmentos.</li>
+    <li>Simulador: un cliente nuevo → segmento → acción de marketing recomendada.</li>
+  </ol>
+  <div class="card" style="height:230px;display:grid;place-items:center;border-style:dashed;color:var(--muted)"><mark>[captura del dashboard: &lt;img src="capturas/dashboard.png" style="max-height:210px"&gt;]</mark></div>
+  <p class="note">Plan B si falla el directo: vídeo de la demo (USB) y esta captura.</p>
+  <div class="foot"><span>Clustering the Star</span><span>4</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">5:30 – 6:30</span>
+  <h2>Segmentos y acciones</h2>
+  <table>
+    <tr><th>Persona</th><th>Peso</th><th>Quiénes son</th><th>Acción de marketing</th></tr>
+    <tr><td><mark>[Nombre]</mark></td><td><mark>[%]</mark></td><td><mark>[2 rasgos clave]</mark></td><td><mark>[acción concreta]</mark></td></tr>
+    <tr><td><mark>[Nombre]</mark></td><td><mark>[%]</mark></td><td><mark>[2 rasgos clave]</mark></td><td><mark>[acción concreta]</mark></td></tr>
+    <tr><td><mark>[Nombre]</mark></td><td><mark>[%]</mark></td><td><mark>[2 rasgos clave]</mark></td><td><mark>[acción concreta]</mark></td></tr>
+    <tr><td><mark>[Nombre]</mark></td><td><mark>[%]</mark></td><td><mark>[2 rasgos clave]</mark></td><td><mark>[acción concreta]</mark></td></tr>
+    <tr><td><mark>[Nombre]</mark></td><td><mark>[%]</mark></td><td><mark>[2 rasgos clave]</mark></td><td><mark>[acción concreta]</mark></td></tr>
+  </table>
+  <p class="muted" style="margin-top:18px">Insight principal: <mark>[el hallazgo que más sorprende o más dinero mueve]</mark></p>
+  <div class="foot"><span>Clustering the Star</span><span>5</span></div>
+</section>
+
+<section class="slide">
+  <span class="time">6:30 – 7:00</span>
+  <h2>Limitaciones y siguientes pasos</h2>
+  <div class="cols">
+    <div><h3 style="font-size:26px">Limitaciones</h3><ul>
+      <li>Foto fija: los clientes cambian de segmento</li>
+      <li><mark>[variables que faltan o con muchos nulos]</mark></li>
+      <li><mark>[otra]</mark></li></ul></div>
+    <div><h3 style="font-size:26px">Siguientes pasos</h3><ul>
+      <li>Medir el impacto de cada acción con un test A/B</li>
+      <li>Re-segmentar periódicamente desde Oracle</li>
+      <li>Integrar el simulador en el CRM</li></ul></div>
+  </div>
+  <div class="foot"><span>Clustering the Star</span><span>6</span></div>
+</section>
+
+<section class="slide">
+  <div style="margin-top:170px;text-align:center">
+    <h1>Gracias</h1>
+    <p class="big muted" style="font-weight:400">¿Preguntas?</p>
+  </div>
+  <div class="foot"><span>Clustering the Star</span><span>7</span></div>
+</section>
+</body>
+</html>

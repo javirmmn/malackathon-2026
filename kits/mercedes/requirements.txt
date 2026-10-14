@@ -1,5 +1,5 @@
 # Kit Mercedes-Benz (apartado 6.3 del plan). Además de ../../requirements.txt
-hdbscan>=0.8.38
+# HDBSCAN viene en scikit-learn (sklearn.cluster.HDBSCAN): no hace falta el paquete hdbscan.
 umap-learn>=0.5.6
 kmodes>=0.12
-# Opcional (EDA automática; pesada):  ydata-profiling
+pyyaml>=6.0

@@ -1,0 +1,34 @@
+# Sondas que se envían a cada servicio. Todas son peticiones inocuas de lectura.
+# {token} se sustituye por una cadena aleatoria (la misma en todas las repeticiones de esa sonda y servicio),
+# para pedir rutas que NO existen: un servidor real responde 404; un honeypot generativo se inventa algo.
+
+repeticiones: 5          # veces que se repiten las sondas marcadas con "repetir: true"
+timeout_s: 60             # un honeypot generativo puede tardar mucho en "inventarse" la respuesta
+concurrencia: 6          # peticiones simultáneas en total (sed amables con la red del reto)
+pausa_ms: 150            # pausa entre peticiones al mismo servicio
+user_agent: "Mozilla/5.0 (compatible; malackathon-nics-kit/1.0)"
+
+sondas:
+  - id: raiz
+    metodo: GET
+    ruta: /
+    repetir: true
+  - id: inexistente
+    metodo: GET
+    ruta: /{token}.html
+    repetir: true
+  - id: api_inventada
+    metodo: GET
+    ruta: /api/v1/{token}/detalles
+  - id: robots
+    metodo: GET
+    ruta: /robots.txt
+  - id: parametro_raro
+    metodo: GET
+    ruta: /?{token}=1
+  - id: head
+    metodo: HEAD
+    ruta: /
+  - id: options
+    metodo: OPTIONS
+    ruta: /
