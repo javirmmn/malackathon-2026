@@ -24,7 +24,7 @@
 https://g7dd466e4fc1627-malackathon.adb.eu-madrid-1.oraclecloudapps.com/ords/malack/_sdw/
 ```
 
-## Conexión desde Python (pendiente de probar)
+## Conexión desde Python (probada el 14/10 ✅)
 
 1. *Database connection* → *Download wallet* (Instance wallet) → poner una contraseña al wallet.
 2. Descomprimir el zip **fuera del repo** (p. ej. `C:\Users\<usuario>\oracle\Wallet_malackathon`).
@@ -35,7 +35,13 @@ https://g7dd466e4fc1627-malackathon.adb.eu-madrid-1.oraclecloudapps.com/ords/mal
 .venv\Scripts\python -m common.db
 ```
 
-Debe imprimir `Conectado a ... como MALACK`.
+Debe imprimir `Conectado a ... como MALACK`. Probado el 14/10: Oracle 23.26, carga con `common.load` y
+resultados de los dos kits con `--a-oracle` (tablas de ensayo borradas después).
+
+- La contraseña del wallet es la que se pone al descargarlo (el fichero `ewallet.pem` va cifrado). Si se olvida,
+  se vuelve a descargar con otra.
+- El mismo wallet sirve para SQL Developer (escritorio o extensión de VS Code): tipo de conexión *Cloud Wallet*,
+  zip del wallet, usuario `MALACK`, servicio `malackathon_low`. La web (Database Actions) no lo necesita.
 
 ## Carga de datos con Data Load (ensayada el 14/10 ✅)
 

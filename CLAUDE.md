@@ -12,5 +12,5 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 - Repo privado en GitHub: `javirmmn/malackathon-2026` (remoto `origin`, rama `main`). `gh` está en `C:\Program Files\GitHub CLI\gh.exe` (no está en el PATH de sesiones antiguas).
 - Kits hechos y probados (14/10): `kits/nics` (`-m kits.nics.run --testbed`; reglas en `rules.yaml`; solo escanea localhost salvo `--scope`) y `kits/mercedes` (`-m kits.mercedes.sample_data` + `-m kits.mercedes.run --data ...`). Salidas en `out/` (ignorado). 9 tests.
 - Ollama instalado (14/10) con `llama3.2:3b`; el testbed de NICS lo usa si está en marcha (~2–3 min). Los tests fuerzan el simulador.
-- Oracle desde Python: `-m common.load <fichero> --tabla T [--simular]` y `--a-oracle PREFIJO` en los kits. Sin probar contra la BD real hasta tener wallet + `.env`.
+- Oracle desde Python: `-m common.load <fichero> --tabla T [--simular]` y `--a-oracle PREFIJO` en los kits. Probado contra la BD real el 14/10 (wallet en `C:\Users\jrmro\oracle\Wallet_malackathon`, `.env` en la raíz, ignorado).
 - Presentación: plantillas en `docs/presentacion/` (nics, mercedes, generica; huecos en `<mark>`), diagramas en `docs/arquitectura/`.
