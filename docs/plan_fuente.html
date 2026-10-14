@@ -54,11 +54,22 @@
 <div class="cover">
   <h1>Plan de acción · III Malackathon</h1>
   <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
-  <p class="meta">Documento preparado el 13/10/2026 (cierre del 14/10) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
+  <p class="meta">Documento preparado el 13/10/2026 (cierre del 14/10 · listo para el jueves 15) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
 </div>
 
 <div class="box warn">
-  <strong class="t">Lo crítico en una línea:</strong> los 4 ya tenemos cuenta de Oracle (@uma.es, de una asignatura), así que <b>no hace falta la encuesta</b>. Cada uno debe comprobar <b>hoy</b> que puede entrar con el doble factor. El jueves 15 hay que <b>entregar por el Campus Virtual antes de las 20:00</b>. Si no hay entrega, el equipo no cuenta.
+  <strong class="t">Lo crítico en una línea:</strong> el jueves 15 hay que <b>entregar por el Campus Virtual antes de las 20:00</b> (código, PDF y URL del esquema de Oracle si aplica). Si no hay entrega, el equipo no cuenta. La preparación está hecha (ver el recuadro siguiente); cada uno debe tener entrada a OCI con el doble factor.
+</div>
+
+<div class="box ok">
+  <strong class="t">Punto de partida para el jueves 15 (cierre del 14/10)</strong>
+  <ul style="margin:4px 0 0">
+    <li><b>Hecho:</b> repo privado con 3 kits probados (NICS, Mercedes y NTT DATA), utilidades comunes, base de datos Oracle <code>malackathon</code> con el usuario <code>MALACK</code> (conexión desde Python probada), plantillas de presentación y diagramas, README de instalación probado en un portátil limpio y 16 tests en verde.</li>
+    <li><b>Al conocer el reto:</b> abrir la tabla "Si el reto es…" del <code>README.md</code> y el README del kit que toque. Si es Indra, Google o Betsson no hay kit: se parte de <code>common/</code> y de los apartados 13 a 15.</li>
+    <li><b>Primeras preguntas a la organización:</b> criterios de evaluación, formato de entrega y métricas. NICS: ¿lista de servicios o hay que descubrirla?, rango autorizado y herramientas permitidas. NTT: bot de ejemplo, formato del ranking y cuándo es la prueba sorpresa. Mercedes: formato del dataset.</li>
+    <li><b>Qué NO está resuelto</b> (se hace el jueves con los datos reales): los kits no han visto datos del reto y sus métricas de ensayo son optimistas (datos sintéticos); NICS no descubre servicios por sí mismo; no hay kits para Indra, Google ni Betsson; las "personas" y acciones de marketing, los resultados y la demo se hacen el jueves.</li>
+    <li><b>Primera media hora del jueves:</b> pull del repo, tests, criterios de evaluación anotados, y primera versión que funcione de principio a fin cuanto antes (apartado 8).</li>
+  </ul>
 </div>
 
 <div class="toc">
@@ -318,11 +329,13 @@
 
 <h3>6.6 Jueves 15, antes de salir de casa (10 minutos)</h3>
 <ul class="check">
-  <li>Traer lo último del repo: <i>Pull origin</i> en GitHub Desktop o <code>git pull</code>.</li>
+  <li><b>Los otros 3: clonar e instalar</b> siguiendo el apartado 1 del <code>README.md</code> (unos 10 minutos, con Javier ayudando). Mejor <b>antes de salir de casa o con el móvil como punto de acceso</b>: baja unos 1,5 GB y la red del evento puede ir lenta. No hace falta Ollama (solo Javier lo tiene).</li>
+  <li>Javier: traer lo último del repo: <i>Pull origin</i> en GitHub Desktop o <code>git pull</code>.</li>
   <li>Comprobar que todo sigue funcionando: <code>.venv\Scripts\python -m pytest</code>.</li>
   <li>Javier: Ollama abierto (icono junto al reloj) por si toca NICS o NTT DATA.</li>
   <li>Portátil cargado, cargador, regleta y móvil con datos. Credenciales de OCI y de <code>MALACK</code> accesibles en el gestor de contraseñas.</li>
   <li>Al conocer el reto: abrir la tabla "Si el reto es…" del <code>README.md</code> y el README del kit que toque.</li>
+  <li>En los primeros 15 minutos del jueves: acordar los <b>roles</b> del apartado 7 (líder, datos, modelo, frontend). <b>Quién presenta el viernes</b> solo hace falta saberlo cuando salga la lista de finalistas (21:45 del jueves), y las presentaciones se preparan en el tramo de 18:00 a 19:15.</li>
 </ul>
 
 <h2>7. Organización del equipo</h2>
