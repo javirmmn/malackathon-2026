@@ -50,8 +50,9 @@ for i, k in enumerate(ETIQUETA, 1):
 
 vista = res[res["clase"].isin(clases) & (res["confianza"] >= umbral)].copy()
 vista["clasificación"] = vista["clase"].map(ETIQUETA)
-st.dataframe(vista[["servicio", "url_base", "clasificación", "confianza", "que_lo_delato"]], width="stretch", hide_index=True,
-             column_config={"confianza": st.column_config.ProgressColumn("confianza", min_value=0, max_value=1, format="%.0f%%")})
+vista["confianza_pct"] = (vista["confianza"] * 100).round()
+st.dataframe(vista[["servicio", "url_base", "clasificación", "confianza_pct", "que_lo_delato"]], width="stretch", hide_index=True,
+             column_config={"confianza_pct": st.column_config.ProgressColumn("confianza", min_value=0, max_value=100, format="%d%%")})
 
 t1, t2, t3 = st.tabs(["Detalle del servicio", "Mapa de rasgos", "Evidencias en bruto"])
 

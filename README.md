@@ -29,6 +29,8 @@ Si los tests pasan, todo está bien. Instala también lo de los kits:
 | **Mercedes** (segmentar clientes) | `.venv\Scripts\python -m kits.mercedes.sample_data` y luego `.venv\Scripts\python -m kits.mercedes.run --data data\clientes_ensayo.csv --model kmeans_k5` | `.venv\Scripts\streamlit run kits\mercedes\app.py` |
 | Genérico (cualquier tabla) | — | `.venv\Scripts\streamlit run common\streamlit_app.py` |
 
+La primera vez, Streamlit pide un email en la terminal: dejarlo vacío y pulsar **Enter**. Los dashboards se cierran con **Ctrl+C**.
+
 Cómo usarlos el jueves con los datos del reto: [`kits/nics/README.md`](kits/nics/README.md) y [`kits/mercedes/README.md`](kits/mercedes/README.md).
 
 ### Conexión a Oracle (opcional hasta saber el reto)
