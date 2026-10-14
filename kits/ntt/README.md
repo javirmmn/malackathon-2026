@@ -83,6 +83,12 @@ g.evaluar(respuesta, fuentes)   # -> {"alucina": True, "prob": 0.93, "motivos": 
   omitir información no es alucinar; con eso acertó 17 de 18 en una muestra, pero a veces da **motivos equivocados**.
   Por eso es una señal más, no el juez final.
 - La paráfrasis ("la dirige" frente a "está dirigida por") activa las señales "suaves"; por eso pesan poco.
+- **Ensayo completo (120 respuestas, 12 min):** el juez LLM solo acierta el 84 % y marca como inventadas 18 de 46
+  respuestas fieles; las señales baratas solas aciertan el 98 % sin falsos positivos, y añadir el LLM no mejora
+  (el modelo le da peso 0,47 frente a ~2,2 de cifras y nombres).
+- **Recomendación para el jueves:** empezar **sin** `--llm`. Probarlo en una muestra solo si los datos reales
+  parafrasean mucho o escriben cifras con letras (ahí las señales baratas fallan más). Un modelo mayor
+  (`ollama pull llama3.1:8b`, ~4,7 GB, más lento) juzgaría mejor que el de 3B.
 
 ## Salidas (`out/ntt/`, no se suben)
 

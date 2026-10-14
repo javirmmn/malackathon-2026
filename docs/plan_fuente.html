@@ -54,7 +54,7 @@
 <div class="cover">
   <h1>Plan de acción · III Malackathon</h1>
   <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
-  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 14/10 por la noche) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
+  <p class="meta">Documento preparado el 13/10/2026 (cierre del 14/10) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
 </div>
 
 <div class="box warn">
@@ -245,7 +245,7 @@
     <li><b>Oracle integrado:</b> <code>python -m common.load fichero --tabla T</code> sube cualquier fichero del reto a Oracle (alternativa a Data Load) y los kits guardan sus resultados con <code>--a-oracle PREFIJO</code>. <b>Probado contra la base de datos real el 14/10</b> (wallet + <code>.env</code> en el portátil de Javier): conexión, carga de un CSV y resultados de los dos kits; tablas de ensayo borradas.</li>
     <li><b>Presentación:</b> plantillas de 7 diapositivas (NICS, Mercedes y genérica), guion y preguntas probables en <code>docs/presentacion/</code>; diagramas en <code>docs/arquitectura/</code>.</li>
     <li><b>12 tests</b> en verde (<code>python -m pytest</code>). Cómo usar cada kit el jueves: en su <code>README.md</code>.</li>
-    <li><b>Kit NTT DATA</b> (<code>kits/ntt/</code>, hecho el 14/10 por la noche): detecta si la respuesta de una IA se inventa algo frente a sus fuentes. Con el dataset sintético de ensayo acierta ~98 % solo con señales baratas (cifras, nombres, fechas, negaciones y apoyo frase a frase), y el modelo se reutiliza sin reentrenar para la prueba sorpresa.</li>
+    <li><b>Kit NTT DATA</b> (<code>kits/ntt/</code>, hecho el 14/10 por la noche): detecta si la respuesta de una IA se inventa algo frente a sus fuentes. Con el dataset sintético de ensayo acierta ~98 % solo con señales baratas (cifras, nombres, fechas, negaciones y apoyo frase a frase), y el modelo se reutiliza sin reentrenar para la prueba sorpresa. Ensayado también con el juez LLM (Ollama, 12 min para 120 respuestas): solo acierta el 84 % (sospecha de muchas respuestas fieles) y no mejora la combinación, así que <b>el jueves se empieza sin <code>--llm</code></b>.</li>
     <li><b>Lo que queda para las parejas:</b> clonar, ejecutar los ensayos, <b>entender el código</b> (el jueves hay que explicarlo al jurado) y mejorar lo que vean. Además, la plantilla del PDF y la puesta en común (6.5).</li>
   </ul>
 </div>
@@ -376,7 +376,7 @@
 <p>Trabajar <b>solo sobre la red y los servicios del entorno del reto</b> y respetar las normas que den los organizadores.</p>
 <h4>Enfoque</h4>
 <ol>
-  <li><b>Inventario</b> de los servicios del entorno autorizado: dirección, puerto, tipo de servicio y primera respuesta.</li>
+  <li><b>Inventario</b> de los servicios del entorno autorizado: dirección, puerto, tipo de servicio y primera respuesta. El kit analiza toda la lista en paralelo y acepta CSV, <code>.txt</code> (<code>host:puerto</code>) o el resultado guardado de una herramienta de descubrimiento (<code>.xml</code>/<code>.gnmap</code>); <b>no escanea redes por su cuenta</b>. <b>Preguntar a la organización el jueves</b> si dan la lista de servicios o hay que descubrirla, y con qué herramientas.</li>
   <li><b>Batería de pruebas automatizada</b> que recoja evidencias por servicio:
     <ul>
       <li><b>Consistencia:</b> ¿la misma petición repetida da siempre la misma respuesta? Un modelo generativo suele variar.</li>

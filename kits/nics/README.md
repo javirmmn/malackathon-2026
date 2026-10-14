@@ -33,8 +33,23 @@ Resultado esperado: **3/3 aciertos**. El generativo usa Ollama si está instalad
 6. **Afinar sin volver a escanear:** editar pesos/umbrales o añadir firmas en `rules.yaml` y pulsar
    *Reclasificar* en el dashboard (o `python -m kits.nics.run --solo-clasificar`).
 
-Si los servicios no son HTTP o hay que descubrirlos primero (puertos), se descubren con las herramientas que
-autorice la organización y el resultado se mete en el CSV.
+### ¿Y si solo os dan una red y hay que encontrar los servicios?
+
+El kit **analiza tantos servicios como haya en la lista** (en paralelo y con límite de concurrencia, todos en el
+mismo informe y dashboard), pero **no los busca él**: el descubrimiento se hace con las herramientas que autorice la
+organización. Lo que sí hace es leer su resultado. `--targets` acepta:
+
+| Formato | Contenido |
+|---|---|
+| `.csv` / `.xlsx` / `.yaml` | columna `url`, o `host` y `port` |
+| `.txt` | una línea por servicio: URL completa o `host:puerto` (`#` para comentarios) |
+| `.xml` / `.gnmap` | resultado guardado de una herramienta de descubrimiento (formatos de nmap `-oX` y `-oG`); solo se usan los puertos abiertos que son web |
+
+Se siga el formato que se siga, **`--scope` es obligatorio fuera de localhost**: si algún servicio de la lista está
+fuera del rango autorizado, el kit aborta sin enviarle nada. Si los servicios no son HTTP, el kit no los cubre.
+
+**Pregunta para los organizadores el jueves:** ¿se facilita la lista de hosts y puertos, o hay que descubrirla? ¿Qué
+rango es el autorizado y qué herramientas se permiten?
 
 ## Ficheros
 
