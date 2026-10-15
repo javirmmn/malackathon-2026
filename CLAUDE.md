@@ -24,7 +24,8 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 
 ## Clasificador automático (entregable final)
 
-- `python -m kits.nics.auto --host 10.66.0.1` (~6 min, un solo barrido) -> `out/nics_auto/` (`clasificacion.csv`,
+- `python -m kits.nics.auto --host 10.66.0.1` (~6 min, un solo barrido) -> **solo terminal, no escribe ficheros** (`--guardar` los vuelca a `out/nics_auto/`:
+  `clasificacion.csv`,
   `entrega.csv`, `rasgos.csv`, `pruebas.csv`, `no_disponibles.csv`, `validacion.csv`). Dashboard:
   `.venv/Scripts/streamlit run kits/nics/app_auto.py`. Reglas editables en `kits/nics/auto/reglas.yaml`
   (`--reclasificar` sin volver a sondear). Formato y límites: `kits/nics/auto/README.md`. Tests: `tests/test_nics_auto.py`.

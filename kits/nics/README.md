@@ -1,7 +1,8 @@
 # Kit NICS Lab · ¿real, honeypot clásico o honeypot generativo?
 
 > **Clasificador automático (entregable final):** `python -m kits.nics.auto --host 10.66.0.1` hace todo el flujo en un
-> solo barrido y deja `out/nics_auto/clasificacion.csv`; dashboard `streamlit run kits/nics/app_auto.py`. Ver
+> solo barrido y lo imprime por terminal (sin escribir ficheros; `--guardar` es opcional). El CSV y el dashboard de
+> entrega son los del proceso manual. Ver
 > `kits/nics/auto/README.md`. Lo de abajo es el proceso manual que lo originó.
 
 ## Resultado final (15/10, red del reto: Ondalux Logística S.L.)

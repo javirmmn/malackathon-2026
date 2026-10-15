@@ -1,17 +1,18 @@
 # Clasificador automático NICS
 
-Un solo comando analiza un host, filtra lo que no está disponible, sondea cada servicio con todas las pruebas que
+Un solo comando analiza un host (**por defecto solo imprime por terminal: no escribe ningún fichero**), filtra lo que no está disponible, sondea cada servicio con todas las pruebas que
 descubrimos durante la jornada y deja un CSV con la clase de cada uno (1 = real, 2 = honeypot clásico,
 3 = honeypot generativo), la confianza y las evidencias concretas.
 
 ```bash
 .venv\Scripts\python -m kits.nics.auto --host 10.66.0.1          # barrido completo (~6 min)
-.venv\Scripts\streamlit run kits\nics\app_auto.py                # dashboard con los resultados
+.venv\Scripts\python -m kits.nics.auto --host 10.66.0.1 --guardar   # opcional: además vuelca CSV a out\nics_auto
 ```
 
 Opciones útiles: `--puertos 24179,29082` (sin escanear), `--inventario kits/nics/auto/inventario_reto.csv` (los 42 puertos del reto, ya en el repo; salta el
 escaneo, ~3 min), `--rapido` (menos pruebas de generativo), `--rep 3` (más repeticiones: la obediencia de un LLM es
-estocástica), `--reclasificar` (reaplica `reglas.yaml` a lo ya medido, en segundos, sin volver a sondear),
+estocástica), `--detalle` (todas las evidencias por puerto), `--guardar` (opcional: volcar CSV/JSON), `--reclasificar` (reaplica
+`reglas.yaml` a lo ya guardado con `--guardar`, en segundos, sin volver a sondear),
 `--salida DIR`, `--sin-ssh-login`, `--sin-validar`.
 
 ## Flujo (un barrido)
@@ -60,7 +61,10 @@ margen (`0,50 + 0,06 × puntos de margen`, máx. 0,97), no una probabilidad; por
 Un generativo que supera el umbral es decisivo: las señales de clásico que lo acompañan no restan confianza.
 Editar `reglas.yaml` y ejecutar `--reclasificar` reclasifica sin volver a sondear.
 
-## Ficheros de salida (`out/nics_auto/`)
+## Ficheros de salida (solo con `--guardar`, en `out/nics_auto/`)
+
+Sin `--guardar` no se escribe nada. El dashboard `kits/nics/app_auto.py` solo sirve si se ha guardado antes; el CSV y el
+dashboard de entrega son los del proceso manual (`out/nics_entrega/`, `kits/nics/app_veredicto.py`).
 
 | Fichero | Contenido |
 |---|---|

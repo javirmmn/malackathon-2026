@@ -64,10 +64,10 @@ honeypot generativo). Necesita la VPN del reto activa:
 
 ```bash
 .venv\Scripts\python -m kits.nics.auto --host 10.66.0.1
-.venv\Scripts\streamlit run kits\nics\app_auto.py
 ```
 
-Tarda unos 6 minutos y deja `out\nics_auto\clasificacion.csv` (y `entrega.csv`). Para saltarse el escaneo:
+Tarda unos 6 minutos y **solo imprime por terminal** (no escribe ningún fichero; `--guardar` es opcional). El CSV y el
+dashboard de entrega son los del proceso manual de abajo. Para saltarse el escaneo:
 `--inventario kits\nics\auto\inventario_reto.csv` (los 42 puertos del reto, incluido en el repo) o
 `--puertos 24179,29082`. Formato, opciones y límites en [`kits/nics/auto/README.md`](kits/nics/auto/README.md).
 
