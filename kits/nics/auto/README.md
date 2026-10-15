@@ -9,7 +9,7 @@ descubrimos durante la jornada y deja un CSV con la clase de cada uno (1 = real,
 .venv\Scripts\streamlit run kits\nics\app_auto.py                # dashboard con los resultados
 ```
 
-Opciones útiles: `--puertos 24179,29082` (sin escanear), `--inventario data/inventario_completo.csv` (salta el
+Opciones útiles: `--puertos 24179,29082` (sin escanear), `--inventario kits/nics/auto/inventario_reto.csv` (los 42 puertos del reto, ya en el repo; salta el
 escaneo, ~3 min), `--rapido` (menos pruebas de generativo), `--rep 3` (más repeticiones: la obediencia de un LLM es
 estocástica), `--reclasificar` (reaplica `reglas.yaml` a lo ya medido, en segundos, sin volver a sondear),
 `--salida DIR`, `--sin-ssh-login`, `--sin-validar`.

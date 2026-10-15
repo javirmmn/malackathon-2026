@@ -5,8 +5,8 @@ Plan completo: [`docs/plan_fuente.html`](docs/plan_fuente.html) (y `Plan_Malacka
 
 ## Reto: NICS Lab — clasificación terminada
 
-**40 servicios descubiertos en la red de Ondalux Logística S.L., los 40 confirmados por interacción real
-(no solo apariencia): 8 real, 31 honeypot clásico, 1 honeypot generativo.**
+**40 puertos abiertos en la red de Ondalux Logística S.L.; 14 se descartan por no estar disponibles (solo saludo y
+cierran). De los 26 disponibles, confirmados por interacción real: 8 real, 14 honeypot clásico, 4 honeypot generativo.**
 
 | | |
 |---|---|

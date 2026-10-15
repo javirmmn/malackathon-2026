@@ -1,0 +1,43 @@
+port,state,service,banner
+12937,closed,unknown,
+20150,open,ssl/http,nginx
+20808,open,ssl/http,nginx
+22739,open,ssl/http,nginx
+24179,open,http,Apache httpd 2.2.22 ((Debian))
+24226,open,ssh,OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+24755,open,pop3,
+25461,open,ssl/http,nginx
+25589,open,ssl/http,nginx
+27381,open,ssh,OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+27472,open,telnet,
+28246,open,smtp,Postfix smtpd
+28827,open,pop3,Dovecot pop3d
+29082,open,ssl/http,nginx
+30934,open,imap,
+31885,open,ssl/http,nginx
+34282,open,ftp,FileZilla ftpd 1.7.3
+34328,open,ssl/http,nginx
+34818,open,ssh,OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+35574,open,http,Apache httpd 2.4.52 ((Ubuntu))
+36474,open,ssh,OpenSSH 9.2p1 Debian 2+deb12u3 (protocol 2.0)
+39640,open,http,Microsoft IIS httpd 10.0
+40101,open,ssh,OpenSSH 9.2p1 Debian 2+deb12u3 (protocol 2.0)
+41328,open,imap,Dovecot imapd
+44700,open,ssl/http,nginx
+45025,open,telnet,
+46509,open,pop3,
+46536,closed,unknown,
+46737,open,ssl/http,nginx
+47095,open,http,nginx 1.25.3
+47163,open,ssl/http,nginx
+48200,open,http,Microsoft IIS httpd 10.0
+48519,open,ssl/http,nginx
+50096,open,ssl/http,nginx
+51629,open,pop3,Dovecot pop3d
+51656,open,http,Microsoft IIS httpd 10.0
+51999,open,ssl/http,nginx
+53020,open,telnet,
+56221,open,ssl/http,nginx
+56377,open,ssl/http,nginx
+57238,open,ssl/http,nginx
+59004,open,ssl/http,nginx
