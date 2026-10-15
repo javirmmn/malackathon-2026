@@ -54,21 +54,20 @@
 <div class="cover">
   <h1>Plan de acción · III Malackathon</h1>
   <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
-  <p class="meta">Documento preparado el 13/10/2026 (cierre del 14/10 · listo para el jueves 15) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
+  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 15/10 con el reto real: NICS Lab) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
 </div>
 
 <div class="box warn">
-  <strong class="t">Lo crítico en una línea:</strong> el jueves 15 hay que <b>entregar por el Campus Virtual antes de las 20:00</b> (código, PDF y URL del esquema de Oracle si aplica). Si no hay entrega, el equipo no cuenta. La preparación está hecha (ver el recuadro siguiente); cada uno debe tener entrada a OCI con el doble factor.
+  <strong class="t">Lo crítico en una línea:</strong> nos ha tocado <b>NICS Lab</b>. Entrega por el Campus Virtual <b>antes de las 20:00</b>: write-up de máx. 3 páginas + CSV <code>port,service,class</code> (y código/PDF). Si no hay entrega, el equipo no cuenta.
 </div>
 
 <div class="box ok">
-  <strong class="t">Punto de partida para el jueves 15 (cierre del 14/10)</strong>
+  <strong class="t">15/10 por la mañana: nos ha tocado NICS Lab (nuestra 1.ª opción)</strong>
   <ul style="margin:4px 0 0">
-    <li><b>Hecho:</b> repo privado con 3 kits probados (NICS, Mercedes y NTT DATA), utilidades comunes, base de datos Oracle <code>malackathon</code> con el usuario <code>MALACK</code> (conexión desde Python probada), plantillas de presentación y diagramas, README de instalación probado en un portátil limpio y 16 tests en verde.</li>
-    <li><b>Al conocer el reto:</b> abrir la tabla "Si el reto es…" del <code>README.md</code> y el README del kit que toque. Si es Indra, Google o Betsson no hay kit: se parte de <code>common/</code> y de los apartados 13 a 15.</li>
-    <li><b>Primeras preguntas a la organización:</b> criterios de evaluación, formato de entrega y métricas. NICS: ¿lista de servicios o hay que descubrirla?, rango autorizado y herramientas permitidas. NTT: bot de ejemplo, formato del ranking y cuándo es la prueba sorpresa. Mercedes: formato del dataset.</li>
-    <li><b>Qué NO está resuelto</b> (se hace el jueves con los datos reales): los kits no han visto datos del reto y sus métricas de ensayo son optimistas (datos sintéticos); NICS no descubre servicios por sí mismo; no hay kits para Indra, Google ni Betsson; las "personas" y acciones de marketing, los resultados y la demo se hacen el jueves.</li>
-    <li><b>Primera media hora del jueves:</b> pull del repo, tests, criterios de evaluación anotados, y primera versión que funcione de principio a fin cuanto antes (apartado 8).</li>
+    <li>Enunciado completo recibido y resumido en el apartado 10. Red de <i>Ondalux Logística S.L.</i>, acceso por VPN WireGuard (<code>10.66.T.M</code>), clasificar los servicios <b>abiertos</b> en real/honeypot clásico/honeypot generativo. Entrega: write-up de 3 páginas + CSV <code>port,service,class</code>.</li>
+    <li><b>Los kits de Mercedes y NTT DATA ya no se usan hoy.</b> Todo el esfuerzo va al kit de NICS (apartado 10) y a <code>common/</code> para Oracle si hace falta.</li>
+    <li><b>VPN conectada.</b> Confirmar el rango exacto <code>10.66.T.0/24</code> (T = nuestro número de equipo) para pasarlo como <code>--scope</code> al kit. El fichero de configuración de WireGuard y las claves de cada miembro <b>nunca se suben al repo</b>.</li>
+    <li><b>Hecho de ayer que sigue sirviendo:</b> repo privado, kit de NICS probado (3/3 en el banco de pruebas), Oracle <code>malackathon</code> con el usuario <code>MALACK</code> (por si hace falta guardar resultados), README probado en limpio, 16 tests en verde.</li>
   </ul>
 </div>
 
@@ -383,31 +382,42 @@
 <h2>10. Plan por reto · <span class="pri">1</span>NICS Lab: encuentra a la IA impostora</h2>
 <div class="challenge">
 <p><span class="pill">Ciberseguridad</span><span class="pill">IA</span><span class="pill">Honeypots</span><span class="pill">Reconocimiento</span></p>
-<h4>Objetivo</h4>
-<p>Clasificar cada servicio web de la red proporcionada como <b>real</b>, <b>honeypot clásico</b> u <b>honeypot generativo</b>, y documentar las evidencias que lo delatan.</p>
-<h4>Alcance</h4>
-<p>Trabajar <b>solo sobre la red y los servicios del entorno del reto</b> y respetar las normas que den los organizadores.</p>
-<h4>Enfoque</h4>
-<ol>
-  <li><b>Inventario</b> de los servicios del entorno autorizado: dirección, puerto, tipo de servicio y primera respuesta. El kit analiza toda la lista en paralelo y acepta CSV, <code>.txt</code> (<code>host:puerto</code>) o el resultado guardado de una herramienta de descubrimiento (<code>.xml</code>/<code>.gnmap</code>); <b>no escanea redes por su cuenta</b>. <b>Preguntar a la organización el jueves</b> si dan la lista de servicios o hay que descubrirla, y con qué herramientas.</li>
-  <li><b>Batería de pruebas automatizada</b> que recoja evidencias por servicio:
+
+<div class="box ok">
+<strong class="t">Enunciado real recibido el 15/10 (presentación "MALACKATHON_extensa.pptx")</strong>
+<ul style="margin:4px 0 0">
+  <li><b>Escenario:</b> <i>Ondalux Logística S.L.</i>, empresa de logística con sede en Málaga. Hemos conseguido acceso a su red interna corporativa, con muchos servicios expuestos; no todos son lo que parecen.</li>
+  <li><b>Misión:</b> clasificar cada servicio <b>abierto y disponible</b> en una de 3 clases: <b>1 = Real</b> (servicio auténtico y funcional), <b>2 = Honeypot clásico</b> (señuelo con respuestas predefinidas), <b>3 = Honeypot generativo</b> (señuelo que improvisa sus respuestas con IA).</li>
+  <li><b>Acceso a la red:</b> VPN WireGuard. Cada miembro del equipo tiene su propio fichero de configuración (QR, en diapositivas individuales por equipo del PPTX). Abre un túnel contra <code>10.66.0.1</code>. La IP de cada participante es <code>10.66.T.M</code> (T = número de equipo, M = número de miembro). <b>Pendiente:</b> confirmar nuestro número de equipo T e importar el QR de cada miembro en la app de WireGuard (nunca subir el fichero de configuración ni la clave privada al repo).</li>
+  <li><b>Entregables:</b>
     <ul>
-      <li><b>Consistencia:</b> ¿la misma petición repetida da siempre la misma respuesta? Un modelo generativo suele variar.</li>
-      <li><b>Latencia:</b> tiempos de respuesta irregulares o altos, típicos de la generación de texto.</li>
-      <li><b>Coherencia con el protocolo:</b> cabeceras, códigos de estado y formatos que cumplan lo esperado de un servicio real.</li>
-      <li><b>Valores por defecto</b> conocidos de software de honeypot clásico.</li>
-      <li><b>Coherencia del contenido:</b> contradicciones entre respuestas, datos inventados o demasiado "verosímiles".</li>
+      <li><b>Write-up de máximo 3 páginas</b> con las evidencias de cada clasificación.</li>
+      <li><b>CSV</b> con cabecera <code>port,service,class</code> (class = 1, 2 o 3), una fila por servicio. Ejemplo del enunciado: <code>22,SSH,1</code>.</li>
+      <li><b>Bonus opcionales</b> durante la jornada por otras técnicas de ciberseguridad (flags, forense, reconocimiento...).</li>
+      <li>Se valoran también las <b>herramientas propias</b> construidas para el trabajo (nuestro kit encaja aquí).</li>
     </ul>
   </li>
-  <li><b>Clasificador por reglas con pesos</b>: puntuación por categoría, nivel de confianza y lista de evidencias.</li>
-  <li><b>Informe y dashboard</b>: tabla con servicio, clasificación, confianza, evidencias y la técnica que lo delató.</li>
+  <li><b>Consejos de la organización:</b> escanear con calma (ir a lo bruto da resultados poco fiables), interactuar de verdad con cada servicio y no quedarse en la superficie, y documentar cada decisión con la prueba concreta que la justifica.</li>
+</ul>
+</div>
+
+<h4>Objetivo</h4>
+<p>Clasificar cada servicio <b>abierto</b> de la red de Ondalux como <b>real (1)</b>, <b>honeypot clásico (2)</b> u <b>honeypot generativo (3)</b>, con la evidencia que delata a cada uno.</p>
+<h4>Alcance</h4>
+<p>Trabajar <b>solo dentro del túnel WireGuard del equipo</b> (red <code>10.66.0.0/16</code> vista desde nuestra IP <code>10.66.T.M</code>) y respetar las normas de la organización. El kit exige <code>--scope</code> fuera de localhost y aborta si algún objetivo queda fuera.</p>
+<h4>Enfoque (kit <code>kits/nics/</code>, hecho el 14/10, por adaptar hoy a los puertos y protocolos reales)</h4>
+<ol>
+  <li><b>Conectar la VPN</b> e identificar los servicios <b>abiertos</b> en el rango del equipo. El reto no dice si da la lista o hay que descubrirla con un escáner de puertos: si hay que descubrirla, el resultado guardado (<code>.xml</code>/<code>.gnmap</code> de un escaneo) o un <code>.txt</code> (<code>host:puerto</code>) ya los lee <code>kits/nics/inventory.py</code>. <b>Ojo: no todos los servicios serán HTTP</b> (el ejemplo del CSV es SSH); el kit solo sondea y clasifica servicios web, así que los que no lo sean se documentan a mano (banner, versión, comportamiento) para el CSV y el write-up.</li>
+  <li><b>Batería de pruebas automatizada</b> que recoja evidencias por servicio: consistencia ante la misma petición repetida, latencia, coherencia de cabeceras/códigos de estado, valores por defecto de honeypots conocidos y coherencia del contenido.</li>
+  <li><b>Clasificador por reglas con pesos</b> (<code>rules.yaml</code>): puntuación por clase, confianza y evidencias que la justifican.</li>
+  <li><b>Salidas para la entrega:</b> informe y dashboard ya hechos; falta un exportador que escriba el <b>CSV <code>port,service,class</code></b> exacto que pide el formulario y el <b>write-up de 3 páginas</b> con las evidencias de cada servicio.</li>
 </ol>
 <h4>Diferenciador</h4>
-<p>Documentación clara y reproducible de cada clasificación. El reto lo pide explícitamente y pesa mucho en la evaluación.</p>
+<p>Documentar cada decisión con la prueba concreta que la justifica: lo pide el enunciado explícitamente ("documenta cada decisión con la prueba concreta que la justifica") y lo valoran también por las herramientas propias.</p>
 <h4>Preparación</h4>
-<ul>
-  <li>Python con <code>requests</code>/<code>httpx</code>, <code>pandas</code> y <code>streamlit</code>. Plantilla del informe hecha.</li>
-  <li>Repasar cómo funcionan los honeypots (de baja y alta interacción) y por qué los LLM son poco deterministas.</li>
+<ul class="check">
+  <li class="done">Kit <code>kits/nics/</code> con inventario, sondas, rasgos, reglas, informe y dashboard, probado 3/3 en el banco de pruebas (también con Ollama).</li>
+  <li>Por hacer hoy: VPN conectada, exportador al formato <code>port,service,class</code>, cobertura de servicios no-HTTP y el write-up.</li>
 </ul>
 </div>
 

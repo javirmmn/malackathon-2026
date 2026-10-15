@@ -13,6 +13,11 @@ tnsnames.ora
 sqlnet.ora
 ojdbc.properties
 .streamlit/secrets.toml
+*.conf
+wg*.conf
+wireguard*
+*wireguard*.png
+*wireguard*.conf
 
 # --- Datos locales (se reparten por otro canal) ---
 data/*
