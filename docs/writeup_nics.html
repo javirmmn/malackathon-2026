@@ -49,7 +49,15 @@
 </ul>
 <p class="pend"><b>Corrección durante el análisis:</b> el clasificador marcó inicialmente 3 nodos Elasticsearch como posible honeypot generativo, porque su respuesta de error (<code>index_not_found_exception</code>) repite el nombre de la ruta pedida — igual que haría una IA. Al revisar el contenido a mano se confirmó que es el formato de error estándar de Elasticsearch, no texto inventado, y se corrigió la regla (ahora reconoce la firma de APIs reales conocidas). Se documenta porque ilustra el riesgo de fiarse solo de reglas automáticas sin revisar la evidencia.</p>
 
-<h2>2. Resultados por clase</h2>
+<h2>2. Comprobaciones adicionales (sin cambios en el veredicto)</h2>
+<ul>
+  <li><b>Certificado TLS:</b> los 18 servicios HTTPS comparten el mismo certificado autofirmado. No distingue nada aquí: es la arquitectura del laboratorio (un único proxy termina el TLS de todos los servicios, reales y falsos por igual).</li>
+  <li><b>Latencia frente al tamaño de la respuesta</b> (huella típica de un backend generativo: tarda más cuanto más larga es la respuesta) en los servicios "real": ninguna correlación relevante (todas lejos de 1, varias negativas). Sin indicios de generación de texto.</li>
+  <li><b>Coherencia de los recursos enlazados</b> (CSS/JS/imágenes de cada página "real"): cargan correctamente, salvo 1 de 12 en Gitea (normal en un sitio real).</li>
+</ul>
+<p class="pend">Las tres comprobaciones refuerzan los 13 servicios clasificados como reales, pero no han destapado ningún honeypot generativo.</p>
+
+<h2>3. Resultados por clase</h2>
 <h3>Clase 1 — Real (34 servicios)</h3>
 <ul>
   <li><b>3 nodos Elasticsearch</b> (<code>ondalux-search</code>, puertos <code>22739, 31885, 50096</code>): responden con el formato estándar de la API, código de error coherente con el framework.</li>
@@ -64,7 +72,7 @@
 <h3>Clase 3 — Honeypot generativo (<span class="mark">pendiente de confirmar</span>)</h3>
 <p class="pend"><b>Sin confirmar todavía.</b> Ningún servicio ha dado, con sondas superficiales, la señal característica de un backend generativo (contenido distinto en la misma petición repetida, latencia alta e irregular, o marcas de texto de un LLM). El enunciado avisa explícitamente de que <i>"un buen honeypot engaña a simple vista; se delata cuando lo usas en serio"</i> — es decir, hace falta interacción real (login, comandos), no solo peticiones de lectura.</p>
 
-<h2>3. Parejas idénticas: la pista más fuerte pendiente de resolver</h2>
+<h2>4. Parejas idénticas: la pista más fuerte pendiente de resolver</h2>
 <p>8 servicios forman 4 parejas con <b>el mismo banner o contenido, byte a byte, en dos puertos distintos</b>. Es la evidencia más sospechosa de todo el inventario y la prioridad para la interacción manual que pide el enunciado:</p>
 <table>
   <tr><th>Puertos</th><th>Protocolo</th><th>Coincidencia exacta</th></tr>
@@ -77,10 +85,10 @@
 <p><b>Hipótesis:</b> en cada pareja, un puerto es el servicio real y el otro un clon (posiblemente generativo) que copia su saludo inicial al milímetro. Solo se distinguen interactuando de verdad: iniciar sesión, comparar la clave de host SSH, probar el endpoint <code>/docs</code> de la API, enviar comandos válidos.</p>
 <p class="mark">[Completar cuando se pueda volver a conectar: qué diferencia se encontró en cada pareja y cuál de los dos puertos es el señuelo]</p>
 
-<h2>4. Herramienta propia</h2>
+<h2>5. Herramienta propia</h2>
 <p>Kit de clasificación hecho por el equipo antes del reto y adaptado hoy a la red real (repositorio privado del equipo, carpeta <code>kits/nics/</code>): inventario y control de alcance, recolector de evidencias HTTP asíncrono, sondeador de protocolos no-web, clasificador por reglas editable sin recodificar (<code>rules.yaml</code>), dashboard en Streamlit y exportador directo al formato de entrega. Las reglas y los pesos usados, con el detalle de cada evidencia, están documentados y son reproducibles.</p>
 
-<h2>5. Limitaciones</h2>
+<h2>6. Limitaciones</h2>
 <ul>
   <li>Clasificación basada en sondas de lectura, sin interacción autenticada (por las 8 parejas pendientes, apartado 3).</li>
   <li>La prueba de "comando inválido" en POP3/SMTP/FTP no obtuvo respuesta de ningún servidor en 15 s; puede ser un límite de la sonda o del servidor — pendiente de revisar.</li>
