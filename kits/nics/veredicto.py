@@ -52,8 +52,11 @@ CONFIRMADOS = {
             "siempre devuelve la portada, sea cual sea la búsqueda."),
     20808: ("honeypot_clasico", 0.85, "Interacción real: mismo comportamiento que el puerto 25589, ignora la búsqueda."),
     # Web corporativa: 48519 el formulario de contacto funciona (303 -> redirect real); 59004/51999 no lo procesan
-    48519: ("real", 0.85, "Interacción real: el formulario de contacto hace POST a /contacto/enviar y responde "
-            "303 See Other -> /contacto.html?enviado=1, el patrón correcto de un formulario procesado de verdad."),
+    48519: ("real", 0.75, "Interacción real: el formulario de contacto hace POST a /contacto/enviar y responde "
+            "303 See Other -> /contacto.html?enviado=1, el patrón correcto de un formulario procesado de verdad. "
+            "Matiz: acepta el envío como válido aunque falten campos obligatorios (probado enviando solo el "
+            "nombre) — no invalida la clasificación (es común en formularios reales con poca validación), pero "
+            "baja algo la confianza frente a los otros \"real\" de esta revisión."),
     59004: ("honeypot_clasico", 0.7, "Interacción real: el formulario de contacto da 403 Forbidden genérico de "
             "nginx — la ruta no está implementada de verdad."),
     51999: ("honeypot_clasico", 0.65, "Interacción real: el formulario de contacto da 404 (con página de error "
@@ -117,8 +120,11 @@ CONFIRMADOS = {
     35574: ("honeypot_clasico", 0.8, "Interacción real: respuesta idéntica en / y en una ruta inventada."),
     47095: ("honeypot_clasico", 0.8, "Interacción real: respuesta idéntica en / y en una ruta inventada."),
     48200: ("honeypot_clasico", 0.8, "Interacción real: respuesta idéntica en / y en una ruta inventada."),
-    46737: ("real", 0.9, "Interacción real: redirige a /owa/auth/logon.aspx, el patrón de redirección exacto y "
-            "genuino de un servidor Microsoft Exchange (OWA) real; una ruta inventada da 404 normal, no catch-all."),
+    46737: ("real", 0.88, "Interacción real: redirige a /owa/auth/logon.aspx, el patrón de redirección exacto y "
+            "genuino de un servidor Microsoft Exchange (OWA) real; una ruta inventada da 404 normal, no catch-all. "
+            "Respuestas distintas y coherentes por ruta (401 en /ecp/, 308 en ActiveSync, 302 en /owa/) — no es un "
+            "bloque homogéneo. Matiz menor: /autodiscover/autodiscover.xml da 404 cuando un Exchange real suele "
+            "dar 405 (método no permitido) a una petición GET."),
     57238: ("real", 0.9, "Interacción real: /api/v1/repos/search devuelve un repositorio real de la organización "
             "\"Ondalux Logística\", con fecha de creación coherente con el resto del entorno (13/10/2026)."),
 }
