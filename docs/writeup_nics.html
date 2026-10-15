@@ -126,6 +126,7 @@
 
 <h2>5. Herramienta propia</h2>
 <p>Kit hecho por el equipo antes del reto y adaptado hoy (repositorio privado, carpeta <code>kits/nics/</code>): inventario con control de alcance, recolector de evidencias HTTP asíncrono, sondeador de protocolos no-web, interacción real por protocolo (SSH, POP3, SMTP, IMAP, FTP, Telnet), clasificador por reglas editable sin recodificar, dashboard en Streamlit con los 26 puertos disponibles y exportador directo al formato de entrega. Reglas, pesos y evidencia de cada servicio documentados y reproducibles.</p>
+<p><b>Clasificador automático</b> (<code>python -m kits.nics.auto --host 10.66.0.1</code>, carpeta <code>kits/nics/auto/</code>): un solo barrido descubre los puertos, descarta los no disponibles y sondea cada servicio con todo lo aprendido en la jornada (catch-all, buscador, formularios, esquema OpenAPI, comprobaciones por producto, obediencia a instrucciones, variantes de ruta contra la caché, métodos no-GET, shell SSH). Un motor de reglas ponderadas editables (<code>reglas.yaml</code>) da la clase, la confianza y las evidencias concretas, y escribe <code>clasificacion.csv</code>, el CSV de entrega y los datos de su propio dashboard. Sobre estos 40 puertos reproduce el veredicto confirmado a mano (26 de 26); sin credencial trivial SSH no puede inspeccionar la shell y lo marca como baja confianza.</p>
 
 <h2>6. Limitaciones</h2>
 <ul>

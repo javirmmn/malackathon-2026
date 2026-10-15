@@ -1,0 +1,69 @@
+# Reglas del clasificador automático (editable sin tocar código; reclasificar con: python -m kits.nics.auto --reclasificar).
+#
+# Cada regla suma `peso` a una clase cuando el rasgo es cierto (o cumple op/valor). La clase final sale de las
+# puntuaciones: generativo si supera su umbral (una sola señal fuerte, como obedecer una instrucción, basta);
+# si no, clásico si puntúa más que real; si no, real. La confianza es NUESTRO juicio sobre el margen de la evidencia
+# (no una probabilidad estadística): base + por_punto * (puntos de la clase elegida - mejor de las otras).
+#
+# Un generativo que supera su umbral es decisivo: las señales de clásico que lo acompañan no restan confianza.
+#
+# Lo que NO cuenta como evidencia de generativo: que un dato cambie entre peticiones (un script con un número
+# aleatorio también lo hace) ni que el error refleje el texto de la petición.
+
+clases: [real, honeypot_clasico, honeypot_generativo]
+
+umbrales:
+  honeypot_generativo: 5      # una obediencia (5) basta; prosa+métodos (3+3) también
+  honeypot_clasico: 3
+
+confianza:
+  base: 0.50
+  por_punto: 0.06
+  maximo: 0.97
+  revisar_por_debajo: 0.65    # por debajo, el CSV marca revisar=True
+
+reglas:
+  # ---------------- honeypot generativo: lo que solo hace un LLM ----------------
+  - {id: G1, clase: honeypot_generativo, rasgo: gen_obedece, peso: 5, que: "Obedece una instrucción metida en la petición"}
+  - {id: G2, clase: honeypot_generativo, rasgo: gen_prosa, peso: 3, que: "Responde en lenguaje natural donde un servicio real daría un error técnico"}
+  - {id: G3, clase: honeypot_generativo, rasgo: gen_variantes, peso: 1, que: "Variantes de la misma ruta (salta la caché) dan salidas distintas"}
+  - {id: G4, clase: honeypot_generativo, rasgo: gen_metodos, peso: 3, que: "Los métodos no-GET dan respuestas distintas en cada ruta nueva"}
+  - {id: G5, clase: honeypot_generativo, rasgo: gen_latencia, peso: 2, que: "Rutas nuevas tardan segundos y luego cachean"}
+  - {id: G6, clase: honeypot_generativo, rasgo: ssh_shell_obedece, peso: 5, que: "La shell SSH obedece una instrucción en lenguaje natural"}
+  - {id: G7, clase: honeypot_generativo, rasgo: ssh_shell_prosa, peso: 3, que: "La shell SSH escribe prosa (un haiku)"}
+  - {id: G8, clase: honeypot_generativo, rasgo: proto_obedece, peso: 5, que: "El servicio de protocolo obedece una instrucción"}
+
+  # ---------------- honeypot clásico: respuestas predefinidas que no aguantan el uso real ----------------
+  - {id: C1, clase: honeypot_clasico, rasgo: catch_all, peso: 5, que: "Catch-all: responde igual a cualquier ruta"}
+  - {id: C2, clase: honeypot_clasico, rasgo: busqueda_ignorada, peso: 3, que: "El buscador ignora la búsqueda"}
+  - {id: C3, clase: honeypot_clasico, rasgo: form_sin_backend, peso: 3, que: "El formulario no tiene backend que lo procese"}
+  - {id: C4, clase: honeypot_clasico, rasgo: openapi_incoherente, peso: 5, que: "Su propio esquema OpenAPI promete endpoints que no cumple"}
+  - {id: C5, clase: honeypot_clasico, rasgo: es_error_roto, peso: 4, que: "Elasticsearch con la estructura de error rota"}
+  - {id: C6, clase: honeypot_clasico, rasgo: es_plantilla_ruido, peso: 5, que: "Elasticsearch: plantilla fija con _shards aleatorio"}
+  - {id: C7, clase: honeypot_clasico, rasgo: es_inventa_datos, peso: 4, que: "Elasticsearch devuelve datos de un índice inventado"}
+  - {id: C8, clase: honeypot_clasico, rasgo: grafana_admin_404, peso: 3, que: "Grafana: la ruta de administración real no existe (404)"}
+  - {id: C9, clase: honeypot_clasico, rasgo: grafana_datos_sin_auth, peso: 2, que: "Grafana: devuelve datos sin autenticación"}
+  - {id: C10, clase: honeypot_clasico, rasgo: grafana_sin_cabeceras, peso: 1, que: "Grafana: sin cabeceras de seguridad"}
+  - {id: C11, clase: honeypot_clasico, rasgo: synology_api_incorrecta, peso: 3, que: "Synology: la API devuelve un error de sesión sin sentido"}
+  - {id: C12, clase: honeypot_clasico, rasgo: synology_login_404, peso: 3, que: "Synology: la página de login no existe"}
+  - {id: C13, clase: honeypot_clasico, rasgo: gitea_incorrecto, peso: 3, que: "Gitea: sin datos reales o sin su error propio"}
+  - {id: C14, clase: honeypot_clasico, rasgo: wp_clon_url_relativa, peso: 2, que: "WordPress: /wp-json/ con URL relativa (clon)"}
+  - {id: C15, clase: honeypot_clasico, rasgo: ssh_aritmetica_falla, peso: 3, que: "SSH: la shell no evalúa aritmética (emulada)"}
+  - {id: C16, clase: honeypot_clasico, rasgo: ssh_type_falso, peso: 2, que: "SSH: `type cat` da una respuesta falsa"}
+  - {id: C17, clase: honeypot_clasico, rasgo: ssh_login_trivial, peso: 2, que: "SSH: acepta una credencial trivial"}
+  - {id: C18, clase: honeypot_clasico, rasgo: proto_respuesta_invalida, peso: 3, que: "Contesta con respuestas que no son del protocolo"}
+
+  # ---------------- real: el servicio funciona de verdad ----------------
+  - {id: R1, clase: real, rasgo: openapi_coherente, peso: 4, que: "Sus endpoints declarados funcionan y devuelven la forma prometida"}
+  - {id: R2, clase: real, rasgo: busqueda_funciona, peso: 3, que: "El buscador busca de verdad"}
+  - {id: R3, clase: real, rasgo: form_funciona, peso: 3, que: "El formulario se procesa (redirección o confirmación)"}
+  - {id: R4, clase: real, rasgo: es_error_correcto, peso: 4, que: "Elasticsearch rechaza un índice inventado con su error exacto"}
+  - {id: R5, clase: real, rasgo: es_shards_estable, peso: 3, que: "Elasticsearch: _shards estable ante la misma consulta"}
+  - {id: R6, clase: real, rasgo: grafana_admin_protegida, peso: 4, que: "Grafana: protege su ruta de administración (401)"}
+  - {id: R7, clase: real, rasgo: synology_api_ok, peso: 4, que: "Synology: responde a su API real"}
+  - {id: R8, clase: real, rasgo: synology_login_ok, peso: 1, que: "Synology: login disponible"}
+  - {id: R9, clase: real, rasgo: gitea_ok, peso: 4, que: "Gitea: datos reales y su error propio"}
+  - {id: R10, clase: real, rasgo: owa_ok, peso: 4, que: "Exchange: redirección y rutas de OWA genuinas"}
+  - {id: R11, clase: real, rasgo: wp_url_absoluta, peso: 1, que: "WordPress: informa su URL absoluta"}
+  - {id: R12, clase: real, rasgo: notfound_realista, peso: 1, que: "Las rutas inventadas dan 404 como un servidor real"}
+  - {id: R13, clase: real, rasgo: proto_responde_valido, peso: 3, que: "Contesta con respuestas válidas del protocolo"}
