@@ -1,19 +1,23 @@
-# Malackathon 2026 · equipo de Javier Román
+# Malackathon 2026 · equipo de Javier Román (equipo 8)
 
 III Malackathon de la ETSI Informática (UMA), 15 y 16 de octubre de 2026.
 Plan completo: [`docs/plan_fuente.html`](docs/plan_fuente.html) (y `Plan_Malackathon_2026.pdf`).
 
-**Qué hay aquí:** tres *kits de arranque* (herramientas listas para usar con los datos del reto) para nuestros tres
-retos preferidos, utilidades comunes (Oracle, lectura de ficheros, dashboards) y plantillas para la presentación.
+## Reto: NICS Lab — clasificación terminada
 
-| Si el reto es… | Empezar por |
+**40 servicios descubiertos en la red de Ondalux Logística S.L., los 40 confirmados por interacción real
+(no solo apariencia): 8 real, 31 honeypot clásico, 1 honeypot generativo.**
+
+| | |
 |---|---|
-| **NICS Lab** (detectar honeypots e IAs impostoras) | [`kits/nics/README.md`](kits/nics/README.md) |
-| **Mercedes-Benz** (segmentar clientes) | [`kits/mercedes/README.md`](kits/mercedes/README.md) |
-| **NTT DATA** (detectar alucinaciones de una IA) | [`kits/ntt/README.md`](kits/ntt/README.md) |
-| Otro (Indra, Google, Betsson) | `common/` (Oracle, lectura de ficheros, dashboard genérico) y apartados 12–15 del plan |
-| Presentación del viernes | [`docs/presentacion/README.md`](docs/presentacion/README.md) |
-| Base de datos Oracle | [`docs/oracle.md`](docs/oracle.md) (URL del esquema y cómo conectar) |
+| Write-up (3 páginas, con la evidencia de cada puerto) | [`docs/writeup_nics.html`](docs/writeup_nics.html) |
+| Cómo se hizo (herramientas, metodología) | [`kits/nics/README.md`](kits/nics/README.md) |
+| CSV de entrega (`port,service,class`) | `out/nics_entrega/entrega.csv` (se genera con `python -m kits.nics.veredicto`) |
+| Dashboard con los 40 puertos | `.venv\Scripts\streamlit run kits\nics\app_veredicto.py` |
+
+Los kits de Mercedes-Benz y NTT DATA (preparados el 14/10, antes de saber qué reto nos tocaba) ya no se usan; se
+quedan en el repo como referencia — [`kits/mercedes/README.md`](kits/mercedes/README.md),
+[`kits/ntt/README.md`](kits/ntt/README.md).
 
 ---
 
@@ -51,58 +55,56 @@ py -m venv .venv
 
 Todos los comandos de este README se escriben **desde la carpeta del repo** y empiezan por `.venv\Scripts\...`.
 
-## 2. Probar los kits con datos de ensayo
+## 2. Ver el resultado del reto / probar los kits
 
-### Kit NICS (unos 20 s; ~2 min si tienes Ollama instalado)
+### Kit NICS: el resultado de hoy
+
+```bash
+.venv\Scripts\python -m kits.nics.veredicto
+.venv\Scripts\streamlit run kits\nics\app_veredicto.py
+```
+
+El primer comando reconstruye `out\nics_entrega\entrega.csv` y `veredicto.csv` a partir de todo lo investigado hoy
+(sondas automáticas + interacción real en los 40 puertos). El segundo abre el dashboard con los 40 puertos, su
+clasificación, la confianza y la evidencia de cada uno. Detalle completo en
+[`kits/nics/README.md`](kits/nics/README.md).
+
+<details>
+<summary>Banco de pruebas del 14/10 (antes de saber el reto; referencia histórica)</summary>
 
 ```bash
 .venv\Scripts\python -m kits.nics.run --testbed
-```
-
-Arranca 3 servicios de prueba en tu portátil (uno real, un honeypot clásico y uno con IA), los analiza y
-debe terminar con **Aciertos: 3/3**. Para verlo en el navegador:
-
-```bash
 .venv\Scripts\streamlit run kits\nics\app.py
 ```
 
-### Kit Mercedes (unos 40 s)
+Arranca 3 servicios de prueba en tu portátil (uno real, un honeypot clásico y uno con IA) y debe terminar con
+**Aciertos: 3/3**. Sirvió para comprobar las sondas automáticas; no sustituyó la interacción real que hizo falta
+con el reto de verdad.
+</details>
 
+### Kits que ya no se usan (Mercedes-Benz, NTT DATA): referencia histórica
+
+<details>
+<summary>Cómo probarlos, si hace falta volver a mirarlos</summary>
+
+**Mercedes-Benz** (segmentación de clientes):
 ```bash
 .venv\Scripts\python -m kits.mercedes.sample_data
-```
-
-```bash
 .venv\Scripts\python -m kits.mercedes.run --data data\clientes_ensayo.csv --model kmeans_k5
-```
-
-Crea 2.000 clientes inventados, los segmenta y genera informes. Para verlo en el navegador:
-
-```bash
 .venv\Scripts\streamlit run kits\mercedes\app.py
 ```
+
+**NTT DATA** (detector de alucinaciones):
+```bash
+.venv\Scripts\python -m kits.ntt.sample_data
+.venv\Scripts\python -m kits.ntt.run --data data\ntt_ensayo.csv
+.venv\Scripts\streamlit run kits\ntt\app.py
+```
+</details>
 
 **Sobre los dashboards (Streamlit):** se abren solos en el navegador (`http://localhost:8501`), solo los ves tú.
 La primera vez Streamlit pide un email en la terminal: dejarlo vacío y pulsar **Enter**. Se cierran con **Ctrl+C**
 en la terminal. El botón *Deploy* no se usa.
-
-### Kit NTT DATA (unos 5 s; ~10 min con el juez LLM `--llm`)
-
-```bash
-.venv\Scripts\python -m kits.ntt.sample_data
-```
-
-```bash
-.venv\Scripts\python -m kits.ntt.run --data data\ntt_ensayo.csv
-```
-
-Crea 120 respuestas de IA (la mitad con datos inventados) y detecta cuáles se inventan algo. Para verlo en el navegador:
-
-```bash
-.venv\Scripts\streamlit run kits\ntt\app.py
-```
-
-**Informes** (doble clic para abrir): `out\nics\informe.html`, `out\mercedes\informe.html`, `out\mercedes\eda.html`, `out\ntt\informe.html`.
 
 ## 3. Conectar con Oracle (solo si vas a trabajar con la base de datos desde tu portátil)
 
@@ -131,10 +133,9 @@ Debe decir `Conectado a ... como MALACK`. A partir de ahí:
 | Carpeta | Contenido |
 |---|---|
 | `common/` | `db.py` (Oracle: `query_df`, `execute`, `df_to_table`), `dataio.py` (leer CSV/Excel con tildes y comas decimales, normalizar columnas, exportar), `charts.py` (estilo de gráficos), `streamlit_app.py` (dashboard genérico), `load.py` (fichero → tabla de Oracle), `pdf.py` (HTML → PDF con Chrome) |
-| `kits/nics/` | Kit de clasificación de servicios: sondas, rasgos, reglas en YAML, informe, dashboard y banco de pruebas |
-| `kits/mercedes/` | Kit de segmentación: EDA, comparación de modelos, perfiles, personas, dashboard con simulador y dataset de ensayo |
-| `kits/ntt/` | Kit detector de alucinaciones: señales (cifras, nombres, fechas, negaciones, apoyo), juez LLM local, modelo reutilizable, dashboard y dataset de ensayo |
-| `docs/` | Plan, `oracle.md`, `sql/` (consultas de ensayo), `presentacion/` (plantillas y guion), `arquitectura/` (diagramas) |
+| `kits/nics/` | **El reto de verdad.** Sondas automáticas, interacción real por protocolo, martillo de consistencia, veredicto final y dashboard de los 40 puertos |
+| `kits/mercedes/`, `kits/ntt/` | Kits de los otros retos preparados el 14/10; no usados hoy, quedan de referencia |
+| `docs/` | Plan, `oracle.md`, `writeup_nics.html` (**el write-up de la entrega**), `sql/` (consultas de ensayo), `presentacion/` (plantillas y guion), `arquitectura/` (diagramas) |
 | `tests/` | Pruebas automáticas (`.venv\Scripts\python -m pytest`), no necesitan Oracle |
 | `data/` | Datos locales, **no se suben** |
 | `out/` | Resultados generados por los kits, **no se suben** |

@@ -1,97 +1,76 @@
 # Kit NICS Lab · ¿real, honeypot clásico o honeypot generativo?
 
-Sondea cada servicio web con peticiones inocuas, mide rasgos (consistencia, latencia, coherencia del protocolo,
-firmas) y lo clasifica con reglas con pesos, explicando **qué delató a cada impostor**.
-Especificación original: apartado **6.2** del plan.
+## Resultado final (15/10, red del reto: Ondalux Logística S.L.)
 
-## Probarlo con el banco de pruebas (1 minuto)
-
-```bash
-.venv\Scripts\python -m kits.nics.run --testbed
-.venv\Scripts\streamlit run kits\nics\app.py
-```
-
-`--testbed` arranca 3 servicios en `127.0.0.1:8081-8083` (real, honeypot clásico y honeypot generativo) y los analiza.
-Resultado esperado: **3/3 aciertos**. El generativo usa Ollama si está instalado; si no, un simulador que imita a un LLM
-(contenido verosímil distinto en cada petición y latencia de generación).
-
-## El jueves, con la red del reto
-
-1. **Alcance:** solo se analizan los servicios que da la organización. Por defecto el kit **se niega a escanear
-   nada fuera de localhost**; hay que pasarle el rango autorizado con `--scope`.
-2. Crear `data\servicios.csv` con una columna `url` (o `host,port[,path]`), una fila por servicio.
-3. Ejecutar:
+**40 servicios descubiertos, los 40 confirmados por interacción real** (no solo apariencia): **8 real, 31 honeypot
+clásico, 1 honeypot generativo.** Detalle completo, evidencia de cada puerto y niveles de confianza (con la regla de
+cómo leerlos) en `docs/writeup_nics.html` y en el dashboard:
 
 ```bash
-.venv\Scripts\python -m kits.nics.run --targets data\servicios.csv --scope 10.10.0.0/16
+.venv\Scripts\python -m kits.nics.veredicto         # -> out/nics_entrega/veredicto.csv y entrega.csv
+.venv\Scripts\streamlit run kits\nics\app_veredicto.py
 ```
 
-4. Revisar `out\nics\informe.html` y el dashboard. Las dudosas (confianza baja) se miran a mano en la pestaña
-   *Detalle* → *Respuestas*.
-5. **Guardar en Oracle** (el esquema de `MALACK` es lo que se entrega): añadir `--a-oracle NICS` para crear
-   `NICS_RESULTADOS`, `NICS_RASGOS` y `NICS_EVIDENCIAS`.
-6. **Afinar sin volver a escanear:** editar pesos/umbrales o añadir firmas en `rules.yaml` y pulsar
-   *Reclasificar* en el dashboard (o `python -m kits.nics.run --solo-clasificar`).
+### Lo que hizo falta para llegar ahí
 
-### ¿Y si solo os dan una red y hay que encontrar los servicios?
+Las sondas automáticas (lo que este kit traía hecho antes del evento) clasifican bien lo evidente, pero el enunciado
+avisaba: *"un buen honeypot engaña a simple vista; se delata cuando lo usas en serio"*. Hizo falta un segundo nivel,
+de interacción real, puerto por puerto:
 
-El kit **analiza tantos servicios como haya en la lista** (en paralelo y con límite de concurrencia, todos en el
-mismo informe y dashboard), pero **no los busca él**: el descubrimiento se hace con las herramientas que autorice la
-organización. Lo que sí hace es leer su resultado. `--targets` acepta:
-
-| Formato | Contenido |
+| Herramienta | Qué hace |
 |---|---|
-| `.csv` / `.xlsx` / `.yaml` | columna `url`, o `host` y `port` |
-| `.txt` | una línea por servicio: URL completa o `host:puerto` (`#` para comentarios) |
-| `.xml` / `.gnmap` | resultado guardado de una herramienta de descubrimiento (formatos de nmap `-oX` y `-oG`); solo se usan los puertos abiertos que son web |
+| `inventory.py` + `collector.py` + `features.py` + `classifier.py` | Sondas automáticas sobre HTTP/HTTPS (consistencia, ruta inventada, latencia, firmas) — primera pasada, rápida |
+| `protocolo.py` + `classifier_protocolo.py` | Banner repetido y firmas conocidas en SSH/FTP/Telnet/SMTP/POP3/IMAP |
+| `interactuar.py` | Interacción real por protocolo: handshake SSH completo, `USER`/`EHLO`/`CAPABILITY`/`SYST` válidos en POP3/SMTP/IMAP/FTP, login y comandos en Telnet |
+| `forense_extra.py` | Certificado TLS compartido, latencia frente al tamaño de la respuesta, coherencia de los recursos enlazados |
+| `martillo_consistencia.py` | Repite la **misma** petición (`GET`/`POST`, mismo cuerpo) varias veces en cada ruta conocida de cada puerto, y avisa si algo que debería ser fijo varía — la prueba que encontró al generativo |
+| `veredicto.py` | Consolida todo lo anterior en un único veredicto con método y evidencia por puerto |
+| `app_veredicto.py` | Dashboard con los 40 puertos, filtros y detalle de cada uno |
 
-Se siga el formato que se siga, **`--scope` es obligatorio fuera de localhost**: si algún servicio de la lista está
-fuera del rango autorizado, el kit aborta sin enviarle nada. Si los servicios no son HTTP, el kit no los cubre.
+### El caso del generativo (puerto 50096): la lección de método del día
 
-**Pregunta para los organizadores el jueves:** ¿se facilita la lista de hosts y puertos, o hay que descubrirla? ¿Qué
-rango es el autorizado y qué herramientas se permiten?
+Con `GET` simple, `50096` (un Elasticsearch falso) parecía tener un error fijo y correcto — coló como "real" en una
+primera pasada. Lo que lo destapó: repetir la **misma consulta `POST`** (la forma normal de usar Elasticsearch)
+varias veces seguidas. Un dato interno que en un Elasticsearch real nunca cambia (`_shards.total`) variaba en cada
+llamada idéntica, y el resultado era el mismo (fabricado) tanto preguntando por un índice real como por uno
+inventado. **`GET` no bastaba; hizo falta `POST` repetido para verlo.** Por eso `martillo_consistencia.py` prueba
+ambos métodos en todo lo que tiene API.
+
+**Revisión por pares:** un compañero del equipo, con su propia clasificación independiente, encontró 2 errores reales
+en la nuestra (confirmados aquí antes de aceptarlos, nunca a ciegas): una pareja de Grafana que teníamos invertida
+(se resolvió probando una ruta de administración real, `/api/admin/stats`), y el par SSH que creíamos real resultó
+tener una *shell* emulada detrás (se entra con `root:toor`, y dentro `echo $((7*13))` no sabe hacer aritmética). Con
+esto, **ningún SSH de los 5 descubiertos es real** — completar el protocolo criptográfico solo prueba que hay un
+proceso hablando SSH, no que la shell de detrás lo sea.
 
 ## Ficheros
 
 | Fichero | Qué es |
 |---|---|
-| `probes.yaml` | Sondas (raíz repetida, ruta inventada, API inventada, robots, HEAD, OPTIONS), repeticiones, concurrencia, pausas |
-| `rules.yaml` | Reglas con pesos por clase, previa, firmas de honeypot, marcas de LLM y banners obsoletos. **Se edita en caliente** |
-| `inventory.py` | Carga el inventario (CSV/YAML) y comprueba el alcance |
-| `collector.py` | Envía las sondas (asíncrono, con límite de concurrencia) y guarda status, cabeceras, cuerpo, hash y latencia |
-| `features.py` | Rasgos por servicio |
-| `classifier.py` | Puntuación por clase, confianza y evidencias |
-| `report.py` | Informe Markdown y HTML |
-| `testbed.py` | Los 3 servicios simulados |
-| `app.py` | Dashboard |
+| `probes.yaml` | Sondas HTTP (raíz repetida, ruta inventada, API inventada, robots, HEAD, OPTIONS) |
+| `rules.yaml` | Reglas con pesos por clase para la primera pasada automática. **Se edita en caliente** |
+| `inventory.py` / `collector.py` / `features.py` / `classifier.py` | Inventario, sondeo HTTP asíncrono, rasgos y clasificación por reglas |
+| `protocolo.py` / `classifier_protocolo.py` | Banner y clasificación de los protocolos no-web |
+| `interactuar.py` | Interacción real por protocolo (SSH/POP3/SMTP/IMAP/FTP/Telnet) |
+| `forense_extra.py` | Certificado TLS, latencia vs tamaño, coherencia de recursos |
+| `martillo_consistencia.py` | Repetición de peticiones `GET`/`POST` para detectar variación oculta |
+| `entrega.py` | Exportador al CSV `port,service,class` |
+| `veredicto.py` | Consolida todo en el veredicto final (fuente del dashboard y del CSV) |
+| `app.py` | Dashboard original, solo HTTP/HTTPS (24 puertos) |
+| `app_veredicto.py` | **Dashboard final, los 40 puertos** |
+| `testbed.py` | Banco de pruebas de ayer (3 servicios simulados), ver abajo |
 
-## Rasgos principales y qué indican
+## Banco de pruebas de ayer (14/10), referencia histórica
 
-| Rasgo | Real | Honeypot clásico | Honeypot generativo |
-|---|---|---|---|
-| `consistencia_raiz` (misma petición repetida) | ~100 % | ~100 % | **< 90 %** |
-| `inexistente_status` (ruta inventada) | **404** | 200 | 200 |
-| `catch_all` (la ruta inventada devuelve lo mismo que /) | no | **sí** | no |
-| `eco_token_200` (se inventa una página con el nombre pedido) | no | no | **sí** |
-| `api_json_inventado` | no | no | **sí** |
-| `latencia_media_ms` / `latencia_irregular` | baja | baja | **alta e irregular** (segundos) |
-| `timeouts` (sin respuesta en 60 s) | no | no | **a veces** |
-| `falta_date`, `server_obsoleto`, `firmas_honeypot` | no | **a menudo** | — |
-| `marcas_llm` ("como modelo de lenguaje", "```"…) | no | no | **a veces** |
+Antes de conocer el reto, el kit se probó con 3 servicios simulados en `127.0.0.1:8081-8083` (real, honeypot clásico
+y honeypot generativo, este último con Ollama si estaba instalado). Resultado: 3/3. Sirvió para comprobar que las
+sondas automáticas funcionaban, pero **no sustituyó la interacción real** que hizo falta hoy con el reto de verdad.
 
-## Salidas (`out/nics/`, no se suben al repo)
+```bash
+.venv\Scripts\python -m kits.nics.run --testbed
+```
 
-`objetivos.csv`, `evidencias.csv` (todas las respuestas), `rasgos.csv`, `resultados.csv/.json`, `informe.md`, `informe.html`.
+## Salidas (no se suben al repo)
 
-## Ollama (banco de pruebas con una IA de verdad)
-
-Instalado en el portátil de Javier con `llama3.2:3b` (2 GB, funciona con el procesador). Si Ollama está en marcha,
-`--testbed` lo usa solo para el servicio generativo (el ensayo tarda ~3 min en vez de ~20 s). Variables:
-`OLLAMA_URL` (por defecto `http://127.0.0.1:11434`) y `OLLAMA_MODEL` (por defecto `llama3.2:3b`).
-
-Lo aprendido al ensayar con la IA real (14/10):
-- **No siempre repite la ruta inventada** (como hacía el simulador), así que `eco_token_200` no basta.
-  Lo que la delata: contenido distinto a la misma petición, JSON inventado para APIs que no existen,
-  latencias de segundos, bloques de código (`` ``` ``) en una "web" y peticiones que superan los 20 s.
-- Por eso el timeout es de 60 s y los timeouts cuentan como evidencia (G8).
-- La variación de latencia solo cuenta si además es lenta (>100 ms): con 5–30 ms cualquier web real "varía mucho".
+`out/nics/` (sondas HTTP), `out/nics_otros/` (protocolos no-web), `out/nics_interaccion/` (diálogos de la
+interacción real), `out/nics_entrega/` (**veredicto.csv, entrega.csv — el que se sube — y entrega_detalle.csv**).

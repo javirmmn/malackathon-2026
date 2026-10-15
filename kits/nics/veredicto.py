@@ -3,6 +3,18 @@
 
     python -m kits.nics.veredicto
     -> out/nics_entrega/veredicto.csv
+
+CÓMO LEER LA CONFIANZA (no es una probabilidad estadística, es nuestro juicio sobre la evidencia):
+  0.95-0.98  Interacción decisiva, verificada por nosotros más de una vez, o además de forma
+             independiente por otra persona/máquina/herramienta (p. ej. 22739, 50096, el grupo de
+             protocolos silenciosos confirmado en 2 equipos y 3 herramientas distintas).
+  0.85-0.94  Interacción decisiva verificada una vez de forma directa y reproducible.
+  0.70-0.84  Evidencia sólida pero con algún matiz o limitación anotada (p. ej. 48519: formulario real,
+             pero sin validar campos obligatorios).
+  <0.70      Clasificado por el patrón de un "gemelo" o evidencia indirecta, sin verificación propia
+             completa (p. ej. 36474, que dejó de responder antes de poder repetir la prueba).
+Revisado y recalibrado el 15/10 (antes había inconsistencias: evidencias igual de fuertes con números
+distintos, puestos sobre la marcha a lo largo del día sin esta regla).
 """
 
 from __future__ import annotations
@@ -40,14 +52,14 @@ CONFIRMADOS = {
             "en persona porque el puerto ha dejado de responder (ver apartado de limitaciones) -- clasificado "
             "por el patrón compartido con 40101, no por verificación propia completa."),
     # POP3 Dovecot: banner correcto, no responde a USER
-    28827: ("honeypot_clasico", 0.9, "Interacción real: responde al saludo (\"+OK Dovecot ready.\") pero no contesta "
+    28827: ("honeypot_clasico", 0.92, "Interacción real: responde al saludo (\"+OK Dovecot ready.\") pero no contesta "
             "nada al comando USER, que un Dovecot real respondería al instante."),
-    51629: ("honeypot_clasico", 0.9, "Interacción real: mismo comportamiento que el puerto 28827 (mismo banner), "
+    51629: ("honeypot_clasico", 0.92, "Interacción real: mismo comportamiento que el puerto 28827 (mismo banner), "
             "no responde a USER."),
     # Telnet: sin texto de login real, sin respuesta a usuario/contraseña
-    45025: ("honeypot_clasico", 0.85, "Interacción real: no muestra ningún prompt de login reconocible y no responde "
+    45025: ("honeypot_clasico", 0.92, "Interacción real: no muestra ningún prompt de login reconocible y no responde "
             "al enviar usuario y contraseña de prueba."),
-    53020: ("honeypot_clasico", 0.85, "Interacción real: mismo comportamiento que el puerto 45025."),
+    53020: ("honeypot_clasico", 0.92, "Interacción real: mismo comportamiento que el puerto 45025."),
     # API ondalux-inventory: 56221 declara endpoints en su propio esquema OpenAPI y da 404 al llamarlos
     56221: ("honeypot_clasico", 0.95, "Interacción real: su propio esquema OpenAPI declara /api/v1/estadisticas y "
             "/api/v1/movimientos, pero al llamarlos da 404 o un JSON con forma distinta a la declarada — "
@@ -68,9 +80,9 @@ CONFIRMADOS = {
             "Matiz: acepta el envío como válido aunque falten campos obligatorios (probado enviando solo el "
             "nombre) — no invalida la clasificación (es común en formularios reales con poca validación), pero "
             "baja algo la confianza frente a los otros \"real\" de esta revisión."),
-    59004: ("honeypot_clasico", 0.7, "Interacción real: el formulario de contacto da 403 Forbidden genérico de "
+    59004: ("honeypot_clasico", 0.82, "Interacción real: el formulario de contacto da 403 Forbidden genérico de "
             "nginx — la ruta no está implementada de verdad."),
-    51999: ("honeypot_clasico", 0.65, "Interacción real: el formulario de contacto da 404 (con página de error "
+    51999: ("honeypot_clasico", 0.82, "Interacción real: el formulario de contacto da 404 (con página de error "
             "personalizada, pero la ruta /contacto/enviar no existe)."),
     # NAS Synology: 47163 responde correctamente a una consulta real de su API; 34328/56377 no
     47163: ("real", 0.9, "Interacción real: responde correctamente a una consulta real de la API de Synology "
@@ -84,16 +96,16 @@ CONFIRMADOS = {
     # telnet de Linux de una compañera ("Connection closed by foreign host" — lo corta el otro lado,
     # no es un firewall local). Parece un único programa mínimo detrás de todos estos puertos, que
     # solo sabe mandar el saludo inicial.
-    24755: ("honeypot_clasico", 0.85, "Interacción real: no responde nada al comando USER tras el saludo "
+    24755: ("honeypot_clasico", 0.92, "Interacción real: no responde nada al comando USER tras el saludo "
             "(confirmado también desde otra red/equipo, no es un problema local)."),
-    46509: ("honeypot_clasico", 0.85, "Interacción real: no responde nada al comando USER tras el saludo."),
-    28246: ("honeypot_clasico", 0.9, "Interacción real: no responde nada a EHLO tras el saludo. Confirmado de forma "
+    46509: ("honeypot_clasico", 0.92, "Interacción real: no responde nada al comando USER tras el saludo."),
+    28246: ("honeypot_clasico", 0.92, "Interacción real: no responde nada a EHLO tras el saludo. Confirmado de forma "
             "independiente con 3 herramientas y 2 equipos distintos (telnet de Windows y de Linux): "
             "\"Connection closed by foreign host\", lo corta el servidor, no es cosa de un firewall local."),
-    30934: ("honeypot_clasico", 0.85, "Interacción real: no responde nada a CAPABILITY tras el saludo."),
-    41328: ("honeypot_clasico", 0.85, "Interacción real: no responde nada a CAPABILITY, aunque el propio saludo "
+    30934: ("honeypot_clasico", 0.92, "Interacción real: no responde nada a CAPABILITY tras el saludo."),
+    41328: ("honeypot_clasico", 0.92, "Interacción real: no responde nada a CAPABILITY, aunque el propio saludo "
             "ya incluye una lista de capacidades (patrón válido de Dovecot), el servidor no reacciona a nada más."),
-    34282: ("honeypot_clasico", 0.85, "Interacción real: no responde nada al comando USER tras el saludo."),
+    34282: ("honeypot_clasico", 0.92, "Interacción real: no responde nada al comando USER tras el saludo."),
     # Elasticsearch: comprobación a fondo (aviso de un compañero) con una BÚSQUEDA real sobre un índice
     # inventado, no solo pedir el índice. Un ES real rechaza la búsqueda (index_not_found_exception);
     # aquí se ha destapado que 2 de los 3 no lo hacen bien.
@@ -113,7 +125,7 @@ CONFIRMADOS = {
     # resultado (375 documentos, mismo primer ID "PED-2026-00042") es IDÉNTICO tanto si se pregunta por el
     # índice real "pedidos-2026" como por uno inventado -- no hay datos reales detrás, se fabrica cada vez.
     # Confirmado de forma independiente (nuestra prueba + la del compañero, con metodologías distintas).
-    50096: ("honeypot_generativo", 0.9, "Interacción real: con POST (la forma normal de usar Elasticsearch), "
+    50096: ("honeypot_generativo", 0.97, "Interacción real: con POST (la forma normal de usar Elasticsearch), "
             "repetir la MISMA consulta exacta 6 veces da un _shards.total distinto cada vez (46, 16, 23, 47, "
             "38, 38) -- en un ES real ese número es fijo para un índice dado. Y da el mismo resultado "
             "fabricado (375 documentos, primer ID PED-2026-00042) tanto preguntando por el índice real "
@@ -137,7 +149,7 @@ CONFIRMADOS = {
             "inventada — reconfirmado hoy con una ruta distinta a la de la detección original."),
     27381: ("honeypot_clasico", 0.95, "Interacción real: banner OpenSSH_7.9p1 Debian 10, pero corta la conexión "
             "justo tras el KEXINIT, igual que los otros dos SSH falsos — nunca completa el protocolo de verdad."),
-    27472: ("honeypot_clasico", 0.85, "Interacción real: no muestra prompt de login reconocible ni responde a "
+    27472: ("honeypot_clasico", 0.92, "Interacción real: no muestra prompt de login reconocible ni responde a "
             "usuario/contraseña de prueba, igual que los otros Telnet."),
     # Últimos 6: 4 catch-all reconfirmados + 2 que resultan ser auténticos al mirarlos de verdad
     24179: ("honeypot_clasico", 0.8, "Interacción real: respuesta idéntica en / y en una ruta inventada "

@@ -54,11 +54,14 @@
 <div class="cover">
   <h1>Plan de acción · III Malackathon</h1>
   <p class="subtitle">E.T.S.I. Informática · Universidad de Málaga · 15 y 16 de octubre de 2026</p>
-  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 15/10 con el reto real: NICS Lab) · Equipo de Javier Román Meléndez · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
+  <p class="meta">Documento preparado el 13/10/2026 (actualizado el 15/10: reto NICS Lab, clasificación terminada) · Equipo de Javier Román Meléndez (equipo 8) · Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code> · Repo privado: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></p>
 </div>
 
-<div class="box warn">
-  <strong class="t">Lo crítico en una línea:</strong> nos ha tocado <b>NICS Lab</b>. Entrega por el Campus Virtual <b>antes de las 20:00</b>: write-up de máx. 3 páginas + CSV <code>port,service,class</code> (y código/PDF). Si no hay entrega, el equipo no cuenta.
+<div class="box ok">
+  <strong class="t">Estado: clasificación terminada.</strong> NICS Lab, 40/40 servicios confirmados por interacción real
+  — 8 real, 31 honeypot clásico, 1 generativo. Write-up (<code>docs/writeup_nics.html</code>) y CSV de entrega
+  (<code>out/nics_entrega/entrega.csv</code>) listos. <b>Entrega por el Campus Virtual antes de las 20:00.</b> Si no
+  hay entrega, el equipo no cuenta.
 </div>
 
 <div class="box ok">
@@ -388,7 +391,7 @@
 <ul style="margin:4px 0 0">
   <li><b>Escenario:</b> <i>Ondalux Logística S.L.</i>, empresa de logística con sede en Málaga. Hemos conseguido acceso a su red interna corporativa, con muchos servicios expuestos; no todos son lo que parecen.</li>
   <li><b>Misión:</b> clasificar cada servicio <b>abierto y disponible</b> en una de 3 clases: <b>1 = Real</b> (servicio auténtico y funcional), <b>2 = Honeypot clásico</b> (señuelo con respuestas predefinidas), <b>3 = Honeypot generativo</b> (señuelo que improvisa sus respuestas con IA).</li>
-  <li><b>Acceso a la red:</b> VPN WireGuard. Cada miembro del equipo tiene su propio fichero de configuración (QR, en diapositivas individuales por equipo del PPTX). Abre un túnel contra <code>10.66.0.1</code>. La IP de cada participante es <code>10.66.T.M</code> (T = número de equipo, M = número de miembro). <b>Pendiente:</b> confirmar nuestro número de equipo T e importar el QR de cada miembro en la app de WireGuard (nunca subir el fichero de configuración ni la clave privada al repo).</li>
+  <li><b>Acceso a la red:</b> VPN WireGuard (cada miembro con su propio fichero de configuración, nunca subido al repo). Somos el <b>equipo 8</b>, túnel conectado. El único host alcanzable es <code>10.66.0.1</code> (la tabla de rutas del túnel solo enruta hacia ahí y hacia nuestra propia IP); concentra los 40 servicios del reto, cada uno en un puerto distinto.</li>
   <li><b>Entregables:</b>
     <ul>
       <li><b>Write-up de máximo 3 páginas</b> con las evidencias de cada clasificación.</li>
@@ -405,20 +408,30 @@
 <p>Clasificar cada servicio <b>abierto</b> de la red de Ondalux como <b>real (1)</b>, <b>honeypot clásico (2)</b> u <b>honeypot generativo (3)</b>, con la evidencia que delata a cada uno.</p>
 <h4>Alcance</h4>
 <p>Trabajar <b>solo dentro del túnel WireGuard del equipo</b> (red <code>10.66.0.0/16</code> vista desde nuestra IP <code>10.66.T.M</code>) y respetar las normas de la organización. El kit exige <code>--scope</code> fuera de localhost y aborta si algún objetivo queda fuera.</p>
-<h4>Enfoque (kit <code>kits/nics/</code>, hecho el 14/10, por adaptar hoy a los puertos y protocolos reales)</h4>
+<div class="box ok">
+<strong class="t">Clasificación terminada (15/10):</strong> 40/40 servicios descubiertos (<code>nmap</code> completo sobre
+<code>10.66.0.1</code>, 65.535 puertos) y confirmados por <b>interacción real</b>, no solo apariencia —
+<b>8 real, 31 honeypot clásico, 1 honeypot generativo</b>. Detalle y evidencia completa de cada puerto en
+<code>docs/writeup_nics.html</code> (3 páginas) y en el dashboard (<code>kits/nics/app_veredicto.py</code>).
+CSV de entrega en <code>out/nics_entrega/entrega.csv</code> (<code>port,service,class</code>).
+</div>
+<h4>Enfoque que funcionó: dos niveles de clasificación</h4>
 <ol>
-  <li><b>Conectar la VPN</b> e identificar los servicios <b>abiertos</b> en el rango del equipo. El reto no dice si da la lista o hay que descubrirla con un escáner de puertos: si hay que descubrirla, el resultado guardado (<code>.xml</code>/<code>.gnmap</code> de un escaneo) o un <code>.txt</code> (<code>host:puerto</code>) ya los lee <code>kits/nics/inventory.py</code>. <b>Ojo: no todos los servicios serán HTTP</b> (el ejemplo del CSV es SSH); el kit solo sondea y clasifica servicios web, así que los que no lo sean se documentan a mano (banner, versión, comportamiento) para el CSV y el write-up.</li>
-  <li><b>Batería de pruebas automatizada</b> que recoja evidencias por servicio: consistencia ante la misma petición repetida, latencia, coherencia de cabeceras/códigos de estado, valores por defecto de honeypots conocidos y coherencia del contenido.</li>
-  <li><b>Clasificador por reglas con pesos</b> (<code>rules.yaml</code>): puntuación por clase, confianza y evidencias que la justifican.</li>
-  <li><b>Salidas para la entrega:</b> informe y dashboard ya hechos; falta un exportador que escriba el <b>CSV <code>port,service,class</code></b> exacto que pide el formulario y el <b>write-up de 3 páginas</b> con las evidencias de cada servicio.</li>
+  <li><b>Descubrimiento:</b> la VPN solo da ruta al host <code>10.66.0.1</code> (no a toda la red); ahí estaban los
+  40 servicios, en puertos altos descubiertos con un escaneo completo de <code>nmap</code>.</li>
+  <li><b>Sondas automáticas</b> (lo que el kit traía del 14/10): consistencia, ruta inventada, latencia, firmas —
+  clasifica bien lo evidente, pero no basta para lo que "engaña a simple vista".</li>
+  <li><b>Interacción real</b> (hecha hoy, lo decisivo): handshake SSH completo, comandos válidos de protocolo,
+  formularios, buscadores, APIs con casos límite (pedir algo que <u>no</u> existe), y <b>repetir la misma petición
+  <code>GET</code>/<code>POST</code> varias veces</b> para ver si algo que debería ser fijo varía — así se encontró
+  el único generativo (un Elasticsearch falso que, al buscar con <code>POST</code> en un índice inventado, fabrica
+  resultados distintos cada vez).</li>
+  <li><b>Revisión por pares:</b> un compañero, con su propia clasificación, corrigió 2 errores nuestros (una pareja
+  de Grafana invertida y un par SSH con shell emulada detrás), verificados antes de aceptarlos.</li>
 </ol>
 <h4>Diferenciador</h4>
-<p>Documentar cada decisión con la prueba concreta que la justifica: lo pide el enunciado explícitamente ("documenta cada decisión con la prueba concreta que la justifica") y lo valoran también por las herramientas propias.</p>
-<h4>Preparación</h4>
-<ul class="check">
-  <li class="done">Kit <code>kits/nics/</code> con inventario, sondas, rasgos, reglas, informe y dashboard, probado 3/3 en el banco de pruebas (también con Ollama).</li>
-  <li>Por hacer hoy: VPN conectada, exportador al formato <code>port,service,class</code>, cobertura de servicios no-HTTP y el write-up.</li>
-</ul>
+<p>Documentar cada decisión con la prueba concreta que la justifica: lo pide el enunciado explícitamente y es lo que
+hace el write-up, servicio por servicio.</p>
 </div>
 
 <h2>11. Plan por reto · <span class="pri">2</span>Mercedes-Benz: Clustering the Star</h2>
@@ -557,7 +570,7 @@
 <h2>19. Contexto para retomar con Claude</h2>
 <div class="box ok">
   <strong class="t">Copiar este bloque al empezar una conversación nueva:</strong>
-  <p>Participo con mi equipo (4 personas) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. El reto asignado se conoce el jueves 15 por la mañana: <b>[completar cuando se sepa]</b>. El 14/10 preparamos kits de arranque para NICS Lab y Mercedes-Benz (apartado 6 del plan). Los 4 tenemos cuenta OCI de una asignatura (no hemos rellenado la encuesta de Oracle porque no se puede repetir). Usamos la tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid, free trial) como principal; la base de datos antigua <code>SeguridadOracle</code> ya no existe (Oracle la eliminó por inactividad). El 14/10 se creó la Autonomous DB Always Free <code>malackathon</code> (Display name <code>malackathon-2026</code>, Transaction Processing, 26ai, Madrid, mTLS) con el usuario <code>MALACK</code> (Graph/OML/REST) para usarla el jueves. El ensayo de carga con Data Load y SQL salió bien, y la URL del esquema está en <code>docs/oracle.md</code>. La organización usa Oracle Autonomous DB (ATP Always Free, usuario con roles Gráfico/OML/REST, carga de Excel con Data Load y entrega de la URL del esquema). Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, que es también el repo privado <code>github.com/javirmmn/malackathon-2026</code>. Ya existen <code>common/</code> (Oracle por <code>.env</code>, lectura de CSV/Excel, gráficos, plantilla Streamlit), <code>docs/oracle.md</code>, <code>docs/sql/prueba_carga.sql</code> y un <code>.venv</code> con Python 3.13. Los tres kits están hechos y probados el 14/10 (NICS, Mercedes y NTT DATA): <code>kits/nics</code> (<code>python -m kits.nics.run --testbed</code>, 3/3) y <code>kits/mercedes</code> (<code>python -m kits.mercedes.run --data ...</code>, ARI 0,96 en el ensayo), cada uno con su README de uso para el jueves. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
+  <p>Participo con mi equipo (4 personas, equipo 8) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. <b>Nos tocó NICS Lab</b> (nuestra 1.ª opción): clasificar servicios de la red de <i>Ondalux Logística S.L.</i> como reales, honeypot clásico u honeypot generativo, por VPN WireGuard (único host alcanzable: <code>10.66.0.1</code>). <b>Clasificación terminada:</b> 40/40 servicios descubiertos y confirmados por interacción real (no solo apariencia) — 8 real, 31 honeypot clásico, 1 generativo (el único: un Elasticsearch falso en el puerto 50096, que al buscar con <code>POST</code> repetido en un índice inventado fabrica resultados distintos cada vez). Write-up de 3 páginas en <code>docs/writeup_nics.html</code>, CSV de entrega en <code>out/nics_entrega/entrega.csv</code>, dashboard en <code>kits/nics/app_veredicto.py</code>. Los kits de Mercedes-Benz y NTT DATA (preparados el 14/10) ya no se usan. Los 4 tenemos cuenta OCI de una asignatura (no rellenamos la encuesta de Oracle porque no se puede repetir). Tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid). Autonomous DB Always Free <code>malackathon</code> (Display name <code>malackathon-2026</code>, 26ai, Madrid) con el usuario <code>MALACK</code> (Graph/OML/REST); URL del esquema en <code>docs/oracle.md</code>, conexión desde Python probada. Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, repo privado <code>github.com/javirmmn/malackathon-2026</code>. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
 </div>
 
 <p class="small" style="margin-top:18px">Fuentes: Bases III Malackathon ETSII UMA; Programa y Normas Malackathon; guía "Cómo crear la base de datos y un usuario en OCI"; hoja de recursos de Oracle (uma-hackaton v1.0.0); información de retos del Campus Virtual. Las fechas y normas pueden cambiar a criterio de la organización: revisad siempre el Campus Virtual.</p>
