@@ -114,10 +114,13 @@ def guardar(df: pd.DataFrame, servicios: list[dict], descartados: list[dict], sa
     df[["port", "service", "class"]].to_csv(salida / "entrega.csv", index=False)
     rasgos = pd.DataFrame([{"port": s["port"], "service": s["service"], **s["rasgos"]} for s in servicios]).sort_values("port")
     rasgos.to_csv(salida / "rasgos.csv", index=False, encoding="utf-8-sig")
-    pd.DataFrame([{k: d.get(k) for k in ("port", "service", "motivo", "banner")} for d in descartados]) \
+    cols_nd = ["port", "service", "motivo", "banner"]
+    pd.DataFrame([{k: d.get(k) for k in cols_nd} for d in descartados], columns=cols_nd) \
         .sort_values("port").to_csv(salida / "no_disponibles.csv", index=False, encoding="utf-8-sig")
+    cols_pr = ["port", "grupo", "prueba", "peticion", "estado", "ms", "respuesta"]
     pruebas = [x for s in servicios + descartados for x in s.get("log", [])]
-    pd.DataFrame(pruebas).sort_values("port", kind="stable").to_csv(salida / "pruebas.csv", index=False, encoding="utf-8-sig")
+    pd.DataFrame(pruebas, columns=cols_pr).sort_values("port", kind="stable") \
+        .to_csv(salida / "pruebas.csv", index=False, encoding="utf-8-sig")
     (salida / "rasgos.json").write_text(json.dumps(
         {"servicios": [{k: s[k] for k in ("port", "service", "rasgos", "detalle", "clave_gemelo") if k in s} for s in servicios],
          "descartados": [{k: d.get(k) for k in ("port", "service", "motivo", "banner")} for d in descartados]},

@@ -135,3 +135,18 @@ def test_barrido_completo_catch_all_local():
     assert {"port", "service", "clase", "class", "confianza", "evidencias"} <= set(df.columns)
     assert any(x["grupo"] == "inyeccion" for x in res["log"])
     srv.shutdown()
+
+
+def test_guardar_sin_descartados_ni_pruebas(tmp_path):
+    """Si todos los puertos están disponibles (o no hay ninguno descartado) los CSV se escriben igualmente."""
+    from kits.nics.auto.pipeline import guardar
+
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), _CatchAll)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    res = analizar("127.0.0.1", srv.server_address[1], {"rep": 1, "rapido": True, "creds": []})
+    df = clasificar_todo([res], CFG)
+    guardar(df, [res], [], tmp_path)
+    for f in ("clasificacion.csv", "entrega.csv", "rasgos.csv", "pruebas.csv", "no_disponibles.csv", "rasgos.json"):
+        assert (tmp_path / f).exists()
+    assert (tmp_path / "no_disponibles.csv").read_text(encoding="utf-8-sig").startswith("port,service,motivo,banner")
+    srv.shutdown()

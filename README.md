@@ -13,7 +13,7 @@ cierran). De los 26 disponibles, confirmados por interacción real: 8 real, 14 h
 | Write-up (3 páginas, con la evidencia de cada puerto) | [`docs/writeup_nics.html`](docs/writeup_nics.html) |
 | Cómo se hizo (herramientas, metodología) | [`kits/nics/README.md`](kits/nics/README.md) |
 | CSV de entrega (`port,service,class`) | `out/nics_entrega/entrega.csv` (se genera con `python -m kits.nics.veredicto`) |
-| Dashboard con los 40 puertos | `.venv\Scripts\streamlit run kits\nics\app_veredicto.py` |
+| Dashboard con los 26 puertos disponibles | `.venv\Scripts\streamlit run kits\nics\app_veredicto.py` |
 
 Los kits de Mercedes-Benz y NTT DATA (preparados el 14/10, antes de saber qué reto nos tocaba) ya no se usan; se
 quedan en el repo como referencia — [`kits/mercedes/README.md`](kits/mercedes/README.md),
@@ -57,7 +57,21 @@ Todos los comandos de este README se escriben **desde la carpeta del repo** y em
 
 ## 2. Ver el resultado del reto / probar los kits
 
-### Kit NICS: el resultado de hoy
+### Kit NICS: clasificador automático (entregable final)
+
+Un solo barrido descubre los puertos, descarta los no disponibles, los sondea y clasifica (real / honeypot clásico /
+honeypot generativo). Necesita la VPN del reto activa:
+
+```bash
+.venv\Scripts\python -m kits.nics.auto --host 10.66.0.1
+.venv\Scripts\streamlit run kits\nics\app_auto.py
+```
+
+Tarda unos 6 minutos y deja `out\nics_auto\clasificacion.csv` (y `entrega.csv`). Para saltarse el escaneo:
+`--inventario kits\nics\auto\inventario_reto.csv` (los 42 puertos del reto, incluido en el repo) o
+`--puertos 24179,29082`. Formato, opciones y límites en [`kits/nics/auto/README.md`](kits/nics/auto/README.md).
+
+### Kit NICS: el proceso manual de hoy (veredicto confirmado a mano)
 
 ```bash
 .venv\Scripts\python -m kits.nics.veredicto
@@ -65,7 +79,7 @@ Todos los comandos de este README se escriben **desde la carpeta del repo** y em
 ```
 
 El primer comando reconstruye `out\nics_entrega\entrega.csv` y `veredicto.csv` a partir de todo lo investigado hoy
-(sondas automáticas + interacción real en los 40 puertos). El segundo abre el dashboard con los 40 puertos, su
+(sondas automáticas + interacción real). El segundo abre el dashboard con los 26 puertos disponibles, su
 clasificación, la confianza y la evidencia de cada uno. Detalle completo en
 [`kits/nics/README.md`](kits/nics/README.md).
 
