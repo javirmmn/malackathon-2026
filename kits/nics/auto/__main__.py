@@ -27,12 +27,14 @@ def main() -> None:
     ap.add_argument("--validar", type=Path, default=MANUAL, help="CSV con la verdad de referencia (columnas port, clase)")
     ap.add_argument("--sin-validar", action="store_true")
     ap.add_argument("--sin-ssh-login", action="store_true", help="no probar credenciales triviales en SSH")
+    ap.add_argument("--guardar", action="store_true", help="volcar CSV/JSON a --salida (por defecto NO se escribe ningún fichero)")
+    ap.add_argument("--detalle", action="store_true", help="imprimir todas las evidencias de cada puerto, no solo las 2 principales")
     a = ap.parse_args()
     lo, hi = (int(x) for x in a.rango.split("-"))
     ejecutar(host=a.host, puertos=[int(p) for p in a.puertos.split(",")] if a.puertos else None, rango=(lo, hi),
              inventario=a.inventario, salida=a.salida, rep=a.rep, rapido=a.rapido, hilos=a.hilos, reglas=a.reglas,
              reclasificar=a.reclasificar, autorizado=a.autorizado, validar_contra=None if a.sin_validar else a.validar,
-             sin_ssh_login=a.sin_ssh_login)
+             sin_ssh_login=a.sin_ssh_login, guardar_datos=a.guardar, detalle=a.detalle)
 
 
 if __name__ == "__main__":

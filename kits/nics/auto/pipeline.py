@@ -127,21 +127,25 @@ def guardar(df: pd.DataFrame, servicios: list[dict], descartados: list[dict], sa
         ensure_ascii=False, indent=1, default=str), encoding="utf-8")
 
 
-def validar(df: pd.DataFrame, salida: Path, manual: Path = MANUAL) -> pd.DataFrame | None:
+def validar(df: pd.DataFrame, salida: Path | None, manual: Path = MANUAL) -> pd.DataFrame | None:
     """Compara con el veredicto confirmado a mano (la verdad de referencia), nunca se usa para clasificar."""
     if not manual.exists():
         return None
     m = pd.read_csv(manual, encoding="utf-8-sig")[["port", "clase"]].rename(columns={"clase": "manual"})
     v = df[["port", "service", "clase", "confianza", "reglas"]].rename(columns={"clase": "auto"}).merge(m, on="port", how="outer")
     v["coincide"] = v["auto"] == v["manual"]
-    v.sort_values("port").to_csv(salida / "validacion.csv", index=False, encoding="utf-8-sig")
+    v = v.sort_values("port")
+    if salida is not None:
+        v.to_csv(salida / "validacion.csv", index=False, encoding="utf-8-sig")
     return v
 
 
 def ejecutar(host: str = "10.66.0.1", puertos: list[int] | None = None, rango: tuple[int, int] = (1, 65535),
              inventario: Path | None = None, salida: Path = SALIDA, rep: int = 2, rapido: bool = False, hilos: int = 6,
              reglas: Path = motor.REGLAS, reclasificar: bool = False, autorizado: bool = False,
-             validar_contra: Path | None = MANUAL, sin_ssh_login: bool = False) -> pd.DataFrame:
+             validar_contra: Path | None = MANUAL, sin_ssh_login: bool = False, guardar_datos: bool = False,
+             detalle: bool = False) -> pd.DataFrame:
+    """Por defecto solo imprime por terminal. `guardar_datos` vuelca los CSV/JSON a `salida` (opt-in)."""
     cfg = motor.cargar_reglas(reglas)
     t0 = time.time()
     if reclasificar:
@@ -184,18 +188,27 @@ def ejecutar(host: str = "10.66.0.1", puertos: list[int] | None = None, rango: t
         descartados = [h for h in hechos if not h["disponible"]]
     print(f"[5/5] Clasificando {len(servicios)} servicios disponibles ({len(descartados)} descartados)")
     df = clasificar_todo(servicios, cfg)
-    guardar(df, servicios, descartados, salida)
-    print(f"\nResultado ({time.time() - t0:.0f} s) -> {salida}")
+    if guardar_datos:
+        guardar(df, servicios, descartados, salida)
+        print(f"\nResultado ({time.time() - t0:.0f} s); ficheros guardados en {salida}")
+    else:
+        print(f"\nResultado ({time.time() - t0:.0f} s); no se ha escrito ningún fichero (usa --guardar para volcarlo a CSV)")
     print(df["clase"].value_counts().rename("nº").to_string())
     print("\nClasificación por puerto:")
     tabla = df[["port", "service", "producto", "clase", "confianza", "revisar"]].copy()
     tabla["revisar"] = tabla["revisar"].map({True: "revisar", False: ""})
     print(tabla.to_string(index=False))
+    print("\nPor qué (evidencias de la clase elegida" + (", todas" if detalle else ", las 2 principales; --detalle para todas") + "):")
+    for _, f in df.iterrows():
+        ev = str(f["evidencias"]).split(" | ")
+        print(f"  {f['port']} {f['service']} -> {f['clase']}")
+        for e in (ev if detalle else ev[:2]):
+            print(f"      {e[:230]}")
     if descartados:
         print("\nNo disponibles (fuera de la clasificación): " + ", ".join(str(d["port"]) for d in sorted(descartados, key=lambda d: d["port"])))
     print(f"\nA revisar (confianza baja): {int(df['revisar'].sum())}")
     if validar_contra:
-        v = validar(df, salida, validar_contra)
+        v = validar(df, salida if guardar_datos else None, validar_contra)
         if v is not None:
             comp = v.dropna(subset=["auto", "manual"])
             ok = int(comp["coincide"].sum())

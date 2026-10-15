@@ -150,3 +150,18 @@ def test_guardar_sin_descartados_ni_pruebas(tmp_path):
         assert (tmp_path / f).exists()
     assert (tmp_path / "no_disponibles.csv").read_text(encoding="utf-8-sig").startswith("port,service,motivo,banner")
     srv.shutdown()
+
+
+def test_por_defecto_no_escribe_ningun_fichero(tmp_path, capsys):
+    from kits.nics.auto.pipeline import ejecutar
+
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), _CatchAll)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    ejecutar(host="127.0.0.1", puertos=[srv.server_address[1]], salida=tmp_path, rep=1, rapido=True, validar_contra=None)
+    assert list(tmp_path.iterdir()) == []
+    salida = capsys.readouterr().out
+    assert "no se ha escrito ningún fichero" in salida and "honeypot_clasico" in salida and "Por qué" in salida
+    ejecutar(host="127.0.0.1", puertos=[srv.server_address[1]], salida=tmp_path, rep=1, rapido=True, validar_contra=None,
+             guardar_datos=True)
+    assert (tmp_path / "clasificacion.csv").exists()
+    srv.shutdown()
