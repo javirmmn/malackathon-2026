@@ -110,8 +110,9 @@
 <ul>
   <li>Ningún intento de autenticación (SSH, FTP) usó credenciales reales — solo de ensayo —, así que no se ha podido verificar qué hay "dentro" de un login válido en los servicios reales.</li>
   <li>La detección de generativo se basa en inconsistencia de datos internos ante peticiones repetidas; un honeypot generativo con temperatura 0 y caché agresiva podría no mostrar esta señal.</li>
-  <li>Con más tiempo: aplicar la misma prueba de repetición a más combinaciones de parámetros en cada servicio "real", y revisar a fondo el trío NAS y la web corporativa con la misma profundidad que Elasticsearch y Grafana.</li>
+  <li><b>Puerto 36474</b> (SSH, clasificado real): completó el protocolo correctamente varias veces durante el día, pero en una comprobación final empezó a fallar de forma intermitente mientras su gemelo (<code>40101</code>) seguía funcionando. Puede ser un límite de conexiones rápidas o una inestabilidad real; confianza bajada, pendiente de una última comprobación antes de la entrega.</li>
 </ul>
+<p><b>Barrido final de consistencia:</b> se repitió la misma petición (<code>GET</code> y, donde aplica, <code>POST</code> con el mismo cuerpo) 6 veces en 59 combinaciones de ruta/método sobre los 24 servicios web, y 3–4 veces en los 16 no-web. De 354 peticiones web, solo 5 variaron: 2 del generativo ya confirmado y 3 de servicios reales variando de forma correcta (un contador de tiempo, una marca de hora, los milisegundos que tarda una consulta) — ninguna señal nueva de generativo oculto.</p>
 
 </body>
 </html>

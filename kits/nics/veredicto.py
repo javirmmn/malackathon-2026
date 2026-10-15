@@ -26,8 +26,13 @@ CONFIRMADOS = {
     34818: ("honeypot_clasico", 0.95, "Interacción real: mismo comportamiento que el puerto 24226 (mismo banner), "
             "corta la conexión a medio protocolo."),
     # SSH: banner OpenSSH_9.2p1 Debian -> protocolo completo, claves de host distintas
-    36474: ("real", 0.75, "Interacción real: completa el intercambio de claves criptográfico correctamente. "
-            "Clave de host propia (ssh-ed25519 SHA256:h8kCtc...). No se puede descartar un honeypot de alta interacción sin credenciales válidas."),
+    36474: ("real", 0.65, "Interacción real: completó el intercambio de claves criptográfico correctamente "
+            "varias veces durante el día, con clave de host propia y estable (ssh-ed25519 SHA256:h8kCtc...). "
+            "Aviso: en la última ronda de pruebas (repetir conexiones varias veces seguidas) empezó a fallar "
+            "de forma intermitente (timeout / connection reset) mientras su gemelo 40101 seguía funcionando "
+            "perfecto. Puede ser un límite de conexiones rápidas (normal en un servidor real cuidado) o una "
+            "inestabilidad real del servicio — no se ha podido resolver sin seguir insistiendo en el mismo "
+            "puerto, que se ha evitado por precaución. Confianza bajada; revisar de nuevo antes de la entrega."),
     40101: ("real", 0.75, "Interacción real: completa el intercambio de claves criptográfico correctamente. "
             "Clave de host propia y distinta de la del puerto 36474, como se espera de dos procesos reales."),
     # POP3 Dovecot: banner correcto, no responde a USER
