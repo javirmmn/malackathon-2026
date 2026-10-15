@@ -55,6 +55,7 @@ def save_to_oracle(prefix: str, out: Path = DEFAULT_OUT) -> None:
     res = pd.read_json(out / "resultados.json")
     res["evidencias"] = res["evidencias"].map(lambda ev: " | ".join(f"[{e['regla']}] {e['texto']}" for e in ev))
     feats = pd.read_csv(out / "rasgos.csv", encoding="utf-8-sig")
+    feats = feats.drop(columns=[c for c in feats.columns if c.startswith("_")])  # detalle interno, no para Oracle
     ev = pd.read_csv(out / "evidencias.csv", encoding="utf-8-sig", keep_default_na=False, na_values=[""])
     for table, data in [(f"{p}_RESULTADOS", res), (f"{p}_RASGOS", feats), (f"{p}_EVIDENCIAS", ev)]:
         n = df_to_table(data, table, if_exists="replace")
