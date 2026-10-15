@@ -58,8 +58,8 @@
 </div>
 
 <div class="box ok">
-  <strong class="t">Estado: clasificación terminada.</strong> NICS Lab, 40/40 servicios confirmados por interacción real
-  — 8 real, 31 honeypot clásico, 1 generativo. Write-up (<code>docs/writeup_nics.html</code>) y CSV de entrega
+  <strong class="t">Estado: clasificación terminada.</strong> NICS Lab, 26/26 servicios disponibles confirmados por interacción real
+  (14 de los 40 puertos se descartan: solo saludo y cierran) — 8 real, 17 honeypot clásico, 1 generativo. Write-up (<code>docs/writeup_nics.html</code>) y CSV de entrega
   (<code>out/nics_entrega/entrega.csv</code>) listos. <b>Entrega por el Campus Virtual antes de las 20:00.</b> Si no
   hay entrega, el equipo no cuenta.
 </div>
@@ -412,9 +412,9 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
 <h4>Alcance</h4>
 <p>Trabajar <b>solo dentro del túnel WireGuard del equipo</b> (red <code>10.66.0.0/16</code> vista desde nuestra IP <code>10.66.T.M</code>) y respetar las normas de la organización. El kit exige <code>--scope</code> fuera de localhost y aborta si algún objetivo queda fuera.</p>
 <div class="box ok">
-<strong class="t">Clasificación terminada (15/10):</strong> 40/40 servicios descubiertos (<code>nmap</code> completo sobre
-<code>10.66.0.1</code>, 65.535 puertos) y confirmados por <b>interacción real</b>, no solo apariencia —
-<b>8 real, 31 honeypot clásico, 1 honeypot generativo</b>. Detalle y evidencia completa de cada puerto en
+<strong class="t">Clasificación terminada (15/10):</strong> 40 puertos abiertos (<code>nmap</code> completo sobre
+<code>10.66.0.1</code>, 65.535 puertos); 14 se descartan por no estar disponibles (solo saludo y cierran), y los 26 restantes confirmados por <b>interacción real</b>, no solo apariencia —
+<b>8 real, 17 honeypot clásico, 1 honeypot generativo</b>. Detalle y evidencia completa de cada puerto en
 <code>docs/writeup_nics.html</code> (3 páginas) y en el dashboard (<code>kits/nics/app_veredicto.py</code>).
 CSV de entrega en <code>out/nics_entrega/entrega.csv</code> (<code>port,service,class</code>).
 </div>

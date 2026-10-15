@@ -2,8 +2,9 @@
 
 ## Resultado final (15/10, red del reto: Ondalux Logística S.L.)
 
-**40 servicios descubiertos, los 40 confirmados por interacción real** (no solo apariencia): **8 real, 31 honeypot
-clásico, 1 honeypot generativo.** Detalle completo, evidencia de cada puerto y niveles de confianza (con la regla de
+**40 puertos abiertos; 14 se descartan por no estar disponibles (solo saludo y cierran, criterio de la organización,
+lista en `EXCLUIDOS` de `veredicto.py`). Los 26 disponibles, confirmados por interacción real** (no solo apariencia):
+**8 real, 17 honeypot clásico, 1 honeypot generativo.** Detalle completo, evidencia de cada puerto y niveles de confianza (con la regla de
 cómo leerlos) en `docs/writeup_nics.html` y en el dashboard:
 
 ```bash
@@ -25,7 +26,7 @@ de interacción real, puerto por puerto:
 | `forense_extra.py` | Certificado TLS compartido, latencia frente al tamaño de la respuesta, coherencia de los recursos enlazados |
 | `martillo_consistencia.py` | Repite la **misma** petición (`GET`/`POST`, mismo cuerpo) varias veces en cada ruta conocida de cada puerto, y avisa si algo que debería ser fijo varía — la prueba que encontró al generativo |
 | `veredicto.py` | Consolida todo lo anterior en un único veredicto con método y evidencia por puerto |
-| `app_veredicto.py` | Dashboard con los 40 puertos, filtros y detalle de cada uno |
+| `app_veredicto.py` | Dashboard con los 26 puertos disponibles, filtros y detalle de cada uno |
 
 ### El caso del generativo (puerto 50096): la lección de método del día
 
@@ -57,7 +58,7 @@ proceso hablando SSH, no que la shell de detrás lo sea.
 | `entrega.py` | Exportador al CSV `port,service,class` |
 | `veredicto.py` | Consolida todo en el veredicto final (fuente del dashboard y del CSV) |
 | `app.py` | Dashboard original, solo HTTP/HTTPS (24 puertos) |
-| `app_veredicto.py` | **Dashboard final, los 40 puertos** |
+| `app_veredicto.py` | **Dashboard final, los 26 puertos disponibles** |
 | `testbed.py` | Banco de pruebas de ayer (3 servicios simulados), ver abajo |
 
 ## Banco de pruebas de ayer (14/10), referencia histórica

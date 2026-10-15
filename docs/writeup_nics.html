@@ -33,19 +33,19 @@
 <p class="subtitle">Equipo 8 · [nombres de los 4 miembros] · Reto NICS Lab, III Malackathon 2026 · Red de Ondalux Logística S.L.</p>
 
 <div class="kpis gen">
-  <div class="kpi"><b>40</b><span>servicios abiertos</span></div>
+  <div class="kpi"><b>26</b><span>servicios abiertos y disponibles</span></div>
   <div class="kpi"><b>8</b><span>clase 1 · real</span></div>
-  <div class="kpi"><b>31</b><span>clase 2 · honeypot clásico</span></div>
+  <div class="kpi"><b>17</b><span>clase 2 · honeypot clásico</span></div>
   <div class="kpi"><b>1</b><span>clase 3 · honeypot generativo</span></div>
 </div>
 
 <h2>1. Metodología</h2>
-<p><b>Acceso:</b> túnel WireGuard del equipo (IP <code>10.66.8.M</code>). La tabla de rutas del túnel solo enruta tráfico hacia nuestra propia IP y hacia <code>10.66.0.1</code>; ese host concentra los 40 servicios del reto, cada uno en un puerto distinto.</p>
-<p><b>Descubrimiento:</b> <code>nmap</code> (TCP connect, <code>-Pn</code>) contra <code>10.66.0.1</code>: primero los 1000 puertos más comunes (ninguno abierto), después los 65.535 completos a ritmo moderado. <b>40 puertos abiertos</b> en rangos altos (12000–59000), con detección de versión (<code>-sV</code>).</p>
+<p><b>Acceso:</b> túnel WireGuard del equipo (IP <code>10.66.8.M</code>). La tabla de rutas del túnel solo enruta tráfico hacia nuestra propia IP y hacia <code>10.66.0.1</code>; ese host concentra los 40 puertos del reto, cada uno en un puerto distinto.</p>
+<p><b>Descubrimiento:</b> <code>nmap</code> (TCP connect, <code>-Pn</code>) contra <code>10.66.0.1</code>: primero los 1000 puertos más comunes (ninguno abierto), después los 65.535 completos a ritmo moderado. <b>40 puertos abiertos</b> en rangos altos (12000–59000), con detección de versión (<code>-sV</code>). Siguiendo el criterio de la organización (solo cuentan los servicios <b>abiertos y disponibles</b>), <b>14 de los 40 se descartan</b> por ofrecer solo un saludo y cerrar la conexión (ver apartado 3); el análisis es sobre los <b>26 restantes</b>.</p>
 <p><b>Clasificación, en dos fases</b> (herramienta propia, repositorio del equipo, carpeta <code>kits/nics/</code>):</p>
 <ol>
-  <li><b>Sondas automáticas:</b> para los 24 servicios web, consistencia de la misma petición, ruta inventada con un token aleatorio, endpoint de API inventado, cabeceras, latencia y firmas conocidas. Para los 16 no-web (SSH, FTP, Telnet, SMTP, POP3, IMAP), captura del banner repetida 5 veces y comparación de consistencia. Clasificador por reglas con pesos.</li>
-  <li><b>Interacción real, en los 40:</b> el enunciado avisa de que <i>"un buen honeypot engaña a simple vista; se delata cuando lo usas en serio"</i>. Por cada servicio se probó su función real — handshake SSH completo, comandos válidos de protocolo, formularios, buscadores, APIs con casos límite (pedir algo que <u>no</u> existe) — y, en los casos con API, <b>repetir la misma petición exacta varias veces</b> para comprobar que ningún dato interno cambia sin motivo.</li>
+  <li><b>Sondas automáticas:</b> para los 24 servicios web, consistencia de la misma petición, ruta inventada con un token aleatorio, endpoint de API inventado, cabeceras, latencia y firmas conocidas. Para los no-web (SSH, FTP, Telnet, SMTP, POP3, IMAP), captura del banner repetida 5 veces y comparación de consistencia. Clasificador por reglas con pesos.</li>
+  <li><b>Interacción real, en los 26 disponibles:</b> el enunciado avisa de que <i>"un buen honeypot engaña a simple vista; se delata cuando lo usas en serio"</i>. Por cada servicio se probó su función real — handshake SSH completo, comandos válidos de protocolo, formularios, buscadores, APIs con casos límite (pedir algo que <u>no</u> existe) — y, en los casos con API, <b>repetir la misma petición exacta varias veces</b> para comprobar que ningún dato interno cambia sin motivo.</li>
 </ol>
 <div class="pend"><b>Corrección de método, documentada con transparencia:</b> una primera pasada marcó 3 nodos Elasticsearch como posible generativo por una coincidencia superficial de texto; se corrigió al revisar la estructura a fondo. Más tarde, aplicar la prueba del punto 2 con <b>más rigor</b> (repetir la misma consulta <code>POST</code>, no solo <code>GET</code>) destapó el caso real de generativo que una comprobación más superficial no vio. Los dos episodios están en el repositorio del equipo, con las pruebas que llevaron a cada cambio.</div>
 
@@ -62,16 +62,14 @@
   <tr><td><code>57238</code></td><td>Gitea</td><td>Repositorio real de la organización; error correcto de Gitea ante un repo inexistente</td></tr>
   <tr><td><code>25461</code></td><td>Grafana</td><td><code>/api/admin/stats</code> (ruta real de Grafana) da 401, no 404 — la reconoce y la protege; cabeceras de seguridad propias de un despliegue real</td></tr>
 </table>
-<p class="pend"><b>Ningún SSH es real.</b> Los 5 puertos SSH descubiertos son honeypot clásico. El par que parecía real (<code>36474</code>/<code>40101</code>, OpenSSH 9.2p1) completaba el protocolo criptográfico — pero eso solo prueba que hay un proceso que habla SSH, no que la <i>shell</i> de detrás sea real. Al entrar en <code>40101</code> con la credencial trivial <code>root:toor</code> (un servidor real no debería aceptarla), la shell resultó ser una emulación: <code>echo $((7*13))</code> da <code>bash: 7*13: command not found</code> (no sabe hacer aritmética) y <code>type cat</code> dice <code>cat is a shell builtin</code> (falso: <code>cat</code> nunca es un builtin). Aviso de un compañero del equipo, verificado de forma independiente.</p>
+<p class="pend"><b>Ningún SSH es real.</b> De los 5 descubiertos, 3 solo dan el saludo y cierran (no disponibles) y los 2 disponibles son honeypot clásico. El par que parecía real (<code>36474</code>/<code>40101</code>, OpenSSH 9.2p1) completaba el protocolo criptográfico — pero eso solo prueba que hay un proceso que habla SSH, no que la <i>shell</i> de detrás sea real. Al entrar en <code>40101</code> con la credencial trivial <code>root:toor</code> (un servidor real no debería aceptarla), la shell resultó ser una emulación: <code>echo $((7*13))</code> da <code>bash: 7*13: command not found</code> (no sabe hacer aritmética) y <code>type cat</code> dice <code>cat is a shell builtin</code> (falso: <code>cat</code> nunca es un builtin). Aviso de un compañero del equipo, verificado de forma independiente.</p>
 
-<h3>Clase 2 — Honeypot clásico (31 servicios)</h3>
+<h3>Clase 2 — Honeypot clásico (17 servicios)</h3>
 <p>Se agrupan por el tipo de fallo que los delata, siempre comprobado con interacción real, no solo apariencia:</p>
 <table>
   <tr><th>Patrón</th><th>Puertos</th><th>Evidencia</th></tr>
   <tr><td>Catch-all HTTP</td><td><code>24179 35574 39640 47095 48200 51656</code></td><td>Responde exactamente igual a <code>/</code> y a una ruta inventada, byte a byte</td></tr>
-  <tr><td>Protocolo que se corta</td><td><code>24226 34818 27381</code> (SSH)</td><td>El saludo es correcto, pero corta la conexión justo tras recibir el <code>KEXINIT</code> del cliente, sin completar nunca el protocolo</td></tr>
   <tr><td>Shell SSH emulada</td><td><code>36474 40101</code> (SSH 9.2p1)</td><td>Completan el protocolo SSH, pero la shell de dentro no es real: no sabe hacer aritmética (<code>$((7*13))</code> → "command not found") y <code>type cat</code> dice que es un builtin, falso en bash real. Entra con credenciales triviales (<code>root:toor</code>)</td></tr>
-  <tr><td>Banner sin protocolo detrás</td><td><code>24755 28827 46509 51629</code> (POP3) · <code>28246</code> (SMTP) · <code>30934 41328</code> (IMAP) · <code>34282</code> (FTP) · <code>27472 45025 53020</code> (Telnet)</td><td>Responden al saludo pero no contestan a ningún comando válido después, sea cual sea (probado con varios comandos distintos). Confirmado de forma independiente con 3 herramientas y 2 equipos (Windows y Linux)</td></tr>
   <tr><td>API que miente en su propio esquema</td><td><code>56221</code></td><td>Declara <code>/api/v1/estadisticas</code> y <code>/api/v1/movimientos</code> en su documentación, pero da 404 o un JSON con forma distinta a la declarada</td></tr>
   <tr><td>Buscador que no busca</td><td><code>20808 25589</code> (blog)</td><td>El parámetro de búsqueda se ignora; siempre devuelve la portada</td></tr>
   <tr><td>Formulario sin backend</td><td><code>51999 59004</code> (corporativa)</td><td>El formulario de contacto no procesa el envío (403/404 en vez de redirigir)</td></tr>
@@ -92,10 +90,7 @@
 <p>En varios casos, dos o tres puertos compartían banner o contenido idéntico. En todos, la interacción real reveló el mismo patrón — <b>un servicio real y el resto clones que fallan al usarlos de verdad</b> — nunca al revés:</p>
 <table>
   <tr><th>Grupo</th><th>Real</th><th>Clones (honeypot)</th></tr>
-  <tr><td>SSH 8.2p1 / 7.9p1</td><td>—</td><td><code>24226 34818 27381</code> (los 3 son falsos)</td></tr>
   <tr><td>SSH 9.2p1</td><td>—</td><td><code>36474 40101</code> (completan el protocolo, pero la shell de dentro es falsa)</td></tr>
-  <tr><td>POP3 Dovecot</td><td>—</td><td><code>28827 51629</code></td></tr>
-  <tr><td>Telnet</td><td>—</td><td><code>45025 53020</code></td></tr>
   <tr><td>API <code>ondalux-inventory</code></td><td><code>20150</code></td><td><code>56221</code></td></tr>
   <tr><td>NAS Synology</td><td><code>47163</code></td><td><code>34328 56377</code></td></tr>
   <tr><td>Blog WordPress</td><td><code>44700</code></td><td><code>25589 20808</code></td></tr>
@@ -104,16 +99,28 @@
   <tr><td>Grafana</td><td><code>25461</code></td><td><code>29082</code></td></tr>
 </table>
 
-<h2>4. Herramienta propia</h2>
-<p>Kit hecho por el equipo antes del reto y adaptado hoy (repositorio privado, carpeta <code>kits/nics/</code>): inventario con control de alcance, recolector de evidencias HTTP asíncrono, sondeador de protocolos no-web, interacción real por protocolo (SSH, POP3, SMTP, IMAP, FTP, Telnet), clasificador por reglas editable sin recodificar, dashboard en Streamlit con los 40 puertos y exportador directo al formato de entrega. Reglas, pesos y evidencia de cada servicio documentados y reproducibles.</p>
+<h2>4. Puertos descartados: abiertos pero no disponibles (14)</h2>
+<p>La organización aclaró que el análisis es solo sobre servicios <b>abiertos y disponibles</b>. Estos 14 puertos aceptan la conexión, emiten un saludo y cierran sin contestar a ningún comando (comprobado con varios comandos y desde 2 equipos), por lo que no ofrecen servicio y <b>no se cuentan ni se clasifican</b>:</p>
+<table>
+  <tr><th>Protocolo</th><th>Puertos</th></tr>
+  <tr><td>SSH</td><td><code>24226 34818 27381</code></td></tr>
+  <tr><td>POP3</td><td><code>24755 28827 46509 51629</code></td></tr>
+  <tr><td>SMTP</td><td><code>28246</code></td></tr>
+  <tr><td>IMAP</td><td><code>30934 41328</code></td></tr>
+  <tr><td>FTP</td><td><code>34282</code></td></tr>
+  <tr><td>Telnet</td><td><code>27472 45025 53020</code></td></tr>
+</table>
 
-<h2>5. Limitaciones</h2>
+<h2>5. Herramienta propia</h2>
+<p>Kit hecho por el equipo antes del reto y adaptado hoy (repositorio privado, carpeta <code>kits/nics/</code>): inventario con control de alcance, recolector de evidencias HTTP asíncrono, sondeador de protocolos no-web, interacción real por protocolo (SSH, POP3, SMTP, IMAP, FTP, Telnet), clasificador por reglas editable sin recodificar, dashboard en Streamlit con los 26 puertos disponibles y exportador directo al formato de entrega. Reglas, pesos y evidencia de cada servicio documentados y reproducibles.</p>
+
+<h2>6. Limitaciones</h2>
 <ul>
   <li>Ningún intento de autenticación (SSH, FTP) usó credenciales reales — solo de ensayo —, así que no se ha podido verificar qué hay "dentro" de un login válido en los servicios reales.</li>
   <li>La detección de generativo se basa en inconsistencia de datos internos ante peticiones repetidas; un honeypot generativo con temperatura 0 y caché agresiva podría no mostrar esta señal.</li>
   <li><b>Puerto 36474</b> (SSH, clasificado honeypot clásico): dejó de responder a mitad de la jornada (timeout / connection reset) y no se ha podido repetir en persona la prueba de la shell emulada que sí se hizo en su gemelo <code>40101</code>. Se clasifica igual por compartir software, versión y el mismo fallo descrito de forma independiente por un compañero del equipo — pero sin verificación propia completa.</li>
 </ul>
-<p><b>Barrido final de consistencia:</b> se repitió la misma petición (<code>GET</code> y, donde aplica, <code>POST</code> con el mismo cuerpo) 6 veces en 59 combinaciones de ruta/método sobre los 24 servicios web, y 3–4 veces en los 16 no-web. De 354 peticiones web, solo 5 variaron: 2 del generativo ya confirmado y 3 de servicios reales variando de forma correcta (un contador de tiempo, una marca de hora, los milisegundos que tarda una consulta) — ninguna señal nueva de generativo oculto.</p>
+<p><b>Barrido final de consistencia:</b> se repitió la misma petición (<code>GET</code> y, donde aplica, <code>POST</code> con el mismo cuerpo) 6 veces en 59 combinaciones de ruta/método sobre los 24 servicios web. De 354 peticiones web, solo 5 variaron: 2 del generativo ya confirmado y 3 de servicios reales variando de forma correcta (un contador de tiempo, una marca de hora, los milisegundos que tarda una consulta) — ninguna señal nueva de generativo oculto.</p>
 
 </body>
 </html>

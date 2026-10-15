@@ -46,7 +46,10 @@ v, ev_web, rasgos_otros, interacciones = load((OUT / "veredicto.csv").stat().st_
 v["clasificación"] = v["clase"].map(ETIQUETA)
 v["método"] = v["metodo"].map(METODO)
 
-st.title("NICS Lab · Veredicto de los 40 servicios")
+st.title(f"NICS Lab · Veredicto de los {len(v)} servicios abiertos y disponibles")
+if (OUT / "excluidos.csv").exists():
+    _ex = pd.read_csv(OUT / "excluidos.csv", encoding="utf-8-sig")
+    st.info("Fuera del análisis por no estar disponibles (sin conexión): " + ", ".join(map(str, _ex["port"])))
 st.caption("Red de Ondalux Logística S.L. (10.66.0.1) · III Malackathon 2026")
 
 c = st.columns(5)

@@ -166,6 +166,15 @@ CONFIRMADOS = {
             "\"Ondalux Logística\", con fecha de creación coherente con el resto del entorno (13/10/2026)."),
 }
 
+# Aviso de la organización (15/10): solo cuentan los servicios ABIERTOS y DISPONIBLES. Un puerto que solo ofrece
+# saludo y cierra la conexión (o al que no se puede conectar) NO es honeypot: se saca del análisis y del CSV.
+# Lista de un compañero (13 puertos) + 34282 (FTP), que cumple lo mismo (verificado 15/10: banner y cierra). Formato: puerto -> motivo.
+# (Un servicio que conecta y da banner pero luego no contesta a los comandos SÍ está disponible: se queda.)
+EXCLUIDOS: dict[int, str] = dict.fromkeys(
+    [24226, 34818, 28246, 24755, 28827, 46509, 51629, 30934, 41328, 27472, 45025, 53020, 27381, 34282],
+    "abierto pero no disponible: solo emite banner y cierra sin permitir interacción",
+)
+
 
 def build() -> pd.DataFrame:
     df = entrega.build(
@@ -182,7 +191,12 @@ def build() -> pd.DataFrame:
         df.loc[m, ["clase", "confianza", "evidencias", "class", "metodo", "revisar_a_mano"]] = \
             [clase, conf, ev, entrega.CLASE_A_NUM[clase], "interaccion_real", False]
 
-    df = df.sort_values("port").reset_index(drop=True)
+    excl = df[df["port"].isin(EXCLUIDOS)]
+    if len(excl):
+        excl.assign(motivo=excl["port"].map(EXCLUIDOS)).to_csv(OUT / "excluidos.csv", index=False, encoding="utf-8-sig")
+    elif (OUT / "excluidos.csv").exists():
+        (OUT / "excluidos.csv").unlink()
+    df = df[~df["port"].isin(EXCLUIDOS)].sort_values("port").reset_index(drop=True)
     df[["port", "service", "class"]].to_csv(OUT / "entrega.csv", index=False)
     df.to_csv(OUT / "veredicto.csv", index=False, encoding="utf-8-sig")
 
