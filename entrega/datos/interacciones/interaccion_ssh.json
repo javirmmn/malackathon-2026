@@ -1,0 +1,46 @@
+[
+  {
+    "host": "10.66.0.1",
+    "port": 24226,
+    "error": "EOFError: "
+  },
+  {
+    "host": "10.66.0.1",
+    "port": 34818,
+    "error": "EOFError: "
+  },
+  {
+    "host": "10.66.0.1",
+    "port": 36474,
+    "version_remota": "SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u3",
+    "huella_clave_host": "ssh-ed25519 5de4e4c28141d95791c25a82637bf85e",
+    "algoritmos_kex": [
+      "curve25519-sha256@libssh.org",
+      "ecdh-sha2-nistp256",
+      "ecdh-sha2-nistp384",
+      "ecdh-sha2-nistp521",
+      "diffie-hellman-group16-sha512",
+      "diffie-hellman-group-exchange-sha256",
+      "diffie-hellman-group14-sha256"
+    ],
+    "auth": "rechazada: Authentication failed.",
+    "metodos_auth_permitidos": null
+  },
+  {
+    "host": "10.66.0.1",
+    "port": 40101,
+    "version_remota": "SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u3",
+    "huella_clave_host": "ssh-ed25519 c5d358a25520a2ceedf4616026f16b43",
+    "algoritmos_kex": [
+      "curve25519-sha256@libssh.org",
+      "ecdh-sha2-nistp256",
+      "ecdh-sha2-nistp384",
+      "ecdh-sha2-nistp521",
+      "diffie-hellman-group16-sha512",
+      "diffie-hellman-group-exchange-sha256",
+      "diffie-hellman-group14-sha256"
+    ],
+    "auth": "rechazada: Authentication failed.",
+    "metodos_auth_permitidos": null
+  }
+]

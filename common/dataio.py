@@ -54,7 +54,7 @@ def read_any(path: str | Path, sheet: str | int | None = 0, **kwargs) -> pd.Data
 
 
 def slug(text: str) -> str:
-    """'Fecha de Alta (€)' -> 'fecha_de_alta'. Válido como identificador de Oracle."""
+    """'Fecha de Alta (€)' -> 'fecha_de_alta'. Válido como identificador (letras, números y guion bajo)."""
     text = unicodedata.normalize("NFKD", str(text)).encode("ascii", "ignore").decode()
     text = re.sub(r"[^0-9a-zA-Z]+", "_", text).strip("_").lower()
     if not text or not text[0].isalpha():

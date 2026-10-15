@@ -1,0 +1,16 @@
+[
+  {
+    "host": "10.66.0.1",
+    "port": 34282,
+    "dialogo": [
+      [
+        "<",
+        "220 FileZilla Server 1.7.3"
+      ],
+      [
+        "> USER test",
+        ""
+      ]
+    ]
+  }
+]

@@ -42,8 +42,8 @@ notificaciones desactivadas, portátil enchufado y vídeo de respaldo a mano.
   interpretable para negocio.
 - **¿Cómo lo habéis validado?** Banco de pruebas con 3 servicios conocidos (3/3, también contra una IA real con
   Ollama) / dataset sintético con segmentos conocidos (ARI 0,96) + métricas sobre los datos del reto.
-- **¿Cómo escala?** Peticiones asíncronas con concurrencia limitada / pipeline en scikit-learn, datos en Oracle.
+- **¿Cómo escala?** Peticiones asíncronas con concurrencia limitada / pipeline en scikit-learn.
 - **¿Qué haríais con más tiempo?** Ver la diapositiva 6.
 - **Enseñadnos la arquitectura / el código:** diagrama de `docs/arquitectura/` y el README de cada kit.
-- **¿Qué traíais preparado?** Con naturalidad: infraestructura genérica (conexión a Oracle, plantillas, esqueleto de
+- **¿Qué traíais preparado?** Con naturalidad: infraestructura genérica (plantillas, esqueleto de
   los kits y un banco de pruebas). El análisis y los resultados se hicieron el jueves con los datos del reto.

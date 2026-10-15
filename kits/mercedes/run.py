@@ -2,7 +2,6 @@
 
     python -m kits.mercedes.run --data data/clientes_ensayo.csv
     python -m kits.mercedes.run --data data/reto.xlsx --exclude columna1,columna2 --kmax 8
-    python -m kits.mercedes.run --sql "SELECT * FROM CLIENTES"          (lee de Oracle, necesita .env)
     python -m kits.mercedes.run --data ... --model kmeans_k5            (forzar un modelo concreto)
 
 Salidas en out/mercedes/: eda.html, informe.html, modelos.csv, perfiles_*.csv,
@@ -30,30 +29,13 @@ DEFAULT_OUT = OUT_DIR / "mercedes"
 
 
 def load(args) -> pd.DataFrame:
-    if args.sql:
-        from common.db import query_df
-
-        return query_df(args.sql)
     df = read_any(args.data, sheet=args.sheet) if args.sheet is not None else read_any(args.data)
     return df
 
 
-def save_to_oracle(prefix: str, seg_df: pd.DataFrame, prof: dict, names: dict, models: pd.DataFrame) -> None:
-    """<PREFIJO>_CLIENTES (cada cliente con su segmento), <PREFIJO>_SEGMENTOS (perfil) y <PREFIJO>_MODELOS."""
-    from common.db import df_to_table
-
-    p = prefix.upper()
-    clientes = seg_df.assign(nombre_segmento=seg_df["segmento"].map(names))
-    segmentos = prof["tamanos"].join(prof["medias"]).reset_index()
-    segmentos.insert(1, "nombre_segmento", segmentos["segmento"].map(names))
-    for table, data in [(f"{p}_CLIENTES", clientes), (f"{p}_SEGMENTOS", segmentos), (f"{p}_MODELOS", models)]:
-        n = df_to_table(data, table, if_exists="replace")
-        print(f"      Oracle: {table} ({n} filas)")
-
-
 def run(df: pd.DataFrame, out: Path = DEFAULT_OUT, exclude: tuple[str, ...] = (), kmin: int = 2, kmax: int = 10,
         scaler: str = "standard", cat_weight: float = 0.5, model: str | None = None, umap: bool = True,
-        kprototypes: bool = False, seed: int = 42, eda: bool = True, oracle_prefix: str | None = None) -> dict:
+        kprototypes: bool = False, seed: int = 42, eda: bool = True) -> dict:
     t0 = time.time()
     out.mkdir(parents=True, exist_ok=True)
     df = normalize_columns(df)
@@ -107,9 +89,6 @@ def run(df: pd.DataFrame, out: Path = DEFAULT_OUT, exclude: tuple[str, ...] = ()
                  "cat_cols": sch.categorical, "dates": sch.dates, "ref_date": ref_date, "defaults": defaults,
                  "choices": choices, "chosen": chosen}, out / "modelo.joblib")
 
-    if oracle_prefix:
-        save_to_oracle(oracle_prefix, seg_df, prof, names, models)
-
     ari = report.ari_if_known(df, lab)
     print(f"[5/5] Informe -> {out / 'informe.html'}  ({time.time() - t0:.0f} s)")
     if ari is not None:
@@ -120,9 +99,7 @@ def run(df: pd.DataFrame, out: Path = DEFAULT_OUT, exclude: tuple[str, ...] = ()
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    src = ap.add_mutually_exclusive_group(required=True)
-    src.add_argument("--data", type=Path, help="CSV/Excel/JSON/Parquet con una fila por cliente")
-    src.add_argument("--sql", help="consulta a Oracle (usa .env)")
+    ap.add_argument("--data", type=Path, required=True, help="CSV/Excel/JSON/Parquet con una fila por cliente")
     ap.add_argument("--sheet", help="hoja del Excel (nombre o número)")
     ap.add_argument("--exclude", default="", help="columnas a no usar, separadas por comas")
     ap.add_argument("--kmin", type=int, default=2)
@@ -135,15 +112,13 @@ def main() -> None:
     ap.add_argument("--kprototypes", action="store_true", help="probar también K-Prototypes (lento)")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--seed", type=int, default=42)
-    ap.add_argument("--a-oracle", metavar="PREFIJO", help="guarda resultados en Oracle: PREFIJO_CLIENTES, _SEGMENTOS, _MODELOS")
     args = ap.parse_args()
     if args.sheet is not None and args.sheet.isdigit():
         args.sheet = int(args.sheet)
 
     run(load(args), out=args.out, exclude=tuple(c.strip() for c in args.exclude.split(",") if c.strip()),
         kmin=args.kmin, kmax=args.kmax, scaler=args.scaler, cat_weight=args.cat_weight, model=args.model,
-        umap=not args.no_umap, kprototypes=args.kprototypes, seed=args.seed, eda=not args.no_eda,
-        oracle_prefix=args.a_oracle)
+        umap=not args.no_umap, kprototypes=args.kprototypes, seed=args.seed, eda=not args.no_eda)
 
 
 if __name__ == "__main__":

@@ -47,21 +47,6 @@ def classify_saved(out: Path = DEFAULT_OUT, rules_path: Path = HERE / "rules.yam
     return res
 
 
-def save_to_oracle(prefix: str, out: Path = DEFAULT_OUT) -> None:
-    """<PREFIJO>_RESULTADOS (clase, confianza, evidencias), <PREFIJO>_RASGOS y <PREFIJO>_EVIDENCIAS (cada respuesta)."""
-    from common.db import df_to_table
-
-    p = prefix.upper()
-    res = pd.read_json(out / "resultados.json")
-    res["evidencias"] = res["evidencias"].map(lambda ev: " | ".join(f"[{e['regla']}] {e['texto']}" for e in ev))
-    feats = pd.read_csv(out / "rasgos.csv", encoding="utf-8-sig")
-    feats = feats.drop(columns=[c for c in feats.columns if c.startswith("_")])  # detalle interno, no para Oracle
-    ev = pd.read_csv(out / "evidencias.csv", encoding="utf-8-sig", keep_default_na=False, na_values=[""])
-    for table, data in [(f"{p}_RESULTADOS", res), (f"{p}_RASGOS", feats), (f"{p}_EVIDENCIAS", ev)]:
-        n = df_to_table(data, table, if_exists="replace")
-        print(f"      Oracle: {table} ({n} filas)")
-
-
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--targets", type=Path, help="CSV/YAML con url (o host+port) de cada servicio")
@@ -73,7 +58,6 @@ def main() -> None:
     ap.add_argument("--verify-tls", action="store_true", help="validar certificados (por defecto no, por si son autofirmados)")
     ap.add_argument("--solo-clasificar", action="store_true", help="no escanear: reclasificar evidencias.csv")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
-    ap.add_argument("--a-oracle", metavar="PREFIJO", help="guarda resultados en Oracle: PREFIJO_RESULTADOS, _RASGOS, _EVIDENCIAS")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
@@ -102,8 +86,6 @@ def main() -> None:
 
     print("[3/4] Calculando rasgos y clasificando...")
     res = classify_saved(args.out, args.rules)
-    if args.a_oracle:
-        save_to_oracle(args.a_oracle, args.out)
     print(f"[4/4] Informe -> {args.out / 'informe.html'}  ({time.time() - t0:.0f} s)\n")
     with pd.option_context("display.max_colwidth", 90, "display.width", 200):
         print(res[["servicio", "clase", "confianza", "que_lo_delato"]].to_string(index=False))

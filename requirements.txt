@@ -1,8 +1,6 @@
 # Todo lo necesario (común + kits) con un solo comando:  .venv\Scripts\python -m pip install -r requirements.txt
 
 # Común (common/)
-oracledb>=2.4
-python-dotenv>=1.0
 pandas>=2.2
 numpy>=2.0
 openpyxl>=3.1

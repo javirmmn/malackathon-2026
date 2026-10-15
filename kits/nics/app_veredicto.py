@@ -1,10 +1,8 @@
-"""Dashboard único con los servicios abiertos y DISPONIBLES y toda la evidencia de su clasificación.
+"""Dashboard con los servicios abiertos y DISPONIBLES y toda la evidencia de su clasificación.
 
-Antes (por orden):
-    python -m kits.nics.veredicto            # veredicto + CSV de entrega (+ excluidos.csv)
-    python -m kits.nics.barrido_generativo   # señales de generativo por puerto
-    python -m kits.nics.capturar_evidencia   # petición -> respuesta concretas de cada prueba
     streamlit run kits/nics/app_veredicto.py
+
+Lee los datos versionados en entrega/ (veredicto.csv y entrega/datos/): funciona en cualquier clon, sin red.
 """
 
 import json
@@ -18,9 +16,8 @@ import plotly.express as px
 import streamlit as st
 
 import common.charts  # noqa: F401
-from common import OUT_DIR
-
-OUT = OUT_DIR / "nics_entrega"
+ENTREGA = Path(__file__).resolve().parents[2] / "entrega"   # datos versionados en el repo (no depende de out/)
+DATOS = ENTREGA / "datos"
 ETIQUETA = {"real": "Real", "honeypot_clasico": "Honeypot clásico", "honeypot_generativo": "Honeypot generativo (IA)"}
 COLOR = {"real": "#1d7a46", "honeypot_clasico": "#e07a1f", "honeypot_generativo": "#b4410c"}
 METODO = {"interaccion_real": "🟢 Interacción real", "sondas_automaticas": "⚪ Solo sondas automáticas"}
@@ -44,8 +41,8 @@ SENALES = {
 
 st.set_page_config(page_title="NICS · Veredicto completo", page_icon="🕵️", layout="wide")
 
-if not (OUT / "veredicto.csv").exists():
-    st.error("No hay veredicto. Ejecuta antes:  python -m kits.nics.veredicto")
+if not (ENTREGA / "veredicto.csv").exists():
+    st.error("Falta entrega/veredicto.csv (viene en el repo).")
     st.stop()
 
 
@@ -55,23 +52,23 @@ def _csv(path, **kw):
 
 @st.cache_data
 def load(stamp: tuple):
-    v = _csv(OUT / "veredicto.csv")
-    ev_web = _csv(OUT_DIR / "nics_real" / "evidencias.csv", keep_default_na=False, na_values=[""])
-    rasgos_otros = _csv(OUT_DIR / "nics_otros" / "rasgos_protocolo.csv")
+    v = _csv(ENTREGA / "veredicto.csv")
+    ev_web = _csv(DATOS / "evidencias_sondas.csv", keep_default_na=False, na_values=[""])
+    rasgos_otros = _csv(DATOS / "rasgos_protocolo.csv")
     interacciones = {}
-    carpeta_int = OUT_DIR / "nics_interaccion"
+    carpeta_int = DATOS / "interacciones"
     if carpeta_int.exists():
         for f in carpeta_int.glob("interaccion_*.json"):
             for r in json.loads(f.read_text(encoding="utf-8")):
                 interacciones[r["port"]] = r
-    barrido = _csv(OUT / "barrido_generativo.csv")
-    pruebas = _csv(OUT / "evidencia_pruebas.csv", keep_default_na=False)
-    excl = _csv(OUT / "excluidos.csv")
+    barrido = _csv(DATOS / "barrido_generativo.csv")
+    pruebas = _csv(DATOS / "evidencia_pruebas.csv", keep_default_na=False)
+    excl = _csv(DATOS / "excluidos.csv")
     return v, ev_web, rasgos_otros, interacciones, barrido, pruebas, excl
 
 
 _ficheros = ["veredicto.csv", "barrido_generativo.csv", "evidencia_pruebas.csv", "excluidos.csv"]
-_stamp = tuple((OUT / f).stat().st_mtime if (OUT / f).exists() else 0 for f in _ficheros)
+_stamp = tuple((((ENTREGA if f == "veredicto.csv" else DATOS) / f).stat().st_mtime) for f in _ficheros)
 v, ev_web, rasgos_otros, interacciones, barrido, pruebas, excl = load(_stamp)
 v["clasificación"] = v["clase"].map(ETIQUETA)
 v["método"] = v["metodo"].map(METODO)
@@ -263,5 +260,5 @@ matiz; < 0,70 por patrón de un gemelo o indirecta.
 """)
 
 st.divider()
-st.caption(f"CSV de entrega: `{OUT / 'entrega.csv'}` · Detalle completo: `{OUT / 'veredicto.csv'}` · "
-           f"Pruebas capturadas: `{OUT / 'evidencia_pruebas.csv'}`")
+st.caption("CSV de entrega: `entrega/entrega.csv` · Veredicto con la evidencia: `entrega/veredicto.csv` · "
+           "Pruebas capturadas: `entrega/datos/evidencia_pruebas.csv`")

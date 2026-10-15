@@ -29,16 +29,9 @@ def load_file(path_or_buffer, name: str):
     return normalize_columns(read_any(path_or_buffer))
 
 
-@st.cache_data(ttl=300)
-def load_oracle(sql: str):
-    from common.db import query_df
-
-    return query_df(sql)
-
-
 # ---------------- Barra lateral: origen de datos ----------------
 st.sidebar.title("Datos")
-source = st.sidebar.radio("Origen", ["Fichero de data/", "Subir fichero", "Oracle (SQL)"])
+source = st.sidebar.radio("Origen", ["Fichero de data/", "Subir fichero"])
 
 df = None
 if source == "Fichero de data/":
@@ -52,18 +45,10 @@ if source == "Fichero de data/":
         df = load_file(choice, choice.name)
     else:
         st.sidebar.info("No hay ficheros en data/.")
-elif source == "Subir fichero":
+else:
     up = st.sidebar.file_uploader("CSV / Excel / JSON / Parquet")
     if up:
         df = load_file(up, up.name)
-else:
-    sql = st.sidebar.text_area("Consulta", "SELECT table_name FROM user_tables")
-    if st.sidebar.button("Ejecutar"):
-        try:
-            st.session_state["oracle_df"] = load_oracle(sql)
-        except Exception as e:  # noqa: BLE001
-            st.sidebar.error(f"Error de Oracle: {e}")
-    df = st.session_state.get("oracle_df")
 
 # ---------------- Contenido ----------------
 st.title("Malackathon 2026 · Dashboard")

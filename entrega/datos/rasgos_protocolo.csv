@@ -1,0 +1,17 @@
+﻿servicio,host,puerto,protocolo,intentos_ok,sin_banner,banner_ejemplo,consistencia_banner,hay_banner,respuesta_invalida_ejemplo,consistencia_invalida,latencia_media_ms,latencia_cv
+p24226,10.66.0.1,24226,ssh,5,0,SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11,100.0,True,,0.0,337.8,0.2
+p27381,10.66.0.1,27381,ssh,5,0,SSH-2.0-OpenSSH_7.9p1 Debian-10+deb10u2,100.0,True,,0.0,281.4,0.294
+p34818,10.66.0.1,34818,ssh,5,0,SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.11,100.0,True,,0.0,195.0,0.513
+p36474,10.66.0.1,36474,ssh,5,0,SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u3,100.0,True,,0.0,22.8,0.346
+p40101,10.66.0.1,40101,ssh,5,0,SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u3,100.0,True,,0.0,16.6,0.335
+p24755,10.66.0.1,24755,pop3,5,0,+OK POP3 ready,100.0,True,,0.0,482.6,0.815
+p28827,10.66.0.1,28827,pop3,5,0,+OK Dovecot ready.,100.0,True,,0.0,240.5,0.207
+p46509,10.66.0.1,46509,pop3,5,0,+OK POP3 server ready <1896.a@ondalux>,100.0,True,,0.0,174.7,0.449
+p51629,10.66.0.1,51629,pop3,5,0,+OK Dovecot ready.,100.0,True,,0.0,241.6,0.263
+p27472,10.66.0.1,27472,telnet,5,0,���� ��#��'��,100.0,True,,0.0,257.8,0.157
+p45025,10.66.0.1,45025,telnet,5,0,������,100.0,True,,0.0,220.2,0.086
+p53020,10.66.0.1,53020,telnet,5,0,������,100.0,True,,0.0,179.2,0.336
+p30934,10.66.0.1,30934,imap,5,0,* OK Microsoft Exchange Server 2016 IMAP4 service ready,100.0,True,,0.0,149.9,0.285
+p41328,10.66.0.1,41328,imap,5,0,* OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE] Dovecot ready.,100.0,True,,0.0,274.4,0.069
+p28246,10.66.0.1,28246,smtp,5,0,220 smtp.ondalux.local ESMTP Postfix,100.0,True,,0.0,351.9,1.117
+p34282,10.66.0.1,34282,ftp,5,0,220 FileZilla Server 1.7.3,100.0,True,,0.0,253.6,0.235

@@ -1,0 +1,30 @@
+[
+  {
+    "host": "10.66.0.1",
+    "port": 30934,
+    "dialogo": [
+      [
+        "<",
+        "* OK Microsoft Exchange Server 2016 IMAP4 service ready"
+      ],
+      [
+        "> a1 CAPABILITY",
+        ""
+      ]
+    ]
+  },
+  {
+    "host": "10.66.0.1",
+    "port": 41328,
+    "dialogo": [
+      [
+        "<",
+        "* OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE] Dovecot ready."
+      ],
+      [
+        "> a1 CAPABILITY",
+        ""
+      ]
+    ]
+  }
+]

@@ -1,4 +1,4 @@
-"""Utilidades comunes a todos los retos: Oracle, carga de ficheros y gráficos."""
+"""Utilidades comunes a todos los retos: carga de ficheros, gráficos y PDF."""
 
 from pathlib import Path
 

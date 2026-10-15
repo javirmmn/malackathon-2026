@@ -44,7 +44,6 @@ Con `kmeans_k5` el pipeline los recupera con un acuerdo (ARI) de ~0,96.
 | `--model kmeans_k5` | Forzar un modelo concreto |
 | `--kprototypes` | Probar también K-Prototypes (lento; útil con muchas categóricas) |
 | `--no-umap` / `--no-eda` | Más rápido |
-| `--a-oracle MERC` | Guarda en Oracle `MERC_CLIENTES` (cada cliente con su segmento), `MERC_SEGMENTOS` y `MERC_MODELOS` |
 
 ## Qué hace por dentro (`pipeline.py`)
 

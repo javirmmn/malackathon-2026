@@ -1,0 +1,58 @@
+[
+  {
+    "host": "10.66.0.1",
+    "port": 28827,
+    "dialogo": [
+      [
+        "<",
+        "+OK Dovecot ready."
+      ],
+      [
+        "> USER test",
+        ""
+      ]
+    ]
+  },
+  {
+    "host": "10.66.0.1",
+    "port": 51629,
+    "dialogo": [
+      [
+        "<",
+        "+OK Dovecot ready."
+      ],
+      [
+        "> USER test",
+        ""
+      ]
+    ]
+  },
+  {
+    "host": "10.66.0.1",
+    "port": 24755,
+    "dialogo": [
+      [
+        "<",
+        "+OK POP3 ready"
+      ],
+      [
+        "> USER test",
+        ""
+      ]
+    ]
+  },
+  {
+    "host": "10.66.0.1",
+    "port": 46509,
+    "dialogo": [
+      [
+        "<",
+        "+OK POP3 server ready <1896.a@ondalux>"
+      ],
+      [
+        "> USER test",
+        ""
+      ]
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "host": "10.66.0.1",
+    "port": 28246,
+    "dialogo": [
+      [
+        "<",
+        "220 smtp.ondalux.local ESMTP Postfix"
+      ],
+      [
+        "> EHLO malackathon.local",
+        ""
+      ]
+    ]
+  }
+]

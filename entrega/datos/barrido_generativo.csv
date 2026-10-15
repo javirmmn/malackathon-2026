@@ -1,0 +1,27 @@
+﻿port,service,obedece,prosa_ante_instruccion,variantes_distintas_max,lat_1a_max_ms,lat_repetida_mediana_ms,flag_obedece,metodos_distintos_max,flag_prosa,flag_metodos,flag_variantes,flag_latencia,n_flags,clase
+31885,HTTPS,POST /contacto/enviar; ruta /_cat/; ruta /search/,/_cat/ -> No se puede responder con un poema de dos versos porque la petición es a un endpoint de catálogo de ,4.0,725.0,185.0,True,4.0,True,True,True,False,4,honeypot_generativo
+25589,HTTPS,POST /_search; POST /pedidos-2026/_search,,1.0,684.0,237.0,True,4.0,False,True,False,False,2,honeypot_generativo
+29082,HTTPS,POST /contacto/enviar; POST /gtlxucse; POST /pedidos-2026/_search; query; ruta /; ruta /_cat/; ruta /admin/; ruta /api/; ruta /api/v1/; ruta /login/; ruta /owa/; ruta /search/; ruta /webman/; ruta /wp-json/,"/owa/ -> Haiku de Ondalux:   / Vientos del puerto soplan,   / Rutas se dibujan en el cielo,   / LogÃ­stica vi; /login/ -> No se ha encontrado una ruta para esa peticiÃ³n.; /search/ -> No se encontrÃ³ una ruta para esa peticiÃ³n.",2.0,1033.0,211.0,True,2.0,True,False,False,False,2,honeypot_generativo
+40101,SSH,shell: instrucción,"[4lCorto / verso, / breve, / Silencio / en / el / aire, / Edi / fluye / sin / ruido. / [4hroot@olx",,,,True,,True,False,False,False,2,honeypot_generativo
+22739,HTTPS,,,4.0,631.0,164.0,False,1.0,False,False,True,False,1,real
+25461,HTTPS,,,4.0,412.0,389.0,False,1.0,False,False,True,False,1,real
+20150,HTTPS,,,1.0,598.0,279.0,False,1.0,False,False,False,False,0,real
+20808,HTTPS,,,1.0,578.0,380.0,False,1.0,False,False,False,False,0,honeypot_clasico
+24179,HTTP,,,1.0,157.0,129.0,False,1.0,False,False,False,False,0,honeypot_clasico
+34328,HTTPS,,,1.0,89.0,52.0,False,1.0,False,False,False,False,0,honeypot_clasico
+35574,HTTP,,,1.0,229.0,224.0,False,1.0,False,False,False,False,0,honeypot_clasico
+36474,SSH,,,,,,False,,False,False,False,False,0,honeypot_clasico
+39640,HTTP,,,1.0,125.0,132.0,False,1.0,False,False,False,False,0,honeypot_clasico
+44700,HTTPS,,,2.0,411.0,621.0,False,1.0,False,False,False,False,0,real
+46737,HTTPS,,,1.0,518.0,271.0,False,1.0,False,False,False,False,0,real
+47095,HTTP,,,1.0,207.0,148.0,False,1.0,False,False,False,False,0,honeypot_clasico
+47163,HTTPS,,,1.0,134.0,87.0,False,1.0,False,False,False,False,0,real
+48200,HTTP,,,1.0,291.0,217.0,False,1.0,False,False,False,False,0,honeypot_clasico
+48519,HTTPS,,,1.0,1118.0,216.0,False,1.0,False,False,False,False,0,real
+50096,HTTPS,,,2.0,774.0,300.0,False,1.0,False,False,False,False,0,honeypot_clasico
+51656,HTTP,,,1.0,238.0,148.0,False,1.0,False,False,False,False,0,honeypot_clasico
+51999,HTTPS,,,1.0,501.0,322.0,False,1.0,False,False,False,False,0,honeypot_clasico
+56221,HTTPS,,,1.0,994.0,387.0,False,1.0,False,False,False,False,0,honeypot_clasico
+56377,HTTPS,,,1.0,150.0,97.0,False,1.0,False,False,False,False,0,honeypot_clasico
+57238,HTTPS,,,1.0,516.0,317.0,False,1.0,False,False,False,False,0,real
+59004,HTTPS,,,1.0,340.0,328.0,False,1.0,False,False,False,False,0,honeypot_clasico
