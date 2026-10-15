@@ -43,8 +43,10 @@ CONFIRMADOS = {
     56221: ("honeypot_clasico", 0.95, "Interacción real: su propio esquema OpenAPI declara /api/v1/estadisticas y "
             "/api/v1/movimientos, pero al llamarlos da 404 o un JSON con forma distinta a la declarada — "
             "estructuralmente imposible en una app FastAPI real."),
-    20150: ("real", 0.9, "Interacción real: todos los endpoints declarados funcionan y devuelven datos de inventario "
-            "coherentes y con fecha de hoy (estadísticas, movimientos, histórico)."),
+    20150: ("real", 0.95, "Interacción real: todos los endpoints declarados funcionan y devuelven datos de inventario "
+            "coherentes y con fecha de hoy (estadísticas, movimientos, histórico). Repetido 5 veces: los datos "
+            "reales no cambian, solo la hora exacta de generación y un contador de tiempo activo que sube de "
+            "uno en uno (17468 -> 17469 s) -- la forma correcta de variar de un sistema vivo de verdad."),
     # Blog WordPress: 44700 el buscador funciona; 25589/20808 lo ignoran y siempre dan la portada
     44700: ("real", 0.9, "Interacción real: el buscador de WordPress (?s=) funciona correctamente — para una "
             "búsqueda sin resultados posibles devuelve la página de \"no se ha encontrado nada\", no la portada."),
@@ -86,16 +88,28 @@ CONFIRMADOS = {
     # Elasticsearch: comprobación a fondo (aviso de un compañero) con una BÚSQUEDA real sobre un índice
     # inventado, no solo pedir el índice. Un ES real rechaza la búsqueda (index_not_found_exception);
     # aquí se ha destapado que 2 de los 3 no lo hacen bien.
-    22739: ("real", 0.95, "Interacción real: una búsqueda (_search) sobre un índice inventado da el error "
-            "correcto (index_not_found_exception, con la estructura exacta de un ES real: root_cause como "
-            "lista, status 404), igual en repeticiones y con distintos nombres de índice."),
+    22739: ("real", 0.97, "Interacción real: una búsqueda (_search) sobre un índice inventado da el error "
+            "correcto (index_not_found_exception, estructura exacta de un ES real), igual en repeticiones y "
+            "con distintos nombres de índice. Además, con POST repetido 6 veces sobre índices reales "
+            "(eventos-almacen, clientes), _shards.total se mantiene perfectamente estable (1 siempre) — como "
+            "debe ser en un clúster real."),
     31885: ("honeypot_clasico", 0.9, "Interacción real: la estructura del error está rota (status 500 en vez de "
             "404, root_cause como objeto en vez de lista, la clave \"error\" aparece duplicada y mal anidada) "
-            "— un Elasticsearch real nunca devuelve esa forma. Error fijo y repetible, no varía entre intentos."),
-    50096: ("honeypot_clasico", 0.9, "Interacción real: al BUSCAR (no solo pedir) un índice inventado, en vez "
-            "de rechazar la búsqueda se inventa un resultado — pero es SIEMPRE el mismo (cliente CLI-0003, "
-            "\"Hortofrutícola del Guadalhorce S.A.\", Málaga), probado con 4 nombres de índice distintos. "
-            "Al no variar, es una respuesta predefinida (clase 2), no una IA improvisando cada vez (clase 3)."),
+            "— un Elasticsearch real nunca devuelve esa forma. Error fijo y repetible, no varía entre intentos. "
+            "Sobre datos reales (eventos-almacen) sí responde estable, el fallo está en el manejo de errores."),
+    # CORREGIDO dos veces: primero marcado real (14/10), luego honeypot_clasico (misma respuesta inventada
+    # SIEMPRE con GET). Un compañero (con ayuda de otra IA) detectó que con POST -como se usa ES de verdad-
+    # y repitiendo la MISMA consulta, el número interno de _shards cambia cada vez (46, 16, 23, 47, 38, 38
+    # en 6 intentos idénticos) -- imposible en un Elasticsearch real, donde ese número es fijo. Y el
+    # resultado (375 documentos, mismo primer ID "PED-2026-00042") es IDÉNTICO tanto si se pregunta por el
+    # índice real "pedidos-2026" como por uno inventado -- no hay datos reales detrás, se fabrica cada vez.
+    # Confirmado de forma independiente (nuestra prueba + la del compañero, con metodologías distintas).
+    50096: ("honeypot_generativo", 0.9, "Interacción real: con POST (la forma normal de usar Elasticsearch), "
+            "repetir la MISMA consulta exacta 6 veces da un _shards.total distinto cada vez (46, 16, 23, 47, "
+            "38, 38) -- en un ES real ese número es fijo para un índice dado. Y da el mismo resultado "
+            "fabricado (375 documentos, primer ID PED-2026-00042) tanto preguntando por el índice real "
+            "pedidos-2026 como por uno inventado: no consulta datos reales, los genera. Con GET simple "
+            "(sin cuerpo) el contenido parecía fijo -- el camino POST, el habitual, es el que lo delata."),
     # Grafana (login): /api/health coincide en los dos, pero al probar más endpoints se ve la diferencia real
     25461: ("honeypot_clasico", 0.85, "Interacción real: responde 401 Unauthorized a TODO, incluso a "
             "/api/frontend/settings, que en un Grafana real es público (se usa antes de iniciar sesión). "
