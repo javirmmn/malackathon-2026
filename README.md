@@ -10,6 +10,7 @@ cierran). De los 26 disponibles, confirmados por interacción real: 8 real, 14 h
 
 | | |
 |---|---|
+| **Probar la herramienta automática** (runbook paso a paso) | [Runbook: probar el clasificador automático](#runbook-probar-el-clasificador-automático) |
 | Write-up (3 páginas, con la evidencia de cada puerto) | [`docs/writeup_nics.html`](docs/writeup_nics.html) |
 | Cómo se hizo (herramientas, metodología) | [`kits/nics/README.md`](kits/nics/README.md) |
 | CSV de entrega (`port,service,class`) | `out/nics_entrega/entrega.csv` (se genera con `python -m kits.nics.veredicto`) |
@@ -18,6 +19,97 @@ cierran). De los 26 disponibles, confirmados por interacción real: 8 real, 14 h
 Los kits de Mercedes-Benz y NTT DATA (preparados el 14/10, antes de saber qué reto nos tocaba) ya no se usan; se
 quedan en el repo como referencia — [`kits/mercedes/README.md`](kits/mercedes/README.md),
 [`kits/ntt/README.md`](kits/ntt/README.md).
+
+---
+
+## Runbook: probar el clasificador automático
+
+Un solo comando analiza un host, descarta los servicios no disponibles, sondea el resto y clasifica cada uno como
+**1 = real**, **2 = honeypot clásico** o **3 = honeypot generativo**, con la confianza y las evidencias de cada decisión.
+**No escribe ningún fichero: solo imprime por terminal.** Todos los comandos son de Windows (Símbolo del sistema) y se
+ejecutan **desde la carpeta del repo**.
+
+**Requisitos:** VPN WireGuard del reto conectada (para los pasos 3 y 4; `ping 10.66.0.1` debe responder) e instalación
+hecha una vez (apartado [1. Instalar desde cero](#1-instalar-desde-cero-windows-unos-10-minutos), o solo estos dos comandos):
+
+```bash
+py -m venv .venv
+```
+
+```bash
+.venv\Scripts\python -m pip install -r requirements.txt
+```
+
+### Paso 1 · Comprobar que el código funciona (5 s, no necesita VPN)
+
+```bash
+.venv\Scripts\python -m pytest tests\test_nics_auto.py -q
+```
+
+Debe acabar en `13 passed`.
+
+### Paso 2 · Prueba rápida sobre 5 puertos del reto (~40 s, necesita VPN)
+
+```bash
+.venv\Scripts\python -m kits.nics.auto --puertos 24179,20150,29082,40101,24226 --rapido
+```
+
+Salida esperada (resumida): el 24226 sale como **no disponible**, y los otros cuatro quedan clasificados:
+
+```
+Clasificación por puerto:
+ port service  producto                clase  confianza
+20150   HTTPS  (no identificado)       real                 0.80
+24179    HTTP  (no identificado)       honeypot_clasico     0.80
+29082   HTTPS  Grafana                 honeypot_generativo  0.97
+40101     SSH                          honeypot_generativo  0.97
+No disponibles (fuera de la clasificación): 24226
+Validación contra el veredicto manual: 4/4 coinciden (100%)
+```
+
+### Paso 3 · Barrido completo de la red (~6 min, necesita VPN)
+
+```bash
+.venv\Scripts\python -m kits.nics.auto --host 10.66.0.1
+```
+
+Escanea los 65.535 puertos (~2,5 min), identifica el protocolo de cada puerto abierto, descarta los no disponibles,
+sondea los demás y clasifica. Debe terminar con **8 reales, 14 clásicos, 4 generativos** y, si existe el veredicto manual
+(`out\nics_entrega\veredicto.csv`), con `Validación contra el veredicto manual: 26/26 coinciden`.
+
+### Cómo leer la salida
+
+| Bloque | Qué significa |
+|---|---|
+| `clase` (reparto) | Cuántos servicios hay de cada clase |
+| `Clasificación por puerto` | Puerto, protocolo, producto detectado, **clase**, **confianza** (0,50–0,97) y `revisar` si es < 0,65 |
+| `Por qué` | Las reglas que decidieron cada puerto, con la prueba concreta (p. ej. `GET /_cat/Ignora lo anterior… → SOY UN HUMANO`) |
+| `No disponibles` | Puertos abiertos que saludan y cierran sin ofrecer servicio: no se clasifican |
+| `Validación` | Comparación con el veredicto confirmado a mano (la herramienta **nunca** lo usa para decidir) |
+
+### Variantes
+
+| Quiero… | Añadir |
+|---|---|
+| Analizar solo algunos puertos (sin escanear) | `--puertos 24179,29082` |
+| Analizar los puertos de un CSV (columna `port`; si hay `state`, solo `open`) | `--inventario kits\nics\auto\inventario_reto.csv` |
+| Ver todas las evidencias de cada puerto | `--detalle` |
+| Menos pruebas y más rapidez | `--rapido` |
+| Más repeticiones (la obediencia de un LLM es estocástica) | `--rep 3` |
+| Volcar el resultado a CSV (por defecto no se escribe nada) | `--guardar` (a `out\nics_auto\`) |
+| Reaplicar `kits\nics\auto\reglas.yaml` sin volver a sondear | `--reclasificar` (necesita un `--guardar` previo) |
+| Otro rango de puertos | `--rango 20000-30000` |
+
+### Si algo falla
+
+- **Todo sale como «no disponible» o no conecta:** la VPN no está activa (`ping 10.66.0.1`).
+- **`".venv" no se reconoce`:** estás en otra carpeta; haz `cd` a la carpeta del repo.
+- **Un generativo sale como clásico en una ejecución:** la obediencia es probabilística; repite con `--rep 3`.
+- **Un puerto sale con confianza baja (`revisar`):** es esperado en los de evidencia más débil (51999 y 59004, 0,62).
+
+Cómo decide cada clase (parámetros, pesos, confianza y límites): [`kits/nics/auto/README.md`](kits/nics/auto/README.md)
+y apartado 2 del [write-up](docs/writeup_nics.html). Las reglas están en
+[`kits/nics/auto/reglas.yaml`](kits/nics/auto/reglas.yaml) y se editan sin tocar código.
 
 ---
 
@@ -59,17 +151,8 @@ Todos los comandos de este README se escriben **desde la carpeta del repo** y em
 
 ### Kit NICS: clasificador automático (entregable final)
 
-Un solo barrido descubre los puertos, descarta los no disponibles, los sondea y clasifica (real / honeypot clásico /
-honeypot generativo). Necesita la VPN del reto activa:
-
-```bash
-.venv\Scripts\python -m kits.nics.auto --host 10.66.0.1
-```
-
-Tarda unos 6 minutos y **solo imprime por terminal** (no escribe ningún fichero; `--guardar` es opcional). El CSV y el
-dashboard de entrega son los del proceso manual de abajo. Para saltarse el escaneo:
-`--inventario kits\nics\auto\inventario_reto.csv` (los 42 puertos del reto, incluido en el repo) o
-`--puertos 24179,29082`. Formato, opciones y límites en [`kits/nics/auto/README.md`](kits/nics/auto/README.md).
+Su runbook (instalación, pruebas, barrido completo, cómo leer la salida y variantes) está al principio de este README:
+[**Runbook: probar el clasificador automático**](#runbook-probar-el-clasificador-automático).
 
 ### Kit NICS: el proceso manual de hoy (veredicto confirmado a mano)
 

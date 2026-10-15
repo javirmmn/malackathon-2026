@@ -52,7 +52,7 @@
 
 <p><b>Resumen.</b> <code>nmap</code> completo (65.535 puertos, ritmo moderado) encontró <b>40 puertos abiertos</b>, todos en <code>10.66.0.1</code>. Siguiendo el criterio de la organización (solo cuentan los servicios <i>abiertos y disponibles</i>), <b>14 se descartan</b>: aceptan la conexión, saludan y cierran sin contestar a ningún comando. Los <b>26 restantes</b> se clasificaron <b>interactuando de verdad</b> con cada uno, no por su apariencia. Después construimos una herramienta que lo hace sola, en un barrido, y reproduce nuestro veredicto manual sin usarlo para decidir. Trabajamos solo dentro del túnel del equipo, sin ataques de denegación ni credenciales reales.</p>
 
-<h2>1. Herramienta automática y runbook (<code>kits/nics/auto/</code>)</h2>
+<h2>1. Herramienta automática (<code>kits/nics/auto/</code>)</h2>
 <div class="flow">
   <div><b>1 Descubrir</b>escaneo TCP, 65.535 puertos en 159 s</div><i>›</i>
   <div><b>2 Identificar</b>protocolo por el saludo (SSH, FTP, SMTP, POP3, IMAP, Telnet) o TLS/HTTP</div><i>›</i>
@@ -60,19 +60,7 @@
   <div><b>4 Sondear</b>web: genéricas + producto + generativo · SSH: shell · resto: comandos</div><i>›</i>
   <div><b>5 Reglas</b>rasgos → puntos por clase → clase, confianza y evidencias</div>
 </div>
-<div class="cols">
-<div>
-<pre># barrido completo (~6 min, solo terminal)
-python -m kits.nics.auto --host 10.66.0.1
-# sin escanear: puertos sueltos o los de un CSV
-python -m kits.nics.auto --puertos 24179,29082
-python -m kits.nics.auto --inventario inventario_reto.csv
-# --rapido  --rep 3  --detalle  --guardar  --reclasificar</pre>
-</div>
-<div>
-<p style="margin-top:0">Por defecto <b>solo imprime por terminal</b>: tabla por puerto (clase, confianza), las reglas que decidieron cada uno, los no disponibles y la comparación con el veredicto manual (<code>--guardar</code> vuelca CSV; <code>reglas.yaml</code> se edita sin tocar código). Solo analiza hosts de redes privadas. <b>Entregables:</b> <code>entrega.csv</code> (<code>port,service,class</code>) y el dashboard <code>app_veredicto.py</code> (resumen, evidencia completa por puerto con la petición y la respuesta, barrido de generativos, descartados y criterios).</p>
-</div>
-</div>
+<p><b>Prueba automática.</b> Esta clasificación se puede reproducir con un solo comando contra el host del reto (solo imprime por terminal, no escribe ficheros). El <b>runbook paso a paso</b> (instalación, prueba rápida, barrido completo, salida esperada y opciones) está en el README del repositorio: <a href="https://github.com/javirmmn/malackathon-2026#runbook-probar-el-clasificador-automático">github.com/javirmmn/malackathon-2026 · «Runbook: probar el clasificador automático»</a>. Entregables: <code>entrega.csv</code> (<code>port,service,class</code>) y el dashboard del repositorio (resumen, evidencia completa por puerto con la petición y la respuesta, barrido de generativos, descartados y criterios).</p>
 
 <h2>2. Qué mide y cómo lo interpreta (parámetros de clasificación)</h2>
 <table>
@@ -136,7 +124,7 @@ ssh root@10.66.0.1 -p 40101   (contraseña de ensayo toor); escribir: Escribe un
 <h2>5. Validación, límites y reproducibilidad</h2>
 <div class="box ok"><b>Validación:</b> el clasificador automático acierta <b>26 de 26</b> frente al veredicto confirmado a mano, que nunca usa para decidir (solo lo compara al final). Barrido completo de principio a fin: 341 s, ~80 peticiones por puerto, 3.197 pruebas registradas con su petición reproducible.</div>
 <div class="box warn"><b>Límites honestos:</b> las reglas salen de lo observado en esta red (un producto nuevo necesita su módulo; las pruebas genéricas valen en cualquier red). La obediencia de un LLM es estocástica y solo se probó inyección en ruta, query, cabeceras, cuerpo y shell SSH: un generativo que ignore instrucciones y cachee todas las variantes podría pasar desapercibido. SSH solo se inspecciona si acepta una credencial trivial de ensayo (nunca se usaron credenciales reales). <code>51999</code> y <code>59004</code> son los de menor confianza (0,62).</div>
-<p>Repositorio privado <code>javirmmn/malackathon-2026</code>: herramienta <code>kits/nics/auto/</code> (README con formato y límites), reglas <code>reglas.yaml</code>, evidencia y dashboard <code>kits/nics/app_veredicto.py</code>, CSV de entrega <code>out/nics_entrega/entrega.csv</code>, 29 tests. Las claves de WireGuard nunca se subieron al repo.</p>
+<p>Repositorio <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a>: herramienta <code>kits/nics/auto/</code> (README con formato y límites; runbook en el README raíz), reglas <code>reglas.yaml</code>, evidencia y dashboard <code>kits/nics/app_veredicto.py</code>, CSV de entrega <code>out/nics_entrega/entrega.csv</code>, 29 tests. Las claves de WireGuard nunca se subieron al repo.</p>
 
 <h2>6. Qué implica para quien defiende o ataca</h2>
 <ul>
