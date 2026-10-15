@@ -10,11 +10,12 @@
 **40 puertos abiertos; 14 se descartan por no estar disponibles (solo saludo y cierran, criterio de la organización,
 lista en `EXCLUIDOS` de `veredicto.py`). Los 26 disponibles, confirmados por interacción real** (no solo apariencia):
 **8 real, 14 honeypot clásico, 4 honeypot generativo (31885, 29082, 25589 y 40101).** Detalle completo, evidencia de cada puerto y niveles de confianza (con la regla de
-cómo leerlos) en `docs/writeup_nics.html` y en el dashboard:
+cómo leerlos) en `docs/writeup_nics.html` y en el dashboard (`entrega/dashboard.html`, se abre en el navegador).
+
+Para reconstruir el veredicto manual:
 
 ```bash
 .venv\Scripts\python -m kits.nics.veredicto         # -> out/nics_entrega/veredicto.csv y entrega.csv
-.venv\Scripts\streamlit run kits\nics\app_veredicto.py
 ```
 
 ### Lo que hizo falta para llegar ahí
@@ -33,7 +34,6 @@ de interacción real, puerto por puerto:
 | `barrido_generativo.py` | Barrido de los 26 servicios con los criterios de generativo (obediencia, prosa, variantes de ruta, latencia, métodos no-GET, shell SSH) |
 | `capturar_evidencia.py` | Captura petición → respuesta de cada prueba (inyección, variantes de ruta, métodos no-GET, shell SSH, saludo de los descartados) en `evidencia_pruebas.csv`, que el dashboard muestra por puerto |
 | `veredicto.py` | Consolida todo lo anterior en un único veredicto con método y evidencia por puerto |
-| `app_veredicto.py` | Dashboard con los 26 puertos disponibles, filtros, y por pestañas: resumen, evidencia completa por puerto, barrido de generativos, descartados y criterios |
 
 ### Generativos (31885, 29082, 25589, 40101): la lección de método del día
 
@@ -78,7 +78,6 @@ proceso hablando SSH, no que la shell de detrás lo sea.
 | `entrega.py` | Exportador al CSV `port,service,class` |
 | `veredicto.py` | Consolida todo en el veredicto final (fuente del dashboard y del CSV) |
 | `app.py` | Dashboard original, solo HTTP/HTTPS (24 puertos) |
-| `app_veredicto.py` | **Dashboard final, los 26 puertos disponibles** |
 | `testbed.py` | Banco de pruebas de ayer (3 servicios simulados), ver abajo |
 
 ## Banco de pruebas de ayer (14/10), referencia histórica

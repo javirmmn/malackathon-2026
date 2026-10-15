@@ -14,7 +14,7 @@ generativos** (con IA).
 | **Write-up** (3 páginas, con la evidencia de cada puerto y el anexo forense bonus) | [`docs/writeup_nics.pdf`](docs/writeup_nics.pdf) (fuente: [`.html`](docs/writeup_nics.html)) |
 | **CSV de entrega** (`port,service,class`; 1 = real, 2 = clásico, 3 = generativo; 26 filas) | [`entrega/entrega.csv`](entrega/entrega.csv) |
 | **Herramienta de clasificación automática** | [`kits/nics/auto/`](kits/nics/auto/) · cómo probarla: [runbook](#runbook-probar-el-clasificador-automático) |
-| **Dashboard** con la evidencia de cada puerto | `.venv\Scripts\streamlit run kits\nics\app_veredicto.py` |
+| **Dashboard** con el resultado y la evidencia de cada puerto | [`entrega/dashboard.html`](entrega/dashboard.html) · un solo fichero HTML: descárgalo y ábrelo con doble clic en el navegador (no hay que instalar nada) |
 | Veredicto confirmado a mano, con la evidencia de cada puerto | [`entrega/veredicto.csv`](entrega/veredicto.csv) |
 
 ## Runbook: probar el clasificador automático
@@ -108,9 +108,9 @@ Las reglas están en [`kits/nics/auto/reglas.yaml`](kits/nics/auto/reglas.yaml) 
 
 | Carpeta | Contenido |
 |---|---|
-| `entrega/` | CSV de entrega, veredicto manual y los datos que usa el dashboard |
+| `entrega/` | CSV de entrega, **dashboard** (`dashboard.html`), veredicto manual y la evidencia capturada (`datos/`) |
 | `kits/nics/auto/` | **La herramienta de clasificación automática** (descubrimiento, sondas, reglas, salida) |
-| `kits/nics/` | Proceso manual con el que se llegó al veredicto (sondas, interacción por protocolo) y el dashboard |
+| `kits/nics/` | Proceso manual con el que se llegó al veredicto (sondas, interacción por protocolo) |
 | `docs/` | Write-up de la entrega, plan del equipo y plantillas de la presentación |
 | `tests/` | Pruebas automáticas (`.venv\Scripts\python -m pytest`) |
 | `common/` | Utilidades compartidas (lectura de ficheros, gráficos, PDF) |

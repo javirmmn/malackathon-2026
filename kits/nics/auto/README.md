@@ -64,7 +64,7 @@ Editar `reglas.yaml` y ejecutar `--reclasificar` reclasifica sin volver a sondea
 ## Ficheros de salida (solo con `--guardar`, en `out/nics_auto/`)
 
 Sin `--guardar` no se escribe nada. El dashboard `kits/nics/app_auto.py` solo sirve si se ha guardado antes; el CSV y el
-dashboard de entrega son los del proceso manual (`entrega/entrega.csv`, `kits/nics/app_veredicto.py`).
+dashboard de entrega son los del proceso manual (`entrega/entrega.csv`, `entrega/dashboard.html`).
 
 | Fichero | Contenido |
 |---|---|
