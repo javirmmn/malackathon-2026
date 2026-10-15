@@ -26,15 +26,19 @@ CONFIRMADOS = {
     34818: ("honeypot_clasico", 0.95, "Interacción real: mismo comportamiento que el puerto 24226 (mismo banner), "
             "corta la conexión a medio protocolo."),
     # SSH: banner OpenSSH_9.2p1 Debian -> protocolo completo, claves de host distintas
-    36474: ("real", 0.65, "Interacción real: completó el intercambio de claves criptográfico correctamente "
-            "varias veces durante el día, con clave de host propia y estable (ssh-ed25519 SHA256:h8kCtc...). "
-            "Aviso: en la última ronda de pruebas (repetir conexiones varias veces seguidas) empezó a fallar "
-            "de forma intermitente (timeout / connection reset) mientras su gemelo 40101 seguía funcionando "
-            "perfecto. Puede ser un límite de conexiones rápidas (normal en un servidor real cuidado) o una "
-            "inestabilidad real del servicio — no se ha podido resolver sin seguir insistiendo en el mismo "
-            "puerto, que se ha evitado por precaución. Confianza bajada; revisar de nuevo antes de la entrega."),
-    40101: ("real", 0.75, "Interacción real: completa el intercambio de claves criptográfico correctamente. "
-            "Clave de host propia y distinta de la del puerto 36474, como se espera de dos procesos reales."),
+    # CORREGIDO tras aviso de un compañero + verificación propia con acceso real a la shell.
+    # El intercambio de claves criptográfico completo (lo que nos hizo creer que eran reales) solo prueba
+    # que hay un proceso que habla el protocolo SSH -- no prueba que la SHELL de detrás sea de verdad.
+    40101: ("honeypot_clasico", 0.95, "Interacción real: entra con la credencial trivial root:toor (un "
+            "servidor real bien administrado no deja entrar a root con una contraseña tan débil). Dentro, "
+            "la shell es una emulación que no entiende bash de verdad: 'echo $((7*13))' da "
+            "'bash: 7*13: command not found' (no evalúa la aritmética) y 'type cat' dice 'cat is a shell "
+            "builtin' (falso: cat nunca es un builtin). Confirmado dos veces, en conexiones distintas."),
+    36474: ("honeypot_clasico", 0.8, "Mismo software y versión exactos que el puerto 40101 (OpenSSH 9.2p1 "
+            "Debian-2+deb12u3), con el mismo tipo de fallo descrito de forma independiente por un compañero "
+            "del equipo (shell emulada: aritmética y 'type' incorrectos). No se ha podido repetir la prueba "
+            "en persona porque el puerto ha dejado de responder (ver apartado de limitaciones) -- clasificado "
+            "por el patrón compartido con 40101, no por verificación propia completa."),
     # POP3 Dovecot: banner correcto, no responde a USER
     28827: ("honeypot_clasico", 0.9, "Interacción real: responde al saludo (\"+OK Dovecot ready.\") pero no contesta "
             "nada al comando USER, que un Dovecot real respondería al instante."),
@@ -115,15 +119,17 @@ CONFIRMADOS = {
             "fabricado (375 documentos, primer ID PED-2026-00042) tanto preguntando por el índice real "
             "pedidos-2026 como por uno inventado: no consulta datos reales, los genera. Con GET simple "
             "(sin cuerpo) el contenido parecía fijo -- el camino POST, el habitual, es el que lo delata."),
-    # Grafana (login): /api/health coincide en los dos, pero al probar más endpoints se ve la diferencia real
-    25461: ("honeypot_clasico", 0.85, "Interacción real: responde 401 Unauthorized a TODO, incluso a "
-            "/api/frontend/settings, que en un Grafana real es público (se usa antes de iniciar sesión). "
-            "Negar todo por igual, sin distinguir por endpoint, es un patrón de respuesta única, no de una "
-            "aplicación real. Coincidir en /api/health con el puerto 29082 no bastaba: es un endpoint tan "
-            "básico que un señuelo simple también lo clava."),
-    29082: ("real", 0.9, "Interacción real: a diferencia del puerto 25461, distingue por endpoint — /api/org "
-            "da datos reales de la organización (\"Ondalux Logística\"), /api/search da paneles reales y "
-            "coherentes con el negocio (rutas, temperatura de naves, stock por almacén)."),
+    # Grafana (login): CORREGIDO tras aviso de un compañero. Mi primera prueba miraba si "distinguía por
+    # endpoint", pero la prueba correcta es si CONOCE una ruta real concreta que solo existe en Grafana real.
+    25461: ("real", 0.9, "Interacción real: /api/admin/stats (ruta real de administración de Grafana) da "
+            "401 Unauthorized -- reconoce que la ruta existe y la protege, el comportamiento correcto de un "
+            "Grafana con acceso anónimo desactivado. Tiene además las cabeceras de seguridad de un despliegue "
+            "real (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection). Negar TODO, incluidas rutas "
+            "poco usadas, no es sospechoso: es lo que hace un Grafana real bien asegurado."),
+    29082: ("honeypot_clasico", 0.85, "Interacción real: /api/admin/stats da 404 -- esa ruta de Grafana no "
+            "está implementada en absoluto, no es que falte autenticación. Sin ninguna cabecera de seguridad "
+            "en /login. Que /api/org y /api/search devuelvan datos SIN pedir autenticación es la propia señal "
+            "de alarma: una app real no filtra esos datos sin login."),
     # Reconfirmación de los 2 catch-all originales (ya detectados el 14/10, hoy comprobado otra vez con una ruta distinta)
     39640: ("honeypot_clasico", 0.8, "Interacción real: respuesta byte a byte idéntica en / y en una ruta "
             "inventada — reconfirmado hoy con una ruta distinta a la de la detección original."),
