@@ -9,7 +9,7 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 
 - Red de "Ondalux Logística S.L.", único host alcanzable por la VPN: `10.66.0.1` (la tabla de rutas del túnel no da
   acceso a nada más). 40 puertos abiertos con `nmap` completo, cada uno en un puerto distinto. **14 se descartan como "no disponibles"** (solo saludo y cierran; aviso de la organización: solo cuentan servicios abiertos y DISPONIBLES; lista `EXCLUIDOS` en `veredicto.py`).
-- **Resultado final (26 disponibles): 8 real, 17 honeypot clásico, 1 honeypot generativo**, los 26 confirmados por **interacción
+- **Resultado final (26 disponibles): 8 real, 16 honeypot clásico, 2 honeypot generativo (31885, 29082)**, los 26 confirmados por **interacción
   real** (no solo sondas): `docs/writeup_nics.html` (write-up de 3 páginas) y `kits/nics/README.md` tienen el
   detalle completo. CSV de entrega: `out/nics_entrega/entrega.csv` (`port,service,class`).
 - Reconstruir el veredicto tras cualquier cambio: `.venv/Scripts/python.exe -m kits.nics.veredicto`. Dashboard:
