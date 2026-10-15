@@ -184,6 +184,12 @@ def ejecutar(host: str = "10.66.0.1", puertos: list[int] | None = None, rango: t
     guardar(df, servicios, descartados, salida)
     print(f"\nResultado ({time.time() - t0:.0f} s) -> {salida}")
     print(df["clase"].value_counts().rename("nº").to_string())
+    print("\nClasificación por puerto:")
+    tabla = df[["port", "service", "producto", "clase", "confianza", "revisar"]].copy()
+    tabla["revisar"] = tabla["revisar"].map({True: "revisar", False: ""})
+    print(tabla.to_string(index=False))
+    if descartados:
+        print("\nNo disponibles (fuera de la clasificación): " + ", ".join(str(d["port"]) for d in sorted(descartados, key=lambda d: d["port"])))
     print(f"\nA revisar (confianza baja): {int(df['revisar'].sum())}")
     if validar_contra:
         v = validar(df, salida, validar_contra)
