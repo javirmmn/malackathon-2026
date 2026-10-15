@@ -11,7 +11,7 @@ cierran). De los 26 disponibles, confirmados por interacción real: 8 real, 14 h
 | | |
 |---|---|
 | **Probar la herramienta automática** (runbook paso a paso) | [Runbook: probar el clasificador automático](#runbook-probar-el-clasificador-automático) |
-| Write-up (3 páginas, con la evidencia de cada puerto) | [`docs/writeup_nics.html`](docs/writeup_nics.html) |
+| Write-up (3 páginas, con la evidencia de cada puerto y el anexo forense bonus) | [`docs/writeup_nics.html`](docs/writeup_nics.html) · [`docs/writeup_nics.pdf`](docs/writeup_nics.pdf) |
 | Cómo se hizo (herramientas, metodología) | [`kits/nics/README.md`](kits/nics/README.md) |
 | CSV de entrega (`port,service,class`) | `out/nics_entrega/entrega.csv` (se genera con `python -m kits.nics.veredicto`) |
 | Dashboard con los 26 puertos disponibles | `.venv\Scripts\streamlit run kits\nics\app_veredicto.py` |
@@ -120,7 +120,7 @@ y apartado 2 del [write-up](docs/writeup_nics.html). Las reglas están en
   En Windows se usa siempre el lanzador `py`, no `python`.
 - **Una de las dos:** [GitHub Desktop](https://desktop.github.com/) **o** [Git](https://git-scm.com/download/win)
   (comprobar con `git --version`).
-- Haber **aceptado la invitación** al repo (es privado) y tener la sesión de GitHub iniciada.
+- Tener la sesión de GitHub iniciada (el repo es público; solo hace falta cuenta para poder hacer *push*).
 
 **Pasos 1 y 2: clonar el repo y abrir una terminal en su carpeta**
 

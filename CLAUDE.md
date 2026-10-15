@@ -44,7 +44,7 @@ con `--a-oracle PREFIJO`.
 - venv en `.venv` (Python 3.13). Usar siempre `.venv/Scripts/python.exe` (tests: `-m pytest`, 16 en verde).
 - `common/` (db, dataio, charts, plantilla Streamlit) se reutiliza en los kits. pandas 3.x: las columnas de texto
   no son `object`, usar `pd.api.types`.
-- Repo privado en GitHub: `javirmmn/malackathon-2026` (remoto `origin`, rama `main`). `gh` está en
+- Repo público en GitHub: `javirmmn/malackathon-2026` (remoto `origin`, rama `main`). `gh` está en
   `C:\Program Files\GitHub CLI\gh.exe` (no está en el PATH de sesiones antiguas).
 - Presentación: plantillas en `docs/presentacion/` (nics, mercedes, generica; huecos en `<mark>`), diagramas en
   `docs/arquitectura/`.
