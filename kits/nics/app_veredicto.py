@@ -81,6 +81,25 @@ st.plotly_chart(
     width="stretch",
 )
 
+st.header("Barrido de generativos")
+st.caption("Qué delata a un LLM (no solo que algo cambie): obedece instrucciones metidas en la petición (ruta, query, "
+           "cabeceras, cuerpo, shell SSH), responde en prosa, da una salida distinta por variante de ruta "
+           "(salta la caché por ruta), tarda segundos en rutas nuevas o solo actúa con métodos no-GET. "
+           "`python -m kits.nics.barrido_generativo`")
+_bg = OUT / "barrido_generativo.csv"
+if _bg.exists():
+    bg = pd.read_csv(_bg, encoding="utf-8-sig").fillna("")
+    bg["clasificación"] = bg["clase"].map(ETIQUETA)
+    cols = [c for c in ["port", "service", "clasificación", "n_flags", "flag_obedece", "flag_prosa", "flag_variantes",
+                        "flag_metodos", "flag_latencia", "obedece", "prosa_ante_instruccion"] if c in bg.columns]
+    st.dataframe(bg[cols].sort_values(["n_flags", "port"], ascending=[False, True]), width="stretch", hide_index=True,
+                 column_config={"port": st.column_config.NumberColumn("Puerto", format="%d"),
+                                "n_flags": st.column_config.NumberColumn("señales")})
+    st.caption("Ojo: variantes de ruta distintas en un servicio real (Elasticsearch, Grafana) son errores técnicos "
+               "estructurados, no prosa; por eso 22739 y 25461 se revisaron a mano y siguen siendo reales.")
+else:
+    st.info("Aún no hay barrido: `python -m kits.nics.barrido_generativo`")
+
 st.header("Detalle de un puerto")
 puerto = st.selectbox("Puerto", vista["port"].tolist() or v["port"].tolist())
 fila = v[v["port"] == puerto].iloc[0]

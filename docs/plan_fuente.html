@@ -59,7 +59,7 @@
 
 <div class="box ok">
   <strong class="t">Estado: clasificación terminada.</strong> NICS Lab, 26/26 servicios disponibles confirmados por interacción real
-  (14 de los 40 puertos se descartan: solo saludo y cierran) — 8 real, 16 honeypot clásico, 2 generativos. Write-up (<code>docs/writeup_nics.html</code>) y CSV de entrega
+  (14 de los 40 puertos se descartan: solo saludo y cierran) — 8 real, 14 honeypot clásico, 4 generativos. Write-up (<code>docs/writeup_nics.html</code>) y CSV de entrega
   (<code>out/nics_entrega/entrega.csv</code>) listos. <b>Entrega por el Campus Virtual antes de las 20:00.</b> Si no
   hay entrega, el equipo no cuenta.
 </div>
@@ -414,7 +414,7 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
 <div class="box ok">
 <strong class="t">Clasificación terminada (15/10):</strong> 40 puertos abiertos (<code>nmap</code> completo sobre
 <code>10.66.0.1</code>, 65.535 puertos); 14 se descartan por no estar disponibles (solo saludo y cierran), y los 26 restantes confirmados por <b>interacción real</b>, no solo apariencia —
-<b>8 real, 16 honeypot clásico, 2 honeypot generativo</b>. Detalle y evidencia completa de cada puerto en
+<b>8 real, 14 honeypot clásico, 4 honeypot generativo</b>. Detalle y evidencia completa de cada puerto en
 <code>docs/writeup_nics.html</code> (3 páginas) y en el dashboard (<code>kits/nics/app_veredicto.py</code>).
 CSV de entrega en <code>out/nics_entrega/entrega.csv</code> (<code>port,service,class</code>).
 </div>
@@ -427,8 +427,9 @@ CSV de entrega en <code>out/nics_entrega/entrega.csv</code> (<code>port,service,
   <li><b>Interacción real</b> (hecha hoy, lo decisivo): handshake SSH completo, comandos válidos de protocolo,
   formularios, buscadores, APIs con casos límite (pedir algo que <u>no</u> existe), y <b>repetir la misma petición
   <code>GET</code>/<code>POST</code> varias veces</b> para ver si algo que debería ser fijo varía — así se encontró
-  los generativos (un Elasticsearch y un Grafana falsos que <b>obedecen instrucciones</b> metidas en la ruta, responden
-  en lenguaje natural y tardan segundos en rutas nuevas; hay caché por ruta, que se salta variando la ruta).</li>
+  los 4 generativos (un Elasticsearch, un Grafana, un blog y una shell SSH falsos que <b>obedecen instrucciones</b> metidas en la
+  petición, responden en lenguaje natural y tardan segundos en rutas nuevas; hay caché por ruta, que se salta variando la ruta,
+  y alguno solo actúa con métodos no-GET).</li>
   <li><b>Revisión por pares:</b> un compañero, con su propia clasificación, corrigió 2 errores nuestros (una pareja
   de Grafana invertida y un par SSH con shell emulada detrás), verificados antes de aceptarlos.</li>
 </ol>

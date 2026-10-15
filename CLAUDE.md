@@ -9,11 +9,13 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 
 - Red de "Ondalux Logística S.L.", único host alcanzable por la VPN: `10.66.0.1` (la tabla de rutas del túnel no da
   acceso a nada más). 40 puertos abiertos con `nmap` completo, cada uno en un puerto distinto. **14 se descartan como "no disponibles"** (solo saludo y cierran; aviso de la organización: solo cuentan servicios abiertos y DISPONIBLES; lista `EXCLUIDOS` en `veredicto.py`).
-- **Resultado final (26 disponibles): 8 real, 16 honeypot clásico, 2 honeypot generativo (31885, 29082)**, los 26 confirmados por **interacción
+- **Resultado final (26 disponibles): 8 real, 14 honeypot clásico, 4 honeypot generativo (31885, 29082, 25589, 40101)**, los 26 confirmados por **interacción
   real** (no solo sondas): `docs/writeup_nics.html` (write-up de 3 páginas) y `kits/nics/README.md` tienen el
   detalle completo. CSV de entrega: `out/nics_entrega/entrega.csv` (`port,service,class`).
 - Reconstruir el veredicto tras cualquier cambio: `.venv/Scripts/python.exe -m kits.nics.veredicto`. Dashboard:
   `.venv/Scripts/streamlit run kits/nics/app_veredicto.py`.
+  Barrido de generativos: `-m kits.nics.barrido_generativo` (obediencia a instrucciones, variantes de ruta por la caché,
+  métodos no-GET, shell SSH).
 - Confianza en `veredicto.py`: regla documentada en la cabecera del fichero (no es una probabilidad estadística).
 - Las claves de WireGuard y el fichero de configuración **nunca se suben al repo ni se pegan en el chat** (en
   `.gitignore`: `*.conf`, `*wireguard*`).
