@@ -22,7 +22,7 @@ from .productos import sondear_productos
 from .proto import CREDS_TRIVIALES, sondear_protocolo, sondear_ssh
 
 SALIDA = OUT_DIR / "nics_auto"
-MANUAL = OUT_DIR / "nics_entrega" / "veredicto.csv"
+MANUAL = OUT_DIR.parent / "entrega" / "veredicto.csv"   # veredicto confirmado a mano, versionado en el repo
 
 
 def _alcance(host: str, autorizado: bool) -> None:

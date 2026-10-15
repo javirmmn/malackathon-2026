@@ -165,3 +165,28 @@ def test_por_defecto_no_escribe_ningun_fichero(tmp_path, capsys):
              guardar_datos=True)
     assert (tmp_path / "clasificacion.csv").exists()
     srv.shutdown()
+
+
+def test_csv_de_entrega_tiene_la_estructura_pedida():
+    """El CSV que se entrega: cabecera port,service,class; una fila por servicio; class en {1,2,3}; sin duplicados."""
+    import pandas as pd
+    from pathlib import Path
+
+    f = Path(__file__).resolve().parents[1] / "entrega" / "entrega.csv"
+    assert f.read_text(encoding="utf-8").splitlines()[0] == "port,service,class"
+    df = pd.read_csv(f)
+    assert len(df) == 26 and df["port"].is_unique and not df.isna().any().any()
+    assert set(df["class"]) <= {1, 2, 3} and set(df["service"]) <= {"HTTP", "HTTPS", "SSH"}
+    assert df["class"].value_counts().sort_index().tolist() == [8, 14, 4]
+
+
+def test_el_veredicto_manual_versionado_coincide_con_el_csv_de_entrega():
+    import pandas as pd
+    from pathlib import Path
+
+    from kits.nics.auto.pipeline import MANUAL
+
+    e = pd.read_csv(Path(__file__).resolve().parents[1] / "entrega" / "entrega.csv")
+    v = pd.read_csv(MANUAL, encoding="utf-8-sig")
+    m = e.merge(v[["port", "class"]], on="port", suffixes=("_csv", "_veredicto"))
+    assert len(m) == 26 and (m["class_csv"] == m["class_veredicto"]).all()

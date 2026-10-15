@@ -13,7 +13,7 @@ cierran). De los 26 disponibles, confirmados por interacción real: 8 real, 14 h
 | **Probar la herramienta automática** (runbook paso a paso) | [Runbook: probar el clasificador automático](#runbook-probar-el-clasificador-automático) |
 | Write-up (3 páginas, con la evidencia de cada puerto y el anexo forense bonus) | [`docs/writeup_nics.html`](docs/writeup_nics.html) · [`docs/writeup_nics.pdf`](docs/writeup_nics.pdf) |
 | Cómo se hizo (herramientas, metodología) | [`kits/nics/README.md`](kits/nics/README.md) |
-| CSV de entrega (`port,service,class`) | `out/nics_entrega/entrega.csv` (se genera con `python -m kits.nics.veredicto`) |
+| **CSV de entrega** (`port,service,class`, 26 filas) | [`entrega/entrega.csv`](entrega/entrega.csv) (con el [veredicto manual](entrega/veredicto.csv) de referencia) |
 | Dashboard con los 26 puertos disponibles | `.venv\Scripts\streamlit run kits\nics\app_veredicto.py` |
 
 Los kits de Mercedes-Benz y NTT DATA (preparados el 14/10, antes de saber qué reto nos tocaba) ya no se usan; se
@@ -75,7 +75,7 @@ Validación contra el veredicto manual: 4/4 coinciden (100%)
 
 Escanea los 65.535 puertos (~2,5 min), identifica el protocolo de cada puerto abierto, descarta los no disponibles,
 sondea los demás y clasifica. Debe terminar con **8 reales, 14 clásicos, 4 generativos** y, si existe el veredicto manual
-(`out\nics_entrega\veredicto.csv`), con `Validación contra el veredicto manual: 26/26 coinciden`.
+(`entrega\veredicto.csv`, incluido en el repo), con `Validación contra el veredicto manual: 26/26 coinciden`.
 
 ### Cómo leer la salida
 
@@ -161,7 +161,7 @@ Su runbook (instalación, pruebas, barrido completo, cómo leer la salida y vari
 .venv\Scripts\streamlit run kits\nics\app_veredicto.py
 ```
 
-El primer comando reconstruye `out\nics_entrega\entrega.csv` y `veredicto.csv` a partir de todo lo investigado hoy
+El primer comando reconstruye `out\nics_entrega\entrega.csv` y `veredicto.csv` (copias versionadas en `entrega\`) a partir de todo lo investigado hoy
 (sondas automáticas + interacción real). El segundo abre el dashboard con los 26 puertos disponibles, su
 clasificación, la confianza y la evidencia de cada uno. Detalle completo en
 [`kits/nics/README.md`](kits/nics/README.md).
