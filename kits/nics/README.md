@@ -26,8 +26,9 @@ de interacción real, puerto por puerto:
 | `forense_extra.py` | Certificado TLS compartido, latencia frente al tamaño de la respuesta, coherencia de los recursos enlazados |
 | `martillo_consistencia.py` | Repite la **misma** petición (`GET`/`POST`, mismo cuerpo) varias veces en cada ruta conocida de cada puerto, y avisa si algo que debería ser fijo varía — la prueba que encontró al primer generativo (insuficiente sola: no ve la caché por ruta; ver abajo) |
 | `barrido_generativo.py` | Barrido de los 26 servicios con los criterios de generativo (obediencia, prosa, variantes de ruta, latencia, métodos no-GET, shell SSH) |
+| `capturar_evidencia.py` | Captura petición → respuesta de cada prueba (inyección, variantes de ruta, métodos no-GET, shell SSH, saludo de los descartados) en `evidencia_pruebas.csv`, que el dashboard muestra por puerto |
 | `veredicto.py` | Consolida todo lo anterior en un único veredicto con método y evidencia por puerto |
-| `app_veredicto.py` | Dashboard con los 26 puertos disponibles, filtros y detalle de cada uno |
+| `app_veredicto.py` | Dashboard con los 26 puertos disponibles, filtros, y por pestañas: resumen, evidencia completa por puerto, barrido de generativos, descartados y criterios |
 
 ### Generativos (31885, 29082, 25589, 40101): la lección de método del día
 

@@ -15,7 +15,8 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 - Reconstruir el veredicto tras cualquier cambio: `.venv/Scripts/python.exe -m kits.nics.veredicto`. Dashboard:
   `.venv/Scripts/streamlit run kits/nics/app_veredicto.py`.
   Barrido de generativos: `-m kits.nics.barrido_generativo` (obediencia a instrucciones, variantes de ruta por la caché,
-  métodos no-GET, shell SSH).
+  métodos no-GET, shell SSH). Evidencia concreta para el dashboard: `-m kits.nics.capturar_evidencia` (orden: veredicto →
+  barrido_generativo → capturar_evidencia → streamlit).
 - Confianza en `veredicto.py`: regla documentada en la cabecera del fichero (no es una probabilidad estadística).
 - Las claves de WireGuard y el fichero de configuración **nunca se suben al repo ni se pegan en el chat** (en
   `.gitignore`: `*.conf`, `*wireguard*`).
