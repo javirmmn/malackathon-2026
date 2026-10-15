@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>NICS Lab · Infiltrados en la red</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: #1d2433; font-size: 9.6pt; line-height: 1.38; margin: 0; }
+  h1 { font-size: 18pt; margin: 0 0 2px; color: #0b5cad; }
+  h2 { font-size: 12.5pt; margin: 10px 0 5px; padding-bottom: 2px; border-bottom: 1.5px solid #0b5cad; color: #0b5cad; }
+  h3 { font-size: 10.3pt; margin: 7px 0 3px; }
+  p { margin: 3px 0 5px; }
+  ul, ol { margin: 2px 0 5px; padding-left: 16px; }
+  li { margin: 1px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 8.8pt; }
+  th, td { border: 1px solid #d9dee7; padding: 3px 5px; text-align: left; vertical-align: top; }
+  th { background: #e8f1fb; }
+  code { font-family: Consolas, monospace; font-size: 8.3pt; background: #f2f4f8; padding: 0 2px; border-radius: 2px; }
+  .subtitle { color: #5b6475; font-size: 9.5pt; margin: 0 0 6px; }
+  .kpis { display: flex; gap: 8px; margin: 6px 0; }
+  .kpi { flex: 1; border: 1px solid #d9dee7; border-radius: 6px; padding: 5px 8px; text-align: center; }
+  .kpi b { display: block; font-size: 15pt; color: #0b5cad; }
+  .kpi span { font-size: 7.8pt; color: #5b6475; }
+  .pend { background: #fdf0e8; border: 1px solid #f2c6ab; border-radius: 5px; padding: 5px 8px; margin: 4px 0; }
+  .pend b { color: #b4410c; }
+  .mark { background: #fff2a8; }
+</style>
+</head>
+<body>
+
+<h1>Infiltrados en la red: encuentra a la IA impostora</h1>
+<p class="subtitle">Equipo <span class="mark">[nº equipo / nombre]</span> · <span class="mark">[nombres de los 4 miembros]</span> · Reto NICS Lab, III Malackathon 2026 · Red de Ondalux Logística S.L.</p>
+
+<div class="kpis">
+  <div class="kpi"><b>40</b><span>servicios abiertos</span></div>
+  <div class="kpi"><b class="mark">34</b><span>clasificados reales</span></div>
+  <div class="kpi"><b class="mark">6</b><span>honeypot clásico</span></div>
+  <div class="kpi"><b class="mark">[?]</b><span>honeypot generativo</span></div>
+</div>
+
+<h2>1. Metodología</h2>
+<p><b>Acceso:</b> túnel WireGuard del equipo (IP <code>10.66.8.M</code>). La tabla de rutas del túnel solo enruta tráfico hacia nuestra propia IP y hacia <code>10.66.0.1</code>; ese host es el único objetivo real alcanzable, y concentra todos los servicios del reto en distintos puertos.</p>
+<p><b>Descubrimiento:</b> <code>nmap</code> (TCP connect, <code>-Pn</code>) contra <code>10.66.0.1</code>, primero los 1000 puertos más comunes (ninguno abierto) y después los 65.535 completos, a ritmo moderado para no sobrecargar la infraestructura compartida del evento. Resultado: <b>40 puertos abiertos</b> en rangos altos (12000–59000), con detección de versión (<code>-sV</code>) para identificar el protocolo de cada uno.</p>
+<p><b>Clasificación automatizada</b> (herramienta propia, repositorio del equipo, carpeta <code>kits/nics/</code>):</p>
+<ul>
+  <li><b>24 servicios web</b> (HTTP/HTTPS): batería de sondas repetidas — consistencia de la misma petición, ruta inventada con un token aleatorio (para detectar contenido inventado), endpoint de API inventado, cabeceras, latencia y firmas de software conocido. Clasificador por reglas con pesos, confianza y evidencia por servicio.</li>
+  <li><b>16 servicios no-web</b> (SSH, FTP, Telnet, SMTP, POP3, IMAP): captura del banner inicial repetida 5 veces, comparación de consistencia, firmas de honeypots conocidos (Cowrie, Kippo, Dionaea) y detección de banners <b>idénticos entre dos puertos distintos</b> (ver apartado 3).</li>
+</ul>
+<p class="pend"><b>Corrección durante el análisis:</b> el clasificador marcó inicialmente 3 nodos Elasticsearch como posible honeypot generativo, porque su respuesta de error (<code>index_not_found_exception</code>) repite el nombre de la ruta pedida — igual que haría una IA. Al revisar el contenido a mano se confirmó que es el formato de error estándar de Elasticsearch, no texto inventado, y se corrigió la regla (ahora reconoce la firma de APIs reales conocidas). Se documenta porque ilustra el riesgo de fiarse solo de reglas automáticas sin revisar la evidencia.</p>
+
+<h2>2. Resultados por clase</h2>
+<h3>Clase 1 — Real (34 servicios)</h3>
+<ul>
+  <li><b>3 nodos Elasticsearch</b> (<code>ondalux-search</code>, puertos <code>22739, 31885, 50096</code>): responden con el formato estándar de la API, código de error coherente con el framework.</li>
+  <li><b>Gitea</b> (gestor de repositorios Git): identificado por el tema de interfaz <code>gitea-auto</code> en el HTML.</li>
+  <li><b>18 servicios HTTP/HTTPS</b> con páginas corporativas en español (plantilla "Ondalux" consistente), redirecciones a <code>/login</code> y una API <code>ondalux-inventory v2.4.0</code>: todos devuelven 404 en rutas inventadas y respuestas deterministas ante la misma petición repetida.</li>
+  <li><b>12 servicios no-web</b> (SSH, FTP, Telnet, SMTP, POP3, IMAP) con banners estándar de software real (OpenSSH, Postfix, Dovecot, FileZilla Server) sin firma de honeypot conocida.</li>
+</ul>
+
+<h3>Clase 2 — Honeypot clásico (6 servicios)</h3>
+<p>Los 6 son HTTP en texto plano (sin TLS), con Apache 2.2.22, IIS 10.0 y nginx 1.25.3. La evidencia es la misma en los 6: <b>responden exactamente igual a cualquier ruta</b>, incluida una inventada con un token aleatorio — comportamiento típico de un señuelo con una sola página fija, no de una aplicación real con rutas distintas.</p>
+
+<h3>Clase 3 — Honeypot generativo (<span class="mark">pendiente de confirmar</span>)</h3>
+<p class="pend"><b>Sin confirmar todavía.</b> Ningún servicio ha dado, con sondas superficiales, la señal característica de un backend generativo (contenido distinto en la misma petición repetida, latencia alta e irregular, o marcas de texto de un LLM). El enunciado avisa explícitamente de que <i>"un buen honeypot engaña a simple vista; se delata cuando lo usas en serio"</i> — es decir, hace falta interacción real (login, comandos), no solo peticiones de lectura.</p>
+
+<h2>3. Parejas idénticas: la pista más fuerte pendiente de resolver</h2>
+<p>8 servicios forman 4 parejas con <b>el mismo banner o contenido, byte a byte, en dos puertos distintos</b>. Es la evidencia más sospechosa de todo el inventario y la prioridad para la interacción manual que pide el enunciado:</p>
+<table>
+  <tr><th>Puertos</th><th>Protocolo</th><th>Coincidencia exacta</th></tr>
+  <tr><td><code>24226</code> / <code>34818</code></td><td>SSH</td><td><code>OpenSSH_8.2p1 Ubuntu-4ubuntu0.11</code></td></tr>
+  <tr><td><code>36474</code> / <code>40101</code></td><td>SSH</td><td><code>OpenSSH_9.2p1 Debian-2+deb12u3</code></td></tr>
+  <tr><td><code>28827</code> / <code>51629</code></td><td>POP3</td><td><code>+OK Dovecot ready.</code></td></tr>
+  <tr><td><code>45025</code> / <code>53020</code></td><td>Telnet</td><td>Misma negociación binaria inicial</td></tr>
+  <tr><td><code>56221</code> / <code>20150</code></td><td>HTTP</td><td><code>{"service":"ondalux-inventory","version":"2.4.0",...}</code> idéntico</td></tr>
+</table>
+<p><b>Hipótesis:</b> en cada pareja, un puerto es el servicio real y el otro un clon (posiblemente generativo) que copia su saludo inicial al milímetro. Solo se distinguen interactuando de verdad: iniciar sesión, comparar la clave de host SSH, probar el endpoint <code>/docs</code> de la API, enviar comandos válidos.</p>
+<p class="mark">[Completar cuando se pueda volver a conectar: qué diferencia se encontró en cada pareja y cuál de los dos puertos es el señuelo]</p>
+
+<h2>4. Herramienta propia</h2>
+<p>Kit de clasificación hecho por el equipo antes del reto y adaptado hoy a la red real (repositorio privado del equipo, carpeta <code>kits/nics/</code>): inventario y control de alcance, recolector de evidencias HTTP asíncrono, sondeador de protocolos no-web, clasificador por reglas editable sin recodificar (<code>rules.yaml</code>), dashboard en Streamlit y exportador directo al formato de entrega. Las reglas y los pesos usados, con el detalle de cada evidencia, están documentados y son reproducibles.</p>
+
+<h2>5. Limitaciones</h2>
+<ul>
+  <li>Clasificación basada en sondas de lectura, sin interacción autenticada (por las 8 parejas pendientes, apartado 3).</li>
+  <li>La prueba de "comando inválido" en POP3/SMTP/FTP no obtuvo respuesta de ningún servidor en 15 s; puede ser un límite de la sonda o del servidor — pendiente de revisar.</li>
+  <li class="mark">[Si hubo corte de red: anotar cuánto tiempo y si afectó a la cobertura final]</li>
+</ul>
+
+</body>
+</html>

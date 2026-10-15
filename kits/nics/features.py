@@ -60,6 +60,18 @@ def service_features(ev: pd.DataFrame, rules: dict) -> pd.DataFrame:
         )
         firmas = _matches(rules.get("firmas_honeypot", []), all_text)
         llm = _matches(rules.get("marcas_llm", []), gen_text)
+        api_real = _matches(rules.get("firmas_api_real", []), gen_text)
+        # patrón genérico: JSON con esquema de error estructurado y consistente (no prosa generada)
+        for body in pd.concat([root, nonex, api])["cuerpo"].fillna(""):
+            try:
+                data = json.loads(body)
+            except (json.JSONDecodeError, TypeError):
+                continue
+            keys = set(data) if isinstance(data, dict) else (set(data[0]) if data and isinstance(data[0], dict) else set())
+            err = data.get("error") if isinstance(data, dict) else None
+            if {"timestamp", "status", "error", "path"} <= keys or (isinstance(err, dict) and "type" in err):
+                api_real.append("esquema de error estructurado (framework real)")
+                break
         lat = ok["latencia_ms"].astype(float).sort_values()
         lat = lat.iloc[: max(2, len(lat) - max(1, len(lat) // 20))]  # sin el 5 % más lento (abrir conexión, picos)
 
@@ -77,6 +89,8 @@ def service_features(ev: pd.DataFrame, rules: dict) -> pd.DataFrame:
             "catch_all": bool(nonex_status == 200 and nonex_vs_root >= 95),
             "eco_token_200": bool(eco and nonex_status == 200),
             "api_json_inventado": bool(api_json),
+            "firma_api_real": len(api_real),
+            "_firma_api_real_txt": ", ".join(api_real),
             "latencia_media_ms": round(lat.mean(), 1),
             "latencia_std_ms": round(lat.std(ddof=0), 1),
             "latencia_cv": round(lat.std(ddof=0) / lat.mean(), 3) if lat.mean() else 0.0,

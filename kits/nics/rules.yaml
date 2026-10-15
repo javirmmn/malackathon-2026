@@ -22,6 +22,8 @@ reglas:
      evidencia: "Responde 200 a una ruta inventada y su contenido menciona el nombre inventado"}
   - {id: G4, clase: honeypot_generativo, variable: api_json_inventado, op: "==", valor: true, peso: 1.5,
      evidencia: "Devuelve un JSON con datos para un endpoint de API que no existe"}
+  - {id: G4b, clase: real, variable: firma_api_real, op: ">", valor: 0, peso: 4.5,
+     evidencia: "El JSON tiene el formato de un framework/API real conocido: {_firma_api_real_txt} (no es texto inventado por un LLM)"}
   - {id: G5, clase: honeypot_generativo, variable: latencia_media_ms, op: ">", valor: 400, peso: 1.5,
      evidencia: "Latencia alta, típica de generar texto ({latencia_media_ms:.0f} ms de media)"}
   - {id: G6, clase: honeypot_generativo, variable: latencia_irregular, op: "==", valor: true, peso: 1.0,
@@ -55,6 +57,15 @@ reglas:
 
 # Patrones (expresiones regulares, sin distinguir mayúsculas) que se buscan en cabeceras y cuerpos.
 # Ampliad estas listas el jueves con lo que vayáis viendo en el entorno del reto.
+# Frases/campos que delatan una API real conocida (NO es un LLM, aunque "invente" un JSON de error)
+firmas_api_real:
+  - "cluster_name"
+  - "lucene_version"
+  - "you know, for search"
+  - "index_not_found_exception"
+  - "org\\.elasticsearch"
+  - "org\\.springframework"
+  - "whitelabel error page"
 firmas_honeypot:
   - "honeypot"
   - "glastopf"
