@@ -55,7 +55,16 @@
   <li><b>Latencia frente al tamaño de la respuesta</b> (huella típica de un backend generativo: tarda más cuanto más larga es la respuesta) en los servicios "real": ninguna correlación relevante (todas lejos de 1, varias negativas). Sin indicios de generación de texto.</li>
   <li><b>Coherencia de los recursos enlazados</b> (CSS/JS/imágenes de cada página "real"): cargan correctamente, salvo 1 de 12 en Gitea (normal en un sitio real).</li>
 </ul>
-<p class="pend">Las tres comprobaciones refuerzan los 13 servicios clasificados como reales, pero no han destapado ningún honeypot generativo.</p>
+<p class="pend">Las tres comprobaciones refuerzan los servicios clasificados como reales, pero no han destapado ningún honeypot generativo.</p>
+
+<p class="pend"><b>Revisión por el equipo:</b> probar un caso límite que debería fallar (buscar dentro de un
+índice inventado, no solo pedirlo) destapó 2 Elasticsearch mal clasificados y, al aplicar la misma prueba
+a los demás servicios con API, una pareja de Grafana invertida. En los 3 casos, lo que parecía "real" solo
+había pasado una comprobación superficial (un único endpoint sencillo) y fallaba al mirar más a fondo.
+Uno de los casos — <code>50096</code> — se inventa un resultado para una búsqueda imposible, pero
+<b>siempre el mismo</b> (mismo cliente, misma empresa, probado con 4 índices distintos): es una respuesta
+fija (clase 2), no una IA improvisando cada vez (clase 3). Tras esta revisión: <b>10 real, 30 honeypot
+clásico, 0 generativo confirmado.</b></p>
 
 <h2>3. Resultados por clase</h2>
 <h3>Clase 1 — Real (34 servicios)</h3>

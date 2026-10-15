@@ -80,18 +80,28 @@ CONFIRMADOS = {
     41328: ("honeypot_clasico", 0.85, "Interacción real: no responde nada a CAPABILITY, aunque el propio saludo "
             "ya incluye una lista de capacidades (patrón válido de Dovecot), el servidor no reacciona a nada más."),
     34282: ("honeypot_clasico", 0.85, "Interacción real: no responde nada al comando USER tras el saludo."),
-    # Elasticsearch: los 3 responden con datos reales y coherentes a consultas de verdad (_cat/indices, _cluster/health)
-    50096: ("real", 0.85, "Interacción real: _cat/indices y _cluster/health devuelven datos de clúster coherentes "
-            "y propios (índices pedidos-2026 y clientes)."),
-    22739: ("real", 0.85, "Interacción real: _cat/indices devuelve datos coherentes (índice eventos-almacen con "
-            "3141 documentos)."),
-    31885: ("real", 0.85, "Interacción real: _cat/indices devuelve datos coherentes (índice eventos-almacen con "
-            "721 documentos, cifra distinta de la del puerto 22739 — clúster que crece de forma independiente)."),
-    # Grafana (login): los dos responden correctamente a /api/health (endpoint real, público, sin login)
-    25461: ("real", 0.8, "Interacción real: /api/health (endpoint público de Grafana) responde correctamente con "
-            "versión y commit coherentes."),
-    29082: ("real", 0.8, "Interacción real: /api/health responde igual que el puerto 25461 (misma versión/commit; "
-            "posible instancia compartida o réplica, pero funcionalmente correcta en los dos)."),
+    # Elasticsearch: comprobación a fondo (aviso de un compañero) con una BÚSQUEDA real sobre un índice
+    # inventado, no solo pedir el índice. Un ES real rechaza la búsqueda (index_not_found_exception);
+    # aquí se ha destapado que 2 de los 3 no lo hacen bien.
+    22739: ("real", 0.95, "Interacción real: una búsqueda (_search) sobre un índice inventado da el error "
+            "correcto (index_not_found_exception, con la estructura exacta de un ES real: root_cause como "
+            "lista, status 404), igual en repeticiones y con distintos nombres de índice."),
+    31885: ("honeypot_clasico", 0.9, "Interacción real: la estructura del error está rota (status 500 en vez de "
+            "404, root_cause como objeto en vez de lista, la clave \"error\" aparece duplicada y mal anidada) "
+            "— un Elasticsearch real nunca devuelve esa forma. Error fijo y repetible, no varía entre intentos."),
+    50096: ("honeypot_clasico", 0.9, "Interacción real: al BUSCAR (no solo pedir) un índice inventado, en vez "
+            "de rechazar la búsqueda se inventa un resultado — pero es SIEMPRE el mismo (cliente CLI-0003, "
+            "\"Hortofrutícola del Guadalhorce S.A.\", Málaga), probado con 4 nombres de índice distintos. "
+            "Al no variar, es una respuesta predefinida (clase 2), no una IA improvisando cada vez (clase 3)."),
+    # Grafana (login): /api/health coincide en los dos, pero al probar más endpoints se ve la diferencia real
+    25461: ("honeypot_clasico", 0.85, "Interacción real: responde 401 Unauthorized a TODO, incluso a "
+            "/api/frontend/settings, que en un Grafana real es público (se usa antes de iniciar sesión). "
+            "Negar todo por igual, sin distinguir por endpoint, es un patrón de respuesta única, no de una "
+            "aplicación real. Coincidir en /api/health con el puerto 29082 no bastaba: es un endpoint tan "
+            "básico que un señuelo simple también lo clava."),
+    29082: ("real", 0.9, "Interacción real: a diferencia del puerto 25461, distingue por endpoint — /api/org "
+            "da datos reales de la organización (\"Ondalux Logística\"), /api/search da paneles reales y "
+            "coherentes con el negocio (rutas, temperatura de naves, stock por almacén)."),
     # Reconfirmación de los 2 catch-all originales (ya detectados el 14/10, hoy comprobado otra vez con una ruta distinta)
     39640: ("honeypot_clasico", 0.8, "Interacción real: respuesta byte a byte idéntica en / y en una ruta "
             "inventada — reconfirmado hoy con una ruta distinta a la de la detección original."),
