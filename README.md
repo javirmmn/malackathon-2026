@@ -111,6 +111,7 @@ Las reglas están en [`kits/nics/auto/reglas.yaml`](kits/nics/auto/reglas.yaml) 
 | `entrega/` | CSV de entrega, **dashboard** (`dashboard.html`), veredicto manual y la evidencia capturada (`datos/`) |
 | `kits/nics/auto/` | **La herramienta de clasificación automática** (descubrimiento, sondas, reglas, salida) |
 | `kits/nics/` | Proceso manual con el que se llegó al veredicto (sondas, interacción por protocolo) |
+| `presentacion_final/` | Presentación de la final (PDF de 9 diapositivas), su fuente HTML y el guion con tiempos, demo y preguntas probables |
 | `docs/` | Write-up de la entrega, plan del equipo y plantillas de la presentación |
 | `tests/` | Pruebas automáticas (`.venv\Scripts\python -m pytest`) |
 | `common/` | Utilidades compartidas (lectura de ficheros, gráficos, PDF) |

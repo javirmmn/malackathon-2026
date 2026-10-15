@@ -4,6 +4,7 @@ Proyecto del equipo para el III Malackathon de la ETSI Informática (UMA), 15 y 
 
 - Plan completo (histórico): `docs/plan_fuente.html` y `Plan_Malackathon_2026.pdf`. Regenerar el PDF tras editar el HTML:
   `.venv/Scripts/python.exe -m common.pdf docs/plan_fuente.html --out Plan_Malackathon_2026.pdf` (Chrome headless).
+- Presentación de la final (5 min, PDF a subir antes de las 08:30 del 16/10): `presentacion_final/` (diapositivas.html → PDF con `common.pdf`, guion.md).
 - Write-up de la entrega: `docs/writeup_nics.html` -> `docs/writeup_nics.pdf` (mismo comando de `common.pdf`; debe seguir en 3 páginas).
 
 ## Reto: NICS Lab (equipo 8) — clasificación terminada el 15/10
