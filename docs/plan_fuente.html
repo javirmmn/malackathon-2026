@@ -70,7 +70,7 @@
     <li>Enunciado completo recibido y resumido en el apartado 10. Red de <i>Ondalux Logística S.L.</i>, acceso por VPN WireGuard (<code>10.66.T.M</code>), clasificar los servicios <b>abiertos</b> en real/honeypot clásico/honeypot generativo. Entrega: write-up de 3 páginas + CSV <code>port,service,class</code>.</li>
     <li><b>Los kits de Mercedes y NTT DATA ya no se usan hoy.</b> Todo el esfuerzo va al kit de NICS (apartado 10) y a <code>common/</code> para Oracle si hace falta.</li>
     <li><b>VPN conectada.</b> Confirmar el rango exacto <code>10.66.T.0/24</code> (T = nuestro número de equipo) para pasarlo como <code>--scope</code> al kit. El fichero de configuración de WireGuard y las claves de cada miembro <b>nunca se suben al repo</b>.</li>
-    <li><b>Hecho de ayer que sigue sirviendo:</b> repo privado, kit de NICS probado (3/3 en el banco de pruebas), Oracle <code>malackathon</code> con el usuario <code>MALACK</code> (por si hace falta guardar resultados), README probado en limpio, 16 tests en verde.</li>
+    <li><b>Hecho de ayer que sigue sirviendo:</b> repo privado, kit de NICS probado (3/3 en el banco de pruebas), README probado en limpio, 16 tests en verde.</li>
   </ul>
 </div>
 
@@ -146,88 +146,9 @@
 </table>
 
 <h2>4. Infraestructura Oracle (OCI)</h2>
-<h3>4.1 Situación actual (actualizada el 14/10)</h3>
-<ul>
-  <li><b>Los 4 miembros tienen cuenta OCI</b> de una asignatura anterior, asociada a su @uma.es. La principal es la de Javier: tenancy <code>javierroman</code>, región de origen <b>Spain Central (Madrid)</b>, en estado <i>Free Trial</i>.</li>
-  <li><b>Correo de la organización (13/10):</b> la encuesta es solo para quien <b>todavía no tiene cuenta</b>. Hay que ser mayor de edad, usar un @uma.es y <b>no se puede repetir si ya se pidió</b>. La alternativa es un alias @uma.es.</li>
-  <li><b>Decisión:</b> <b>no rellenamos la encuesta</b>. Trabajamos con la tenancy de Javier y las de los demás quedan de respaldo.</li>
-  <li><b>Base de datos antigua <code>SeguridadOracle</code>: ya no existe.</b> No aparece en <i>Autonomous AI Databases</i> del compartimento raíz. Oracle la habrá eliminado por inactividad (más de 120 días sin uso). El enlace de "My recently viewed" del inicio daba 404 porque esa lista no se actualiza. <b>No hay nada que borrar</b> y los <b>2 huecos Always Free están libres</b>.</li>
-  <li><b>Base de datos del evento creada el 14/10:</b> Database name <code>malackathon</code> (Display name <code>malackathon-2026</code>), Serverless 26ai, Transaction Processing, <b>Always Free</b>, Madrid, acceso desde cualquier sitio con mTLS. Usuario <code>MALACK</code> creado y ensayo de carga superado. La URL del esquema y los detalles están en <code>docs/oracle.md</code>. <b>Queda 1 hueco Always Free libre.</b></li>
-</ul>
-<div class="box info">
-  <strong class="t">Límites que hay que conocer:</strong>
-  <ul style="margin:4px 0 0">
-    <li>Como máximo <b>2 Autonomous Databases <i>Always Free</i></b> por tenancy.</li>
-    <li>Una base de datos Always Free que pasa <b>7 días sin uso se detiene</b> (se puede volver a arrancar con <i>Start</i>), y si sigue detenida unos 90 días <b>se elimina</b>. Una base de datos creada hoy sigue activa el jueves.</li>
-    <li>Recursos Always Free: 1 OCPU y 20 GB de almacenamiento por base de datos. Suficiente para el hackathon.</li>
-    <li>Cuando termina el trial, la cuenta queda limitada a recursos Always Free. Por eso se crea <b>siempre</b> con el interruptor <b>Always Free</b> activado.</li>
-  </ul>
-</div>
+<p class="small">Apartado retirado del repositorio público: Oracle no se usa en el reto NICS Lab y esta sección contenía datos de la cuenta y de la base de datos del equipo.</p>
 
-<h3>4.2 Encuesta de infraestructura (no aplica a nuestro equipo)</h3>
-<ul>
-  <li>Encuesta "Utilización de Infraestructura de Oracle" en el Campus Virtual. Plazo: <b>13/10 a las 23:59</b>.</li>
-  <li>Se rellena <b>una sola vez por equipo</b>. Queda registrado quién la envía, así que conviene que lo haga el responsable.</li>
-  <li>Solo vale un correo <b>@uma.es</b>. <b>No aplica a nuestro equipo:</b> los 4 ya pedimos cuenta en el pasado y no se puede repetir. Si alguna cuenta resultara inutilizable, la alternativa que da la organización es un <b>alias @uma.es</b>.</li>
-</ul>
-
-<h3>4.3 Flujo técnico según la guía "Crear Base de Datos en OCI"</h3>
-<ol>
-  <li>Entrar en la consola de OCI con el doble factor ya configurado. El idioma se puede cambiar.</li>
-  <li>Buscar <i>Oracle Database</i> y crear una <b>Base de Datos Autónoma</b> de <b>Procesamiento de Transacciones</b> (ATP), marcando <b>SIEMPRE GRATIS / Always Free</b>. El resto de opciones, por defecto.</li>
-  <li>Se crea el usuario <code>ADMIN</code>. <b>Apuntad su contraseña: es muy importante.</b></li>
-  <li><i>Acciones de base de datos → Usuarios de base de datos</i>: crear un usuario nuevo con contraseña fuerte, cuota <b>UNLIMITED</b> y los roles <b>Gráfico</b>, <b>OML</b> y <b>REST</b> activados.</li>
-  <li>Copiar la <b>URL de acceso al esquema</b> de ese usuario (aparece debajo del usuario en la lista). <b>Se entrega después en el formulario de evaluación.</b></li>
-  <li>Cargar los datos: abrir la URL del usuario, iniciar sesión y entrar en <i>Carga de datos → Carga de datos</i>. Arrastrar el Excel descargado del Campus Virtual.</li>
-  <li><b>Muy importante:</b> pulsar el <b>lápiz</b> para configurar la importación. Se recomienda poner como <code>VARCHAR2</code> las fechas, países y campos problemáticos, y transformarlos después con SQL.</li>
-  <li>Pulsar <b>Inicio</b> para importar y después <b>Listo</b>.</li>
-  <li>Opcional: montar un servidor web en una instancia de Compute. No es obligatorio; está explicado en el vídeo del taller.</li>
-</ol>
-
-<h2>5. Checklist del 13/10 (Oracle completado el 14/10)</h2>
-<div class="box ok">
-  <strong class="t">Ya hecho (13/10 por la tarde y 14/10 por la mañana):</strong>
-  <ul style="margin:4px 0 0">
-    <li><b>Repositorio privado</b> en GitHub: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a> (rama <code>main</code>), con la estructura del apartado 6.1, <code>.gitignore</code> que bloquea <code>.env</code>, wallet y <code>data/</code>, y un <code>README</code> de "arrancar en 5 minutos". <b>Los otros 3 ya son colaboradores</b> (14/10). Javier trabaja con GitHub Desktop sobre la carpeta local.</li>
-    <li><b>Oracle (14/10):</b> base de datos <code>malackathon</code> creada (Always Free, 26ai, Madrid), usuario <code>MALACK</code> con Graph/OML/REST y URL del esquema guardada en <code>docs/oracle.md</code>. <b>Ensayo de carga superado:</b> 10 filas, tildes correctas, fecha y decimal con coma convertidos con SQL y tablas de prueba borradas. La configuración de Data Load que funcionó está anotada en <code>docs/oracle.md</code>. Wallet descargado y <b>conexión desde Python probada</b> (14/10).</li>
-    <li><b>Python</b> en el portátil de Javier: 3.13.7 con entorno <code>.venv</code> y todas las dependencias comunes <b>y las de los dos kits</b> (hdbscan, umap-learn, kmodes, httpx, fastapi…) instaladas y comprobadas.</li>
-    <li><b>Partes comunes del 14/10 adelantadas</b> (<code>common/</code>): conexión a Oracle por <code>.env</code> (<code>query_df</code>, <code>execute</code>, <code>df_to_table</code>), lectura de CSV/Excel con tildes y decimales con coma, estilo de gráficos y plantilla de dashboard Streamlit. 4 tests pasan.</li>
-    <li><b>SQL del ensayo</b> listo en <code>docs/sql/prueba_carga.sql</code> y plantilla <code>docs/oracle.md</code> para la URL del esquema.</li>
-  </ul>
-</div>
-<h3>5.1 Ensayo de Oracle: crear ya la base de datos del evento (Javier, unos 30 min) <span class="pill">hecho el 14/10</span></h3>
-<p>En lugar de una base de datos "de usar y tirar", <b>se crea hoy la que usaremos el jueves</b>. Así llegamos con todo comprobado y ahorramos tiempo el día 1. Si el reto exigiera otra configuración, queda libre un segundo hueco Always Free.</p>
-<ol>
-  <li><b>Crear la base de datos.</b> ☰ → <i>Oracle Database</i> → <i>Autonomous Database</i>, con la región <b>Spain Central (Madrid)</b> y el compartimento <code>javierroman (root)</code> → <b>Create Autonomous AI Database</b>.
-    <ul>
-      <li>Display name <code>malackathon-2026</code> y Database name <code>malackathon</code>. El Database name solo admite letras y números y no se puede cambiar; el Display name, sí.</li>
-      <li>Workload type: <b>Transaction Processing</b>.</li>
-      <li>Interruptor <b>Always Free</b>: <b>activado</b>. Comprobad que no se cobra nada.</li>
-      <li>Contraseña de <code>ADMIN</code>: fuerte, <b>guardada en un gestor de contraseñas</b>. Nunca en el repo.</li>
-      <li>Acceso de red: el que venga por defecto (acceso seguro desde cualquier sitio).</li>
-      <li>Lo demás, por defecto → <i>Create</i>. Tarda de 3 a 5 minutos hasta quedar en estado <b>Available</b>.</li>
-    </ul>
-  </li>
-  <li><b>Crear el usuario de trabajo.</b> Dentro de la base de datos: <i>Database actions → Database Users</i> → <i>Create User</i>.
-    <ul>
-      <li>Usuario: <code>MALACK</code> (o el nombre del equipo), con contraseña fuerte.</li>
-      <li>Quota on tablespace DATA: <b>UNLIMITED</b>.</li>
-      <li>Activar <b>Graph</b>, <b>OML</b> y <b>Web Access (REST)</b>.</li>
-    </ul>
-  </li>
-  <li><b>Copiar la URL del esquema</b> que aparece en la tarjeta del usuario. Pegarla en el hueco marcado de <code>docs/oracle.md</code> (ya existe; solo la URL, sin contraseñas), hacer commit y push. <b>Es la que se entrega en el formulario de evaluación.</b></li>
-  <li><b>Probar la carga de datos.</b> Abrir la URL, iniciar sesión como <code>MALACK</code> → <i>Data Load → Load Data</i>. Arrastrar el fichero de prueba <code>prueba_carga.csv</code> de la carpeta del proyecto.
-    <ul>
-      <li>Pulsar el <b>lápiz</b> y poner como <code>VARCHAR2</code> la fecha, el país y el campo decimal con coma.</li>
-      <li><i>Start</i> → <i>Done</i>.</li>
-    </ul>
-  </li>
-  <li><b>Comprobar con SQL.</b> En <i>SQL</i> (Database Actions), pegar <code>docs/sql/prueba_carga.sql</code> y ejecutarlo bloque a bloque: recuento (10 filas), tipos, tildes, conversión de la fecha con <code>TO_DATE(fecha,'DD/MM/YYYY')</code> y del decimal con coma (dos formas), detección de filas que no convierten y una tabla "limpia" tipada. Cada consulta lleva al lado el resultado esperado.</li>
-  <li><b>Opcional, recomendable para Google o Mercedes:</b> descargar el <b>wallet</b> (<i>Database connection → Download wallet</i>, con contraseña), descomprimirlo <b>fuera del repo</b>, copiar <code>.env.example</code> a <code>.env</code>, rellenarlo y ejecutar <code>.venv\Scripts\python -m common.db</code>. Debe decir "Conectado a … como MALACK". El wallet y el <code>.env</code> no se suben al repo.</li>
-  <li><b>Borrar solo las tablas de prueba</b> (último bloque del SQL: <code>DROP TABLE … PURGE</code>). <b>La base de datos y el usuario se quedan</b> para el jueves.</li>
-</ol>
-<p class="small">"My recently viewed" del inicio no tiene opción para quitar elementos. Se va renovando con lo que abráis y la entrada rota de <code>SeguridadOracle</code> desaparecerá sola. Es inofensiva.</p>
-
+<h2>5. Checklist del 13/10</h2>
 <h3>5.2 Resto de tareas de hoy</h3>
 <ul class="check">
   <li><b>Los 4</b> comprueban que pueden entrar en su cuenta OCI con el doble factor (cuentas de respaldo).</li>
@@ -240,7 +161,7 @@
   <li>Los otros 3: clonar el repo y seguir el <code>README</code> (<code>py -m venv .venv</code>, instalar <code>requirements.txt</code> (un solo comando, incluye los kits), <code>python -m pytest</code>). Python 3.11–3.13 vale.</li>
   <li class="done">Repositorio Git compartido: <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a>, privado.</li>
   <li class="done">Invitar a los otros 3 al repo: ya son colaboradores (14/10).</li>
-  <li>Crear un grupo de Telegram o WhatsApp del equipo. Compartir allí la URL del esquema y, por un canal seguro, las credenciales de <code>MALACK</code> y el wallet.</li>
+  <li>Crear un grupo de Telegram o WhatsApp del equipo.</li>
 </ul>
 <p class="small">Las tareas de 5.2 que siguen sin marcar no están confirmadas; hacedlas hoy si siguen pendientes.</p>
 
@@ -258,7 +179,6 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
   <ul style="margin:4px 0 0">
     <li><b>Kit NICS</b> (<code>kits/nics/</code>): <code>python -m kits.nics.run --testbed</code> clasifica bien <b>3 de 3</b> servicios en unos 20 s y genera el informe "qué delató a cada impostor" y el dashboard. Por seguridad, <b>solo escanea localhost</b> salvo que se le pase el rango autorizado con <code>--scope</code>.</li>
     <li><b>Kit Mercedes</b> (<code>kits/mercedes/</code>): con un dataset sintético de 2.000 clientes y 5 segmentos plantados, un comando genera la EDA, la comparación de modelos, los perfiles y el dashboard con simulador en unos 30 s. Recupera los segmentos con un acuerdo ARI de <b>0,96</b>.</li>
-    <li><b>Oracle integrado:</b> <code>python -m common.load fichero --tabla T</code> sube cualquier fichero del reto a Oracle (alternativa a Data Load) y los kits guardan sus resultados con <code>--a-oracle PREFIJO</code>. <b>Probado contra la base de datos real el 14/10</b> (wallet + <code>.env</code> en el portátil de Javier): conexión, carga de un CSV y resultados de los dos kits; tablas de ensayo borradas.</li>
     <li><b>Presentación:</b> plantillas de 7 diapositivas (NICS, Mercedes y genérica), guion y preguntas probables en <code>docs/presentacion/</code>; diagramas en <code>docs/arquitectura/</code>.</li>
     <li><b>12 tests</b> en verde (<code>python -m pytest</code>). Cómo usar cada kit el jueves: en su <code>README.md</code>.</li>
     <li><b>Kit NTT DATA</b> (<code>kits/ntt/</code>, hecho el 14/10 por la noche): detecta si la respuesta de una IA se inventa algo frente a sus fuentes. Con el dataset sintético de ensayo acierta ~98 % solo con señales baratas (cifras, nombres, fechas, negaciones y apoyo frase a frase), y el modelo se reutiliza sin reentrenar para la prueba sorpresa. Ensayado también con el juez LLM (Ollama, 12 min para 120 respuestas): solo acierta el 84 % (sospecha de muchas respuestas fieles) y no mejora la combinación, así que <b>el jueves se empieza sin <code>--llm</code></b>.</li>
@@ -271,17 +191,17 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
   <tr><th style="width:22%">Quién</th><th>Tarea del 14/10</th></tr>
   <tr><td>Pareja A (2 personas)</td><td>Kit <b>NICS Lab</b> (apartado 6.2)</td></tr>
   <tr><td>Pareja B (2 personas)</td><td>Kit <b>Mercedes-Benz</b> (apartado 6.3)</td></tr>
-  <tr><td>Todos, al final del día (1 h)</td><td>Partes comunes: <s>conexión a Oracle desde Python, plantilla Streamlit</s> (<b>ya hechas el 13/10</b> en <code>common/</code>; solo probar la conexión real con el wallet), plantilla del PDF de presentación y puesta en común (cada pareja enseña su kit a la otra)</td></tr>
+  <tr><td>Todos, al final del día (1 h)</td><td>Partes comunes: <s>plantilla Streamlit</s> (<b>ya hecha el 13/10</b> en <code>common/</code>), plantilla del PDF de presentación y puesta en común (cada pareja enseña su kit a la otra)</td></tr>
 </table>
 <p class="small"><b>Para empezar los kits:</b> el dashboard de cada uno parte de una copia de <code>common/streamlit_app.py</code>; para leer y limpiar datos, <code>common/dataio.py</code> (<code>read_any</code>, <code>normalize_columns</code>, <code>to_number_es</code>, <code>quick_profile</code>); para Oracle, <code>common/db.py</code>. Cada kit tiene ya su <code>README.md</code> y <code>requirements.txt</code> (dependencias instaladas en el portátil de Javier). <b>Ojo con pandas 3:</b> las columnas de texto ya no son de tipo <code>object</code>; usad <code>pd.api.types.is_numeric_dtype</code> y similares.</p>
 <p>Estructura del repositorio (<b>ya creada</b> en <code>C:\Users\jrmro\Malackathon_2026</code> y en GitHub):</p>
 <table>
   <tr><th style="width:32%">Carpeta</th><th>Contenido</th></tr>
-  <tr><td><code>common/</code> <span class="pill">hecho</span></td><td>Conexión a Oracle (<code>oracledb</code> + wallet, por variables de entorno), utilidades de carga y exportación de CSV/Excel, plantilla de app Streamlit, estilos de gráficos</td></tr>
+  <tr><td><code>common/</code> <span class="pill">hecho</span></td><td>Utilidades de carga y exportación de CSV/Excel, plantilla de app Streamlit, estilos de gráficos</td></tr>
   <tr><td><code>kits/nics/</code> <span class="pill">hecho</span></td><td>Kit de clasificación de servicios (6.2)</td></tr>
   <tr><td><code>kits/mercedes/</code> <span class="pill">hecho</span></td><td>Kit de clustering de clientes (6.3)</td></tr>
-  <tr><td><code>docs/</code></td><td>Plan, <code>oracle.md</code> (URL del esquema, sin contraseñas), <code>sql/</code> con consultas, plantilla del PDF de presentación, diagrama de arquitectura</td></tr>
-  <tr><td><code>data/</code></td><td>Datos locales; en <code>.gitignore</code>. El wallet y el <code>.env</code> tampoco se suben</td></tr>
+  <tr><td><code>docs/</code></td><td>Plan, plantilla del PDF de presentación, diagrama de arquitectura</td></tr>
+  <tr><td><code>data/</code></td><td>Datos locales; en <code>.gitignore</code></td></tr>
   <tr><td><code>tests/</code></td><td>Pruebas de <code>common/</code> y de los dos kits, sin Oracle (<code>python -m pytest</code>, 9 tests)</td></tr>
 </table>
 
@@ -308,7 +228,6 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
   <li><b>Perfilado:</b> tabla de medias y medianas por cluster, variables que más distinguen a cada segmento, gráfico radar y una plantilla para poner nombre de "persona" y acciones de marketing a cada segmento.</li>
   <li><b>Visualización:</b> PCA y UMAP en 2D coloreados por cluster.</li>
   <li><b>Dashboard Streamlit:</b> selector de segmento, perfil y simulador de "¿a qué segmento pertenece este cliente?".</li>
-  <li><b>Opcional:</b> carga y lectura desde la Autonomous DB <code>malackathon</code> mediante <code>common/</code>.</li>
 </ol>
 <p><b>Hecho cuando:</b> con el dataset de ensayo, un solo comando genera la EDA, la comparación de modelos y los perfiles, y el dashboard muestra los segmentos. <b>✅ Cumplido.</b> En lugar de Kaggle (pide registro) se usa un dataset <b>sintético</b> con segmentos plantados, lo que permite medir si el pipeline acierta. HDBSCAN se usa desde scikit-learn, sin el paquete <code>hdbscan</code>.</p>
 <p class="small">Dependencias: <code>pandas</code>, <code>scikit-learn</code>, <code>hdbscan</code>, <code>umap-learn</code>, <code>kmodes</code>, <code>plotly</code>, <code>streamlit</code>, <code>ydata-profiling</code> (opcional).</p>
@@ -325,9 +244,6 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
 <ul class="check">
   <li class="done">Ambos kits en <code>main</code>, con su <code>README</code> (falta hacer commit y push).</li>
   <li>Los 4 portátiles clonan el repo, pasan <code>python -m pytest</code> y ejecutan los dos kits sin errores.</li>
-  <li class="done">Base de datos <code>malackathon</code> en estado <i>Available</i> (comprobado el 14/10 por la noche al conectar desde Python).</li>
-  <li class="done">Wallet descargado, <code>.env</code> rellenado y <code>common.db</code> conectando como <code>MALACK</code> (portátil de Javier).</li>
-  <li>Repartir la contraseña de <code>MALACK</code> y el wallet (con su contraseña) al equipo por un canal seguro, si van a conectarse desde sus portátiles.</li>
   <li class="done">Plantillas de la presentación (7 diapositivas: NICS, Mercedes y genérica) en <code>docs/presentacion/</code>, con guion y preguntas probables, y diagramas de arquitectura en <code>docs/arquitectura/</code>. PDF con <code>python -m common.pdf docs\presentacion\nics.html</code>.</li>
   <li>Material físico listo (apartado 16) y a dormir pronto: el día 1 dura casi 11 horas.</li>
 </ul>
@@ -338,7 +254,7 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
   <li>Javier: traer lo último del repo: <i>Pull origin</i> en GitHub Desktop o <code>git pull</code>.</li>
   <li>Comprobar que todo sigue funcionando: <code>.venv\Scripts\python -m pytest</code>.</li>
   <li>Javier: Ollama abierto (icono junto al reloj) por si toca NICS o NTT DATA.</li>
-  <li>Portátil cargado, cargador, regleta y móvil con datos. Credenciales de OCI y de <code>MALACK</code> accesibles en el gestor de contraseñas.</li>
+  <li>Portátil cargado, cargador, regleta y móvil con datos.</li>
   <li>Al conocer el reto: abrir la tabla "Si el reto es…" del <code>README.md</code> y el README del kit que toque.</li>
   <li>En los primeros 15 minutos del jueves: acordar los <b>roles</b> del apartado 7 (líder, datos, modelo, frontend). <b>Quién presenta el viernes</b> solo hace falta saberlo cuando salga la lista de finalistas (21:45 del jueves), y las presentaciones se preparan en el tramo de 18:00 a 19:15.</li>
 </ul>
@@ -361,7 +277,7 @@ son del día antes de conocer el reto. El estado actual y final de NICS está en
   <tr><td>11:30 – 15:00</td><td>Solución base completa, aunque sea simple. Comer por turnos.</td><td>Primera versión enseñada a un mentor</td></tr>
   <tr><td>15:00 – 18:00</td><td>Mejoras, métricas, el elemento diferenciador y la interfaz de la demo.</td><td>Versión 2 con métricas</td></tr>
   <tr><td>18:00 – 19:15</td><td><b>Congelar el código.</b> PDF, guion, diagrama de arquitectura y vídeo de respaldo de la demo.</td><td>Demo ensayada una vez</td></tr>
-  <tr><td>19:15 – 19:45</td><td><b>Entrega por el Campus Virtual</b> (código, PDF, URL del esquema de Oracle si aplica).</td><td>Entrega confirmada</td></tr>
+  <tr><td>19:15 – 19:45</td><td><b>Entrega por el Campus Virtual</b> (código, PDF).</td><td>Entrega confirmada</td></tr>
   <tr><td>21:45</td><td>Lista de finalistas. Si estamos, ensayar la presentación esa noche o a primera hora.</td><td>—</td></tr>
 </table>
 <div class="box info"><strong class="t">Clave:</strong> los mentores evalúan <b>por fases durante el día</b>. Enseñadles avances parciales pronto y a menudo; no esperéis a tenerlo todo.</div>
@@ -536,7 +452,7 @@ hace el write-up, servicio por servicio.</p>
   <tr><td>Mercedes-Benz</td><td><code>hdbscan</code>, <code>umap-learn</code>, <code>kmodes</code></td></tr>
   <tr><td>NTT DATA</td><td>Ollama con modelos descargados, <code>transformers</code>, <code>torch</code>, modelo NLI en caché, <code>spacy</code> en español</td></tr>
   <tr><td>Indra</td><td><code>rasterio</code>, <code>opencv-python</code>, <code>scikit-image</code>, <code>geopandas</code>, <code>folium</code></td></tr>
-  <tr><td>Google</td><td>Cliente de Oracle (<code>oracledb</code>), wallet de la base de datos descargado</td></tr>
+  <tr><td>Google</td><td>Cliente de Oracle (<code>oracledb</code>)</td></tr>
   <tr><td>Betsson</td><td><code>playwright</code> y <code>playwright install</code> (navegadores)</td></tr>
 </table>
 <h4>Material físico</h4>
@@ -550,7 +466,6 @@ hace el write-up, servicio por servicio.</p>
 <h2>17. Riesgos y planes de contingencia</h2>
 <table>
   <tr><th style="width:32%">Riesgo</th><th>Plan</th></tr>
-  <tr><td>La tenancy de Javier falla o se queda sin recursos</td><td>Usar la cuenta OCI de otro miembro del equipo (los 4 tenemos). Si alguna no sirve, la organización permite pedir cuenta con un alias @uma.es.</td></tr>
   <tr><td>La red del evento va lenta</td><td>Modelos y dependencias descargados antes; compartir datos desde el móvil.</td></tr>
   <tr><td>No llegamos a todo</td><td>Prioridad: versión mínima funcionando, luego demo y luego mejoras. Congelar el código a las 18:00 sí o sí.</td></tr>
   <tr><td>Falla la demo en directo</td><td>Vídeo grabado y capturas en el PDF.</td></tr>
@@ -565,7 +480,6 @@ hace el write-up, servicio por servicio.</p>
   <li><b>Repositorio del equipo (privado):</b> <a href="https://github.com/javirmmn/malackathon-2026">github.com/javirmmn/malackathon-2026</a></li>
   <li><b>Encuesta de infraestructura Oracle:</b> <a href="https://informatica.cv.uma.es/mod/questionnaire/view.php?id=32225">informatica.cv.uma.es/mod/questionnaire/view.php?id=32225</a></li>
   <li><b>Encuesta de selección de retos</b> (ya cerrada): <a href="https://informatica.cv.uma.es/mod/questionnaire/view.php?id=30635">informatica.cv.uma.es/mod/questionnaire/view.php?id=30635</a></li>
-  <li><b>Vídeo del taller de Oracle (10/10):</b> <a href="https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/_RaHQEu-4kDkJpOALCZmQPoZ8sXgNw0uA5XRjFlX-ECIIFVO4p-nTnOEbUJrO0MG/n/frddomvd8z4q/b/cust-uma-bucket/o/video1274765269.mp4">objectstorage.eu-frankfurt-1.oraclecloud.com/…/video1274765269.mp4</a></li>
   <li><b>Oracle REST Data Services, guía del desarrollador:</b> <a href="https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/24.1/orddg/oracle-rest-data-services-developers-guide.pdf">docs.oracle.com/…/oracle-rest-data-services-developers-guide.pdf</a></li>
   <li><b>Servidor web en una instancia de Compute (vídeo):</b> <a href="https://www.youtube.com/watch?v=IyQ9iyn6QOY">youtube.com/watch?v=IyQ9iyn6QOY</a></li>
   <li><b>Claves SSH para instancias Linux en OCI (vídeo):</b> <a href="https://www.youtube.com/watch?v=v5fGdgIrdd0">youtube.com/watch?v=v5fGdgIrdd0</a></li>
@@ -574,7 +488,7 @@ hace el write-up, servicio por servicio.</p>
 <h2>19. Contexto para retomar con Claude</h2>
 <div class="box ok">
   <strong class="t">Copiar este bloque al empezar una conversación nueva:</strong>
-  <p>Participo con mi equipo (4 personas, equipo 8) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. <b>Nos tocó NICS Lab</b> (nuestra 1.ª opción): clasificar servicios de la red de <i>Ondalux Logística S.L.</i> como reales, honeypot clásico u honeypot generativo, por VPN WireGuard (único host alcanzable: <code>10.66.0.1</code>). <b>Clasificación terminada:</b> 40/40 servicios descubiertos y confirmados por interacción real (no solo apariencia) — 8 real, 31 honeypot clásico, 1 generativo (el único: un Elasticsearch falso en el puerto 50096, que al buscar con <code>POST</code> repetido en un índice inventado fabrica resultados distintos cada vez). Write-up de 3 páginas en <code>docs/writeup_nics.html</code>, CSV de entrega en <code>out/nics_entrega/entrega.csv</code>, dashboard en <code>kits/nics/app_veredicto.py</code>. Los kits de Mercedes-Benz y NTT DATA (preparados el 14/10) ya no se usan. Los 4 tenemos cuenta OCI de una asignatura (no rellenamos la encuesta de Oracle porque no se puede repetir). Tenancy de Javier (<code>javierroman</code>, Spain Central/Madrid). Autonomous DB Always Free <code>malackathon</code> (Display name <code>malackathon-2026</code>, 26ai, Madrid) con el usuario <code>MALACK</code> (Graph/OML/REST); URL del esquema en <code>docs/oracle.md</code>, conexión desde Python probada. Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, repo privado <code>github.com/javirmmn/malackathon-2026</code>. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
+  <p>Participo con mi equipo (4 personas, equipo 8) en el III Malackathon de la ETSI Informática de la UMA: día 1 el jueves 15/10/2026 (trabajo de 10:15 a 20:00, entrega por el Campus Virtual, finalistas a las 21:45) y día 2 el viernes 16/10 (demo en directo de 7 minutos por un solo miembro, con PDF de apoyo). Orden de preferencia enviado: 1 NICS Lab, 2 Mercedes-Benz, 3 NTT DATA, 4 Indra, 5 Google, 6 Betsson. <b>Nos tocó NICS Lab</b> (nuestra 1.ª opción): clasificar servicios de la red de <i>Ondalux Logística S.L.</i> como reales, honeypot clásico u honeypot generativo, por VPN WireGuard (único host alcanzable: <code>10.66.0.1</code>). <b>Clasificación terminada:</b> 40/40 servicios descubiertos y confirmados por interacción real (no solo apariencia) — 8 real, 31 honeypot clásico, 1 generativo (el único: un Elasticsearch falso en el puerto 50096, que al buscar con <code>POST</code> repetido en un índice inventado fabrica resultados distintos cada vez). Write-up de 3 páginas en <code>docs/writeup_nics.html</code>, CSV de entrega en <code>out/nics_entrega/entrega.csv</code>, dashboard en <code>kits/nics/app_veredicto.py</code>. Los kits de Mercedes-Benz y NTT DATA (preparados el 14/10) ya no se usan. Carpeta del proyecto: <code>C:\Users\jrmro\Malackathon_2026</code>, repo privado <code>github.com/javirmmn/malackathon-2026</code>. El plan completo está en <code>docs/plan_fuente.html</code> y <code>Plan_Malackathon_2026.pdf</code>.</p>
 </div>
 
 <p class="small" style="margin-top:18px">Fuentes: Bases III Malackathon ETSII UMA; Programa y Normas Malackathon; guía "Cómo crear la base de datos y un usuario en OCI"; hoja de recursos de Oracle (uma-hackaton v1.0.0); información de retos del Campus Virtual. Las fechas y normas pueden cambiar a criterio de la organización: revisad siempre el Campus Virtual.</p>

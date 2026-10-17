@@ -35,7 +35,6 @@ Con `kmeans_k5` el pipeline los recupera con un acuerdo (ARI) de ~0,96.
 
 | Opción | Para qué |
 |---|---|
-| `--sql "SELECT ..."` | Leer desde la Autonomous DB (necesita `.env` y wallet) en vez de un fichero |
 | `--sheet 1` | Hoja del Excel |
 | `--exclude a,b` | Columnas que no deben usarse |
 | `--kmin 2 --kmax 10` | Rango de k |

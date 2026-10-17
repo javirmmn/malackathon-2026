@@ -60,7 +60,7 @@
   <text class="s" x="565" y="344" text-anchor="middle">comparación de modelos</text>
   <path class="d" d="M565,230 V286"/>
   <rect class="out" x="700" y="290" width="190" height="80" rx="10"/>
-  <text class="s" x="795" y="322" text-anchor="middle" font-weight="700">Oracle (MALACK)</text>
+  <text class="s" x="795" y="322" text-anchor="middle" font-weight="700">Oracle</text>
   <text class="s" x="795" y="344" text-anchor="middle">clientes y segmentos</text>
   <path class="d" d="M795,230 V286"/>
   <rect class="out" x="930" y="290" width="196" height="80" rx="10"/>
